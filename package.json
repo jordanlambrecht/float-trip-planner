@@ -1,0 +1,36 @@
+{
+  "name": "niobrara-app",
+  "version": "1.0.0",
+  "description": "A Doodle Poll-like application to determine the best time for a Niobrara float trip.",
+  "author": "Jordan Lambrecht",
+  "license": "MIT",
+  "main": "app/page.tsx",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "autoprefixer": "^10.4.21",
+    "clsx": "^2.1.1",
+    "next": "^15.3.2",
+    "pg": "^8.7.1",
+    "postcss": "^8.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.7"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "keywords": [
+    "nextjs",
+    "tailwind",
+    "poll",
+    "doodle",
+    "niobrara"
+  ]
+}

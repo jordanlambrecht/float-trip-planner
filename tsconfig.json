@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "ES2022"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": true,
+
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@utilities/*": ["./utilities/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@payload-config": ["./payload.config.ts"],
+      "@payload-types": ["./payload-types.ts"],
+
+      "react": ["./node_modules/@types/react"],
+      "@/*": ["./*"],
+      "@components": ["./app/components/index.ts"],
+      "@types/*": ["./app/types/*"],
+      "@types": ["./app/types.ts"],
+      "@pollConfig": ["./app/pollConfig.ts"],
+      "@actions": ["./app/actions.ts"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

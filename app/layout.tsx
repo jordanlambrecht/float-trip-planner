@@ -5,6 +5,7 @@ import { IBM_Plex_Mono, Kumbh_Sans } from "next/font/google"
 import { Footer } from "@components"
 import type { ReactNode } from "react"
 import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
+import PlausibleProvider from "next-plausible"
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -25,38 +26,49 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <html
-      lang='en'
-      className={`${kumbhSans.variable} ${ibmPlexMono.variable} antialiased`}
+    <PlausibleProvider
+      domain='niobrara.jordy.world'
+      trackOutboundLinks
+      trackLocalhost={process.env.NODE_ENV !== "production"}
+      selfHosted
+      taggedEvents
+      customDomain='https://analytics.jordy.world'
+      enabled
+      hash
     >
-      <head>
-        <title>Niobrara Float Trip Poll</title>
-        <meta
-          name='description'
-          content='Help us determine the best time for a Niobrara float trip!'
-        />
-        <link rel='icon' href='/favicon.png' sizes='any' />
-        {/* Add script to prevent flash of wrong theme */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+      <html
+        lang='en'
+        className={`${kumbhSans.variable} ${ibmPlexMono.variable} antialiased`}
+      >
+        <head>
+          <title>Niobrara Float Trip Poll</title>
+          <meta
+            name='description'
+            content='Help us determine the best time for a Niobrara float trip!'
+          />
+          <link rel='icon' href='/favicon.png' sizes='any' />
+          {/* Add script to prevent flash of wrong theme */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
               (function() {
                 const theme = localStorage.getItem('theme') ||
                   (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
                 if (theme === 'dark') document.documentElement.classList.add('dark');
               })();
             `,
-          }}
-        />
-      </head>
-      <body className='transition-all duration-300 ease-in bg-background text-text dark:text-text-dm dark:bg-background-dm max-w-vw selection:bg-pink-dark selection:text-white'>
-        <ThemeToggleWrapper />
-        <main className='flex flex-col justify-start items-center'>
-          {children}
-        </main>
-        <Footer />
-      </body>
-    </html>
+            }}
+          />
+        </head>
+        <body className='transition-all duration-300 ease-in bg-background text-text dark:text-text-dm dark:bg-background-dm max-w-vw selection:bg-pink-dark selection:text-white'>
+          {/* <ThemeToggleWrapper /> */}
+          <main className='flex flex-col justify-start items-center'>
+            {children}
+          </main>
+          <Footer />
+        </body>
+      </html>
+    </PlausibleProvider>
   )
 }
 

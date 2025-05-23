@@ -14,7 +14,7 @@ function renderValue(val: string | string[]) {
 }
 
 const DetailRow = ({ label, value1, value2 }: DetailRowProps) => (
-  <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-baseline border-b border-gray py-2.5 last:border-b-0'>
+  <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-baseline border-b border-background-dm py-2.5 last:border-b-0 text-center'>
     <span className='pr-3 font-mono text-xs text-right uppercase sm:text-sm text-text/55 dark:text-text-dm/75'>
       {label}:
     </span>
@@ -34,9 +34,14 @@ interface TripDetailsProps {
 
 const TripDetails = ({ option1, option2 }: TripDetailsProps) => {
   return (
-    <div className='mb-6 border-t sm:mb-8 border-gray'>
+    <div className='mb-6 border-t sm:mb-8 border-background-dm'>
       <DetailRow
-        label='Avg Temp'
+        label='Avg Daytime Temp'
+        value1={option1.daytimeTemps}
+        value2={option2.daytimeTemps}
+      />
+      <DetailRow
+        label='Avg Nighttime Temp'
         value1={option1.eveningTemps}
         value2={option2.eveningTemps}
       />
@@ -46,14 +51,35 @@ const TripDetails = ({ option1, option2 }: TripDetailsProps) => {
         value2={option2.moonPhase}
       />
       <DetailRow
-        label='Sky'
-        value1={option1.darkSkyQuality}
-        value2={option2.darkSkyQuality}
+        label='Clear Sky Chance'
+        value1={option1.clearSkyChance}
+        value2={option2.clearSkyChance}
+      />
+      <DetailRow
+        label='Rain Chance'
+        value1={option1.rainChance}
+        value2={option2.rainChance}
+      />
+      <DetailRow label='Wind' value1={option1.wind} value2={option2.wind} />
+      <DetailRow
+        label='Humidity'
+        value1={option1.humidity}
+        value2={option2.humidity}
       />
       <DetailRow
         label='Space Stuff'
         value1={option1.meteorActivity}
         value2={option2.meteorActivity}
+      />
+      <DetailRow
+        label='Vibe Boosters'
+        value1={option1.advantages}
+        value2={option2.advantages}
+      />
+      <DetailRow
+        label='Vibe Wreckers'
+        value1={option1.disadvantages}
+        value2={option2.disadvantages}
       />
     </div>
   )

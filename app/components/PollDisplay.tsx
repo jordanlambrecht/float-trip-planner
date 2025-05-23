@@ -29,7 +29,7 @@ const PollDisplay = ({
 
   return (
     <>
-      <div className='py-4 my-16 text-center'>
+      <div className='py-4 my-16 text-center w-full'>
         <h1 className='text-4xl font-bold'>Niobrara 2025</h1>
         <span className='font-mono text-lg'>Hooray!</span>
       </div>

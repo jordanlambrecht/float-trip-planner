@@ -22,8 +22,8 @@ const MessageWall = ({ rsvps = [] }: MessageWallProps) => {
 
   if (messagesWithNames.length === 0) {
     return (
-      <section className='w-full max-w-4xl mx-auto p-4 sm:p-6'>
-        <div className='p-6 rounded-lg shadow-2xl border border-background-dm bg-cardbg '>
+      <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
+        <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm '>
           <h2 className='text-2xl font-bold mb-4'>Message Board</h2>
           <p className='text-center font-mono text-gray-500 py-8'>
             No messages yet. Add a message when you vote!

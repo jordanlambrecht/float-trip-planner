@@ -4,7 +4,7 @@ const CoolResources = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6  grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm  '>
-        <div className='my-6 py-4 mx-8 px-4 flex flex-col md:flex-row items-start justify-between gap-4'>
+        <div className='my-6 py-4 px-4 mx-2 md:mx-8 md:px-4 flex flex-col md:flex-row items-start justify-between gap-4'>
           <div>
             <h2>Cool Resources</h2>
           </div>

@@ -29,7 +29,7 @@ const RSVP_OPTIONS: {
     textClass: "text-teal-text ",
   },
   {
-    label: "Still not sure",
+    label: "Undecided",
     value: "maybe",
     baseClass:
       "bg-yellow hover:bg-yellow-medium border-yellow-dark focus:outline-none focus:ring-2",

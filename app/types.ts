@@ -5,7 +5,7 @@ export type VotePreference =
   | "idc"
   | "doesnt_work"
 
-export type RSVPStatus = "yes" | "no" | "maybe" // New RSVP status type
+export type RSVPStatus = "yes" | "no" | "maybe"
 
 export interface ParticipantVote {
   id: string

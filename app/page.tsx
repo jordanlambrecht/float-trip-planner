@@ -3,19 +3,19 @@
 
 import { useState, useEffect, useCallback, useTransition } from "react"
 import PollDisplay from "./components/PollDisplay"
-import type { PollResultsData, RsvpEntry } from "@types" // Import RsvpEntry
+import type { PollResultsData, RsvpEntry } from "@types"
 import { tripOptionsStaticDetails } from "@pollConfig"
 import { getPollResultsAction } from "@actions"
 import Schedule from "./components/Schedule"
-import RsvpList from "./components/RsvpList" // Import RsvpList
+import RsvpList from "./components/RsvpList"
 import { MeteorShowerGuide } from "./components"
 import Link from "next/link"
 import CoolResources from "./components/CoolResources"
 import Itinerary from "./components/Itinerary"
-import MessageWall from "./components/MessageWall" // Add the import
+import MessageWall from "./components/MessageWall"
 const Page = () => {
   const [pollResults, setPollResults] = useState<PollResultsData | null>(null)
-  // Separate state for rsvps to make passing to RsvpList cleaner
+
   const [rsvps, setRsvps] = useState<RsvpEntry[] | undefined>(undefined)
   const [isFetching, startFetchingTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
@@ -54,16 +54,15 @@ const Page = () => {
         }
       })
     },
-    [view] // Removed pollResults from dependencies as it's set within this callback
+    [view]
   )
 
   useEffect(() => {
     fetchPollData(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // fetchPollData is memoized with useCallback
+  }, [])
 
   const handleFormSubmissionSuccess = () => {
-    fetchPollData(true) // This will refetch all data including RSVPs
+    fetchPollData(true)
   }
 
   const handleResetToForm = () => {
@@ -112,7 +111,7 @@ const Page = () => {
         />
       </section>
       <RsvpList rsvps={rsvps} />
-      <MessageWall rsvps={rsvps} /> {/* Add MessageWall component here */}
+      <MessageWall rsvps={rsvps} />
       <Schedule />
       <Itinerary />
       <MeteorShowerGuide />

@@ -98,12 +98,10 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
 
           return (
             <div key={year} className='mb-8'>
-              {/* Year Header */}
               <h2 className='text-2xl font-bold mb-4'>
                 {year} Roll Call {year === currentYear ? " (So Far)" : ""}
               </h2>
 
-              {/* Your original grid layout */}
               <div className='w-full'>
                 <ul className='grid grid-cols-2 w-full sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6'>
                   {filteredRsvps.map((rsvp, index) => (

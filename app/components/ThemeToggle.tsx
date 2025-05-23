@@ -40,7 +40,7 @@ export default function ThemeToggle() {
   }
 
   if (!isMounted) {
-    // Render a placeholder to prevent layout shift and match button size
+    // Render a placeholder to prevent layout shift
     return <div className='w-6 h-6 rounded-full sm:w-8 sm:h-8' />
   }
 

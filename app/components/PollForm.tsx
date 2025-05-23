@@ -7,12 +7,11 @@ import type {
   PollFormProps,
   VotePreference,
   ParticipantVote,
-  RSVPStatus, // Import RSVPStatus
+  RSVPStatus,
 } from "@types"
 import { ConfirmationModal } from "@components"
 import { submitPollAction } from "@actions"
 
-// Define RSVP options
 const RSVP_OPTIONS: {
   label: string
   value: RSVPStatus
@@ -49,7 +48,6 @@ const RSVP_OPTIONS: {
 
 const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
   const getInitialParticipant = (): ParticipantVote => ({
-    // Ensure return type is ParticipantVote
     id: Date.now().toString() + Math.random().toString(36).substring(2),
     name: "",
     option1Vote: null,
@@ -94,7 +92,6 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     )
   }
 
-  // New function to update RSVP status
   const updateParticipantRSVP = (id: string, rsvpValue: RSVPStatus) => {
     setParticipants(
       participants.map((p) =>
@@ -105,7 +102,6 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     )
   }
 
-  // Add this function to handle message updates
   const updateParticipantMessage = (id: string, message: string) => {
     setParticipants(
       participants.map((p) => (p.id === id ? { ...p, message } : p))
@@ -154,18 +150,16 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     }
 
     startTransition(async () => {
-      // Ensure the submissions match the Omit<ParticipantVote, "id"> type
       const submissions: Omit<ParticipantVote, "id">[] = validParticipants.map(
         ({ name, option1Vote, option2Vote, rsvp, message }) => ({
-          // Include rsvp
           name,
           option1Vote,
           option2Vote,
-          rsvp, // Add rsvp to submission
-          message, // Include the message in the submission
+          rsvp,
+          message,
         })
       )
-      // The @ts-ignore might no longer be needed if types align
+
       const result = await submitPollAction(submissions)
 
       if (result.success) {

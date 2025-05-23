@@ -4,7 +4,7 @@ import "./globals.css"
 import { IBM_Plex_Mono, Kumbh_Sans } from "next/font/google"
 import { Footer } from "@components"
 import type { ReactNode } from "react"
-import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
+// import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
 import PlausibleProvider from "next-plausible"
 
 const ibmPlexMono = IBM_Plex_Mono({

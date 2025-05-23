@@ -49,7 +49,6 @@ const MessageWall = ({ rsvps = [] }: MessageWallProps) => {
                   {entry.name}
                 </span>
                 <span className='text-xs text-gray-500 italic'>
-                  {/* Always show the date in italics */}
                   {entry.createdAt
                     ? formatDate(new Date(entry.createdAt))
                     : `${formatDate(new Date())} (${entry.year})`}

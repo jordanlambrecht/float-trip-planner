@@ -4,6 +4,7 @@ import "./globals.css"
 import { IBM_Plex_Mono, Kumbh_Sans } from "next/font/google"
 import { Footer } from "@components"
 import type { ReactNode } from "react"
+import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -35,9 +36,24 @@ const Layout = ({ children }: LayoutProps) => {
           content='Help us determine the best time for a Niobrara float trip!'
         />
         <link rel='icon' href='/favicon.png' sizes='any' />
+        {/* Add script to prevent flash of wrong theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') ||
+                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                if (theme === 'dark') document.documentElement.classList.add('dark');
+              })();
+            `,
+          }}
+        />
       </head>
       <body className='transition-all duration-300 ease-in bg-background text-text dark:text-text-dm dark:bg-background-dm max-w-vw selection:bg-pink-dark selection:text-white'>
-        <main>{children}</main>
+        <ThemeToggleWrapper />
+        <main className='flex flex-col justify-start items-center'>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

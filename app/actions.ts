@@ -2,10 +2,19 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import { query } from "@/lib/database"
-import { VotePreference, PollResultsData, ParticipantVote } from "@types"
-import { tripOptionsStaticDetails } from "@pollConfig"
+import { query } from "./lib/database"
+import {
+  VotePreference,
+  PollResultsData,
+  ParticipantVote,
+  RSVPStatus,
+  RsvpEntry,
+  HistoricalYearData, // Import RSVPStatus
+} from "./types"
+import { tripOptionsStaticDetails } from "./pollConfig"
 
+// Type for the submission data expected by the action
+// Omit 'id' as it's client-side only. RSVP is now part of ParticipantVote.
 type PollSubmission = Omit<ParticipantVote, "id">
 
 interface SubmitPollActionResult {
@@ -17,30 +26,42 @@ interface SubmitPollActionResult {
 export async function submitPollAction(
   submissions: PollSubmission[]
 ): Promise<SubmitPollActionResult> {
+  const currentYear = new Date().getFullYear()
   try {
     if (!Array.isArray(submissions) || submissions.length === 0) {
       return { success: false, error: "Invalid submission data." }
     }
 
     for (const submission of submissions) {
-      const { name, option1Vote, option2Vote } = submission
-      if (!name || name.trim() === "" || !option1Vote || !option2Vote) {
+      const { name, option1Vote, option2Vote, rsvp } = submission // Destructure rsvp
+      if (
+        !name ||
+        name.trim() === "" ||
+        !option1Vote ||
+        !option2Vote
+        // rsvp can be null initially, but let's assume it should be set by the time of submission
+        // If rsvp is optional for submission, this validation might change
+      ) {
         console.warn("Skipping incomplete submission in action:", submission)
         return {
           success: false,
           error: `Incomplete data for submission: ${
             name || "Unnamed voter"
-          }. All fields are required.`,
+          }. All fields (including RSVP) are required.`,
         }
+      }
+      // Validate RSVP status if needed, e.g., ensure it's one of 'yes', 'no', 'maybe'
+      if (rsvp && !["yes", "no", "maybe"].includes(rsvp)) {
+        return { success: false, error: `Invalid RSVP status for ${name}.` }
       }
     }
 
     // If all submissions are valid, proceed to insert
     for (const submission of submissions) {
-      const { name, option1Vote, option2Vote } = submission
+      const { name, option1Vote, option2Vote, rsvp } = submission // Destructure rsvp
       await query(
-        "INSERT INTO responses (name, option_1_preference, option_2_preference) VALUES ($1, $2, $3)",
-        [name, option1Vote, option2Vote]
+        "INSERT INTO responses (name, option_1_preference, option_2_preference, rsvp_status, year) VALUES ($1, $2, $3, $4, $5)",
+        [name, option1Vote, option2Vote, rsvp, currentYear]
       )
     }
 
@@ -74,6 +95,17 @@ export async function getPollResultsAction(): Promise<
       GROUP BY option_2_preference
     `)
 
+    // Updated query to fetch RSVP data with year
+    const rsvpResults = await query(`
+      SELECT 
+        name, 
+        rsvp_status,
+        year
+      FROM responses 
+      WHERE name IS NOT NULL AND name <> '' AND rsvp_status IS NOT NULL
+      ORDER BY year DESC, name ASC
+    `)
+
     const formatResults = (rows: any[]): Record<VotePreference, number> => {
       const votes: Record<VotePreference, number> = {
         works_best: 0,
@@ -86,8 +118,16 @@ export async function getPollResultsAction(): Promise<
           votes[row.preference as VotePreference] = parseInt(row.count, 10)
         }
       })
+
       return votes
     }
+
+    // Format RSVP data with year
+    const formattedRsvps: RsvpEntry[] = rsvpResults.rows.map((row: any) => ({
+      name: row.name,
+      rsvp: row.rsvp_status as RSVPStatus,
+      year: parseInt(row.year, 10) || new Date().getFullYear(), // Default to current year if null
+    }))
 
     const pollResults: PollResultsData = {
       option1: {
@@ -98,10 +138,63 @@ export async function getPollResultsAction(): Promise<
         ...tripOptionsStaticDetails.option2,
         votes: formatResults(resultsOption2.rows),
       },
+      rsvps: formattedRsvps,
     }
     return pollResults
   } catch (error) {
     console.error("Error fetching poll results action:", error)
     return { error: "Failed to fetch poll results." }
+  }
+}
+
+export async function getHistoricalYearDataAction(
+  year: number
+): Promise<HistoricalYearData | { error: string }> {
+  try {
+    const result = await query(
+      `
+      SELECT 
+        year,
+        title,
+        daytime_temps,
+        evening_temps,
+        moon_phase,
+        sky_visibility,
+        rain,
+        wind,
+        humidity,
+        meteor_activity,
+        notes,
+        photo_album_url
+      FROM years 
+      WHERE year = $1
+    `,
+      [year]
+    )
+
+    if (result.rows.length === 0) {
+      return { error: `No historical data found for year ${year}` }
+    }
+
+    const row = result.rows[0]
+    const historicalData: HistoricalYearData = {
+      year: row.year,
+      title: row.title,
+      daytimeTemps: row.daytime_temps,
+      eveningTemps: row.evening_temps,
+      moonPhase: row.moon_phase,
+      skyVisibility: row.sky_visibility,
+      rain: row.rain,
+      wind: row.wind,
+      humidity: row.humidity,
+      meteorActivity: row.meteor_activity || [],
+      notes: row.notes,
+      photoAlbumUrl: row.photo_album_url,
+    }
+
+    return historicalData
+  } catch (error) {
+    console.error("Error fetching historical year data:", error)
+    return { error: "Failed to fetch historical year data." }
   }
 }

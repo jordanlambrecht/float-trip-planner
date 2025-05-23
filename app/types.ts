@@ -5,11 +5,14 @@ export type VotePreference =
   | "idc"
   | "doesnt_work"
 
+export type RSVPStatus = "yes" | "no" | "maybe" // New RSVP status type
+
 export interface ParticipantVote {
   id: string
   name: string
   option1Vote: VotePreference | null
   option2Vote: VotePreference | null
+  rsvp: RSVPStatus | null
 }
 
 export interface TripOptionDetails {
@@ -17,19 +20,32 @@ export interface TripOptionDetails {
   title: string
   subTitle?: string
   moonPhase: string
-  darkSkyQuality: string
+  clearSkyChance: string
   meteorActivity: Array<string>
   eveningTemps: string
-  advantage: string
+  daytimeTemps: string
+  rainChance: string
+  wind: string
+  humidity: string
+  advantages: Array<string>
+  disadvantages: Array<string>
 }
 
 export interface PollOptionResult extends TripOptionDetails {
   votes: Record<VotePreference, number>
 }
 
+export interface RsvpEntry {
+  // New type for individual RSVP entries
+  name: string
+  rsvp: RSVPStatus | null // rsvp_status from the database
+  year: number // Add year field
+}
+
 export interface PollResultsData {
   option1: PollOptionResult
   option2: PollOptionResult
+  rsvps?: RsvpEntry[] // Added rsvps list - optional for now
 }
 export interface ConfirmationModalProps {
   isOpen: boolean
@@ -66,4 +82,19 @@ export interface PollResultsProps {
   results: PollResultsData
   votePreferences: typeof DESIGN_VOTE_PREFERENCES
   onResetToForm: () => void
+}
+
+export interface HistoricalYearData {
+  year: number
+  title: string
+  daytimeTemps?: string
+  eveningTemps?: string
+  moonPhase?: string
+  skyVisibility?: string
+  rain?: string
+  wind?: string
+  humidity?: string
+  meteorActivity?: string[]
+  notes?: string
+  photoAlbumUrl?: string
 }

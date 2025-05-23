@@ -1,4 +1,5 @@
 {
+  "baseUrl": ".",
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "ES2022"],
@@ -28,8 +29,10 @@
       "@payload-types": ["./payload-types.ts"],
 
       "react": ["./node_modules/@types/react"],
-      "@/*": ["./*"],
+      "@/*": ["./app/*"],
       "@components": ["./app/components/index.ts"],
+      "@components/*": ["./app/components/*"],
+
       "@types/*": ["./app/types/*"],
       "@types": ["./app/types.ts"],
       "@pollConfig": ["./app/pollConfig.ts"],

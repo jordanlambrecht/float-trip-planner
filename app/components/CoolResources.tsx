@@ -9,7 +9,7 @@ const CoolResources = () => {
             <h2>Cool Resources</h2>
           </div>
           <div>
-            <ul className='underline'>
+            <ul className='underline space-y-4'>
               <li>
                 <Link href='https://www.timeanddate.com/moon/phases/@7317387'>
                   Moon phase chart →

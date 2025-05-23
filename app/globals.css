@@ -77,7 +77,7 @@
     @apply text-2xl mb-8 sm:mb-12 text-left ml-0 font-bold;
   }
   h3 {
-    @apply text-xl;
+    @apply text-xl font-semibold;
   }
   button {
     @apply cursor-pointer;

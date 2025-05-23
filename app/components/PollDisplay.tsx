@@ -33,7 +33,7 @@ const PollDisplay = ({
         <h1 className='text-4xl font-bold'>Niobrara 2025</h1>
         <span className='font-mono text-lg'>Hooray!</span>
       </div>
-      <div className='w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg dark:bg-cardbg-dm'>
+      <div className='w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg '>
         <div className='p-4 sm:p-8'>
           {/* Compare to Last Year Button */}
           <div className='flex flex-row justify-between items-start mb-4'>
@@ -42,7 +42,7 @@ const PollDisplay = ({
             <div className='flex justify-end mb-4'>
               <button
                 onClick={() => setIsComparisonModalOpen(true)}
-                className='px-3 py-2 font-mono text-xs text-gray-textdark dark:text-gray-textlight border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
+                className='px-3 py-2 font-mono text-xs text-gray-textdark  border border-gray-300  rounded-md hover:bg-gray-100 :bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
               >
                 Compare to Past Trips
               </button>

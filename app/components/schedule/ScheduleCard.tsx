@@ -22,7 +22,7 @@ const ScheduleCard = ({ item }: ScheduleCardProps) => {
       {/* Colored section with day label and day abbreviation */}
       <div
         className={clsx(
-          `dark:opacity-80 flex flex-col items-center py-4 border-b ${borderColor}`,
+          ` flex flex-col items-center py-4 border-b ${borderColor}`,
           bgColor,
           { "border-dashed": dayLabel === "bonus day" }
         )}
@@ -61,7 +61,7 @@ const ScheduleCard = ({ item }: ScheduleCardProps) => {
         <div className='flex justify-center items-end h-full'>
           {/* Activity */}
           <span
-            className='font-mono text-2xl text-text dark:text-text-dm'
+            className='font-mono text-2xl text-text '
             style={{
               writingMode: "vertical-rl",
               transform: "rotate(180deg)",

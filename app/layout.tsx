@@ -60,7 +60,7 @@ const Layout = ({ children }: LayoutProps) => {
             }}
           />
         </head>
-        <body className='transition-all duration-300 ease-in bg-background text-text dark:text-text-dm dark:bg-background-dm max-w-vw selection:bg-pink-dark selection:text-white'>
+        <body className='transition-all duration-300 ease-in bg-background text-text   max-w-vw selection:bg-pink-dark selection:text-white'>
           {/* <ThemeToggleWrapper /> */}
           <main className='flex flex-col justify-start items-center'>
             {children}

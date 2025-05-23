@@ -15,13 +15,13 @@ function renderValue(val: string | string[]) {
 
 const DetailRow = ({ label, value1, value2 }: DetailRowProps) => (
   <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-baseline border-b border-background-dm py-2.5 last:border-b-0 text-center'>
-    <span className='pr-3 font-mono text-xs text-right uppercase sm:text-sm text-text/55 dark:text-text-dm/75'>
+    <span className='pr-3 font-mono text-xs text-right uppercase sm:text-sm text-text/55 '>
       {label}:
     </span>
-    <span className='px-3 font-mono text-xs sm:text-sm text-text dark:text-text-dm'>
+    <span className='px-3 font-mono text-xs sm:text-sm text-text '>
       {renderValue(value1)}
     </span>
-    <span className='px-3 font-mono text-xs sm:text-sm text-text dark:text-text-dm'>
+    <span className='px-3 font-mono text-xs sm:text-sm text-text '>
       {renderValue(value2)}
     </span>
   </div>

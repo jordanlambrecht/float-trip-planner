@@ -44,7 +44,7 @@ const scheduleData: ScheduleItem[] = [
 const Schedule = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
-      <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg dark:bg-cardbg-dm'>
+      <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg '>
         <h2>Schedule</h2>
 
         <div className='flex h-full items-stretch justify-center lg:justify-center gap-2 md:gap-6'>

@@ -5,7 +5,7 @@ import Link from "next/link"
 const Footer = () => {
   return (
     <footer className='mt-8 mb-4 text-center'>
-      <p className='font-mono text-xs text-gray-textlight dark:text-text-dm/75'>
+      <p className='font-mono text-xs text-gray-textlight '>
         &copy; {new Date().getFullYear()},{" "}
         <Link href='https://jordanlambrecht.com' className='underline'>
           Jordy

@@ -114,7 +114,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                         getRsvpColor(rsvp.rsvp)
                       )}
                     >
-                      <p className='font-mono text-base font-medium text-gray-textdark dark:text-gray-textlight truncate text-wrap pr-2'>
+                      <p className='font-mono text-base font-medium text-gray-textdark  truncate text-wrap pr-2'>
                         {year < currentYear
                           ? formatNameWithInitials(rsvp.name)
                           : rsvp.name}

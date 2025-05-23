@@ -89,20 +89,20 @@ const MeteorShowerCard = ({
   onToggle: () => void
 }) => {
   return (
-    <div className='border border-background-dm dark:border-gray-600 rounded-lg  bg-white dark:bg-cardbg-dm overflow-hidden shadow'>
+    <div className='border border-background-dm  rounded-lg  bg-white  overflow-hidden shadow'>
       <button
         onClick={onToggle}
-        className='w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors focus:outline-none '
+        className='w-full p-4 text-left hover:bg-gray-50 :bg-gray-700/50 transition-colors focus:outline-none '
       >
         <div className='flex items-center justify-between'>
           <div>
-            <h3 className='text-xl font-bold font-sans text-gray-textdark dark:text-gray-textlight'>
+            <h3 className='text-xl font-bold font-sans text-gray-textdark '>
               {shower.name}
             </h3>
-            <p className='text-sm font-mono text-gray-textlight dark:text-gray-textdark/70 mt-1'>
+            <p className='text-sm font-mono text-gray-textlight  mt-1'>
               {shower.peakDates}
             </p>
-            <p className='text-sm font-mono text-pink-dark dark:text-pink-light mt-1'>
+            <p className='text-sm font-mono text-pink-dark  mt-1'>
               {shower.zhr}
             </p>
           </div>
@@ -130,19 +130,19 @@ const MeteorShowerCard = ({
       </button>
 
       {isExpanded && (
-        <div className='px-4 pb-4 space-y-4 border-t border-gray-200 dark:border-gray-600'>
+        <div className='px-4 pb-4 space-y-4 border-t border-gray-200 '>
           <div className='pt-4'>
-            <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark dark:text-gray-textlight mb-2'>
+            <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark  mb-2'>
               Origin & History
             </h4>
-            <p className='font-mono text-sm font-base text-gray-textdark dark:text-gray-textlight/90 leading-relaxed'>
+            <p className='font-mono text-sm font-base text-gray-textdark  leading-relaxed'>
               {shower.story}
             </p>
           </div>
 
           <div className='grid md:grid-cols-2 gap-4'>
             <div>
-              <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark dark:text-gray-textlight mb-2'>
+              <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark  mb-2'>
                 Technical Details
               </h4>
               <ul className='space-y-1 text-sm font-mono'>
@@ -166,21 +166,18 @@ const MeteorShowerCard = ({
             </div>
 
             <div>
-              <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark dark:text-gray-textlight mb-2'>
+              <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark  mb-2'>
                 Viewing from Valentine, NE
               </h4>
-              <p className='text-sm font-mono text-pink-dark dark:text-pink-light mb-2'>
+              <p className='text-sm font-mono text-pink-dark  mb-2'>
                 Best Time: {shower.bestViewingTime}
               </p>
-              <p className='font-mono text-xs text-gray-textlight dark:text-gray-textdark/70 mb-2'>
+              <p className='font-mono text-xs text-gray-textlight  mb-2'>
                 {shower.radiantPosition}
               </p>
               <ul className='space-y-1 text-xs font-mono'>
                 {shower.viewingTips.map((tip, index) => (
-                  <li
-                    key={index}
-                    className='text-gray-textdark dark:text-gray-textlight/90'
-                  >
+                  <li key={index} className='text-gray-textdark '>
                     • {tip}
                   </li>
                 ))}
@@ -205,7 +202,7 @@ const MeteorShowerGuide = () => {
       <div className='max-w-4xl mx-auto '>
         <div className='text-left mb-8'>
           <h2>Meteor Shower Guide</h2>
-          <p className='text-gray-textlight max-w-lg dark:text-gray-textdark/70 font-mono text-sm'>
+          <p className='text-gray-textlight max-w-lg  font-mono text-sm'>
             Viewing information for Valentine, Nebraska
             <br /> (42°52′25″N 100°33′1″W)
           </p>

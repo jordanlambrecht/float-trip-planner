@@ -29,17 +29,30 @@ const PollDisplay = ({
 
   return (
     <>
+      <div className='py-4 my-16 text-center'>
+        <h1 className='text-4xl font-bold'>Niobrara 2025</h1>
+        <span className='font-mono text-lg'>Hooray!</span>
+      </div>
       <div className='w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg dark:bg-cardbg-dm'>
         <div className='p-4 sm:p-8'>
           {/* Compare to Last Year Button */}
-          <div className='flex justify-end mb-4'>
-            <button
-              onClick={() => setIsComparisonModalOpen(true)}
-              className='px-3 py-2 font-mono text-xs text-gray-textdark dark:text-gray-textlight border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
-            >
-              Compare to Past Trips
-            </button>
+          <div className='flex flex-row justify-between items-start mb-4'>
+            <h2>Pre-RSVP</h2>
+
+            <div className='flex justify-end mb-4'>
+              <button
+                onClick={() => setIsComparisonModalOpen(true)}
+                className='px-3 py-2 font-mono text-xs text-gray-textdark dark:text-gray-textlight border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
+              >
+                Compare to Past Trips
+              </button>
+            </div>
           </div>
+          <p className='font-mono max-w-lg mb-8'>
+            {" "}
+            Just trying to get a general feel of when people are interested in
+            going. No need for hard answers yet.
+          </p>
 
           <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-center mb-1'>
             <div>&nbsp;</div>

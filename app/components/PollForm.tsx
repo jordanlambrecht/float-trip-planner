@@ -3,16 +3,58 @@
 
 import { FormEvent, useState, useTransition } from "react"
 import cn from "clsx"
-import type { PollFormProps, VotePreference, ParticipantVote } from "@types"
+import type {
+  PollFormProps,
+  VotePreference,
+  ParticipantVote,
+  RSVPStatus, // Import RSVPStatus
+} from "@types"
 import { ConfirmationModal } from "@components"
 import { submitPollAction } from "@actions"
 
+// Define RSVP options
+const RSVP_OPTIONS: {
+  label: string
+  value: RSVPStatus
+  baseClass: string
+  selectedClass: string
+  textClass: string
+}[] = [
+  {
+    label: "Coming",
+    value: "yes",
+    baseClass:
+      "bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2",
+    selectedClass:
+      "bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1",
+    textClass: "text-teal-text dark:text-green-400",
+  },
+  {
+    label: "Still not sure",
+    value: "maybe",
+    baseClass:
+      "bg-yellow hover:bg-yellow-medium border-yellow-dark focus:outline-none focus:ring-2",
+    selectedClass: "bg-yellow-medium  ring-2 ring-yellow-medium ring-offset-1",
+    textClass: "text-yellow-text dark:text-yellow-400",
+  },
+  {
+    label: "For sure not coming",
+    value: "no",
+    baseClass: "bg-orange-light hover:bg-orange border-orange-medium",
+    selectedClass:
+      "bg-orange-dark text-white ring-2 ring-orange-dark ring-offset-1",
+    textClass: "text-orange-text",
+  },
+]
+
 const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
-  const getInitialParticipant = () => ({
+  const getInitialParticipant = (): ParticipantVote => ({
+    // Ensure return type is ParticipantVote
     id: Date.now().toString() + Math.random().toString(36).substring(2),
     name: "",
     option1Vote: null,
     option2Vote: null,
+    rsvp: null,
   })
 
   const [participants, setParticipants] = useState<ParticipantVote[]>([
@@ -52,6 +94,17 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     )
   }
 
+  // New function to update RSVP status
+  const updateParticipantRSVP = (id: string, rsvpValue: RSVPStatus) => {
+    setParticipants(
+      participants.map((p) =>
+        p.id === id
+          ? { ...p, rsvp: p.rsvp === rsvpValue ? null : rsvpValue }
+          : p
+      )
+    )
+  }
+
   const requestClearAllParticipants = () => {
     setIsClearAllModalOpen(true)
   }
@@ -82,17 +135,29 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         )
         return
       }
+      if (!p.rsvp) {
+        // Check if RSVP is selected
+        setError(
+          `Please select an RSVP status for ${
+            p.name || `Voter ${participants.indexOf(p) + 1}`
+          }.`
+        )
+        return
+      }
     }
 
     startTransition(async () => {
-      const submissions = validParticipants.map(
-        ({ name, option1Vote, option2Vote }) => ({
+      // Ensure the submissions match the Omit<ParticipantVote, "id"> type
+      const submissions: Omit<ParticipantVote, "id">[] = validParticipants.map(
+        ({ name, option1Vote, option2Vote, rsvp }) => ({
+          // Include rsvp
           name,
           option1Vote,
           option2Vote,
+          rsvp, // Add rsvp to submission
         })
       )
-      // @ts-ignore // TODO: Fix type for submissions if Omit<ParticipantVote, "id"> is not directly assignable
+      // The @ts-ignore might no longer be needed if types align
       const result = await submitPollAction(submissions)
 
       if (result.success) {
@@ -101,7 +166,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
           result.message ||
             "Thanks you kindly. Your preferences have been submitted."
         )
-        onFormSubmitSuccess(submittedNames) // This will trigger fetchPollData in page.tsx
+        onFormSubmitSuccess(submittedNames)
       } else {
         setError(result.error || "An unexpected error occurred.")
       }
@@ -120,11 +185,11 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
       "w-full p-3 font-mono text-xs sm:text-sm uppercase tracking-wider border rounded-md text-center transition-all duration-150 ease-in-out"
     const focusClasses = "focus:outline-none focus:ring-2 focus:ring-offset-1"
 
-    let testClassName
+    let cellClassName
     if (voteOption.value === "works_best" && !isSelected) {
-      testClassName = `${baseClasses} ${focusClasses} bg-pink-light hover:bg-pink border-pink-medium text-pink-dark`
+      cellClassName = `${baseClasses} ${focusClasses} bg-pink-light hover:bg-pink border-pink-medium text-pink-dark`
     } else {
-      testClassName = cn(baseClasses, focusClasses, {
+      cellClassName = cn(baseClasses, focusClasses, {
         [config.selected]: isSelected,
         [config.base]: !isSelected,
         [config.text]: !isSelected,
@@ -138,7 +203,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         onClick={() =>
           updateParticipantVote(participantId, optionKey, voteOption.value)
         }
-        className={testClassName}
+        className={cellClassName}
         title={voteOption.label}
       >
         {voteOption.label}
@@ -175,7 +240,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         {participants.map((p, index) => (
           <div
             key={p.id}
-            className='p-4 space-y-4 border rounded-lg shadow-sm bg-background/50 dark:bg-background-dm/50 border-gray'
+            className='p-4 space-y-4 border rounded-lg shadow-sm bg-background/0 dark:bg-background-dm/50 border-background-dm'
           >
             <div className='flex items-center'>
               <input
@@ -218,6 +283,33 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                 {votePreferences.map((pref) =>
                   renderVoteCell(p.id, "option2Vote", p.option2Vote, pref)
                 )}
+              </div>
+            </div>
+
+            {/*  RSVP Section */}
+            <div className='pt-3 mt-3 border-t border-background-dm'>
+              <p className='mb-2 text-sm font-medium text-center text-gray-textdark dark:text-gray-textlight'>
+                RSVP Status:
+              </p>
+              <div className='grid grid-cols-3 gap-2 sm:gap-3'>
+                {RSVP_OPTIONS.map((option) => {
+                  const isSelected = p.rsvp === option.value
+                  return (
+                    <button
+                      key={option.value}
+                      type='button'
+                      onClick={() => updateParticipantRSVP(p.id, option.value)}
+                      className={cn(
+                        "w-full p-2.5 font-mono text-xs sm:text-sm rounded-md border text-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1",
+                        isSelected ? option.selectedClass : option.baseClass,
+                        !isSelected && option.textClass
+                      )}
+                      title={option.label}
+                    >
+                      {option.label}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>

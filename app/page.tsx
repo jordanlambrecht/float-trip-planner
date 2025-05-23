@@ -2,13 +2,18 @@
 "use client"
 
 import { useState, useEffect, useCallback, useTransition } from "react"
-import { TripDetails, TripOptionHeader, PollViewSwitcher } from "@components"
-import type { PollResultsData } from "@types"
+import PollDisplay from "./components/PollDisplay"
+import type { PollResultsData, RsvpEntry } from "@types" // Import RsvpEntry
 import { tripOptionsStaticDetails } from "@pollConfig"
 import { getPollResultsAction } from "@actions"
-
+import Schedule from "./components/Schedule"
+import RsvpList from "./components/RsvpList" // Import RsvpList
+import { MeteorShowerGuide } from "./components"
+import Link from "next/link"
 const Page = () => {
   const [pollResults, setPollResults] = useState<PollResultsData | null>(null)
+  // Separate state for rsvps to make passing to RsvpList cleaner
+  const [rsvps, setRsvps] = useState<RsvpEntry[] | undefined>(undefined)
   const [isFetching, startFetchingTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [view, setView] = useState<"form" | "results">("form")
@@ -22,9 +27,12 @@ const Page = () => {
         if ("error" in data) {
           setError(data.error)
           console.error("Error fetching poll data:", data.error)
-          setPollResults(null) // Clear previous results on error
+          setPollResults(null)
+          setRsvps(undefined) // Clear rsvps on error
         } else {
           setPollResults(data)
+          setRsvps(data.rsvps) // Set the rsvps state
+
           const totalVotes =
             (data.option1
               ? Object.values(data.option1.votes).reduce((s, c) => s + c, 0)
@@ -43,23 +51,24 @@ const Page = () => {
         }
       })
     },
-    [view]
+    [view] // Removed pollResults from dependencies as it's set within this callback
   )
 
   useEffect(() => {
     fetchPollData(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []) // fetchPollData is memoized with useCallback
 
   const handleFormSubmissionSuccess = () => {
-    fetchPollData(true)
+    fetchPollData(true) // This will refetch all data including RSVPs
   }
 
   const handleResetToForm = () => {
     setView("form")
   }
 
-  if (isFetching && !pollResults && !error) {
+  // Loading state for initial fetch
+  if (isFetching && !pollResults && !error && rsvps === undefined) {
     return (
       <div className='flex items-center justify-center min-h-screen'>
         <p className='font-mono text-lg'>Loading Poll...</p>
@@ -67,7 +76,8 @@ const Page = () => {
     )
   }
 
-  if (error && !pollResults) {
+  // Error state for initial fetch
+  if (error && !pollResults && rsvps === undefined) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen p-4 text-center'>
         <p className='font-mono text-lg text-red-600'>
@@ -86,38 +96,52 @@ const Page = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 selection:bg-pink-dark selection:text-white'>
-      <div className='w-full max-w-4xl rounded-lg shadow-2xl bg-cardbg dark:bg-cardbg-dm'>
-        <div className='p-4 sm:p-8'>
-          <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-center mb-1'>
-            <div>&nbsp;</div>
-            <TripOptionHeader option={tripOptionsStaticDetails.option1} />
-            <TripOptionHeader option={tripOptionsStaticDetails.option2} />
-          </div>
-
-          <TripDetails
-            option1={tripOptionsStaticDetails.option1}
-            option2={tripOptionsStaticDetails.option2}
-          />
-
-          <div className='min-h-[300px]'>
-            {isFetching && view === "results" && (
-              <div className='p-4 font-mono text-center'>
-                Refreshing results...
-              </div>
-            )}
-            <PollViewSwitcher
-              view={view}
-              pollResults={pollResults}
-              tripOptions={tripOptionsStaticDetails}
-              onFormSubmitSuccess={handleFormSubmissionSuccess}
-              onResetToForm={handleResetToForm}
-              error={error}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <section className='flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 selection:bg-pink-dark selection:text-white'>
+        <PollDisplay
+          view={view}
+          pollResults={pollResults}
+          tripOptions={tripOptionsStaticDetails}
+          onFormSubmitSuccess={handleFormSubmissionSuccess}
+          onResetToForm={handleResetToForm}
+          error={error}
+          isFetching={isFetching && !pollResults}
+        />
+      </section>
+      <Schedule />
+      <RsvpList rsvps={rsvps} />
+      <MeteorShowerGuide />
+      <section>
+        Cool Sources:
+        <ul>
+          <li>
+            <Link href='https://www.timeanddate.com/moon/phases/@7317387'>
+              Moon phase chart
+            </Link>
+          </li>
+          <li>
+            <Link href='https://www.cleardarksky.com/clmt/c/WNSGNEct.html'>
+              Clear Sky Chart
+            </Link>
+          </li>
+          <li>
+            <Link href='https://www.amsmeteors.org/meteor-showers/meteor-shower-calendar/'>
+              2025 Meteor Shower Calendar
+            </Link>
+          </li>
+          <li>
+            <Link href='https://weatherspark.com/y/5292/Average-Weather-in-Valentine-Nebraska-United-States-Year-Round'>
+              Climate Averages for Valentine Nebraska
+            </Link>
+          </li>
+          <li>
+            <Link href='https://www.usclimatedata.com/climate/valentine/nebraska/united-states/usne0494'>
+              National Climate Data
+            </Link>
+          </li>
+        </ul>
+      </section>
+    </>
   )
 }
 

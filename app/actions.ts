@@ -58,10 +58,10 @@ export async function submitPollAction(
 
     // If all submissions are valid, proceed to insert
     for (const submission of submissions) {
-      const { name, option1Vote, option2Vote, rsvp } = submission // Destructure rsvp
+      const { name, option1Vote, option2Vote, rsvp, message } = submission // Add message
       await query(
-        "INSERT INTO responses (name, option_1_preference, option_2_preference, rsvp_status, year) VALUES ($1, $2, $3, $4, $5)",
-        [name, option1Vote, option2Vote, rsvp, currentYear]
+        "INSERT INTO responses (name, option_1_preference, option_2_preference, rsvp_status, year, message, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW())",
+        [name, option1Vote, option2Vote, rsvp, currentYear, message || null]
       )
     }
 
@@ -95,15 +95,17 @@ export async function getPollResultsAction(): Promise<
       GROUP BY option_2_preference
     `)
 
-    // Updated query to fetch RSVP data with year
+    // Updated query to fetch RSVP data with messages
     const rsvpResults = await query(`
       SELECT 
         name, 
         rsvp_status,
-        year
+        year,
+        message,
+        created_at as "createdAt"
       FROM responses 
       WHERE name IS NOT NULL AND name <> '' AND rsvp_status IS NOT NULL
-      ORDER BY year DESC, name ASC
+      ORDER BY created_at DESC
     `)
 
     const formatResults = (rows: any[]): Record<VotePreference, number> => {
@@ -122,11 +124,12 @@ export async function getPollResultsAction(): Promise<
       return votes
     }
 
-    // Format RSVP data with year
+    // Format RSVP data with year and message
     const formattedRsvps: RsvpEntry[] = rsvpResults.rows.map((row: any) => ({
       name: row.name,
       rsvp: row.rsvp_status as RSVPStatus,
-      year: parseInt(row.year, 10) || new Date().getFullYear(), // Default to current year if null
+      year: parseInt(row.year, 10) || new Date().getFullYear(),
+      message: row.message || null,
     }))
 
     const pollResults: PollResultsData = {

@@ -12,6 +12,7 @@ import { MeteorShowerGuide } from "./components"
 import Link from "next/link"
 import CoolResources from "./components/CoolResources"
 import Itinerary from "./components/Itinerary"
+import MessageWall from "./components/MessageWall" // Add the import
 const Page = () => {
   const [pollResults, setPollResults] = useState<PollResultsData | null>(null)
   // Separate state for rsvps to make passing to RsvpList cleaner
@@ -111,6 +112,7 @@ const Page = () => {
         />
       </section>
       <RsvpList rsvps={rsvps} />
+      <MessageWall rsvps={rsvps} /> {/* Add MessageWall component here */}
       <Schedule />
       <Itinerary />
       <MeteorShowerGuide />

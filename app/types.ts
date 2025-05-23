@@ -13,6 +13,7 @@ export interface ParticipantVote {
   option1Vote: VotePreference | null
   option2Vote: VotePreference | null
   rsvp: RSVPStatus | null
+  message?: string | null
 }
 
 export interface TripOptionDetails {
@@ -36,16 +37,17 @@ export interface PollOptionResult extends TripOptionDetails {
 }
 
 export interface RsvpEntry {
-  // New type for individual RSVP entries
   name: string
-  rsvp: RSVPStatus | null // rsvp_status from the database
-  year: number // Add year field
+  rsvp: RSVPStatus | null
+  year: number
+  message?: string | null
+  createdAt?: string // ISO date string
 }
 
 export interface PollResultsData {
   option1: PollOptionResult
   option2: PollOptionResult
-  rsvps?: RsvpEntry[] // Added rsvps list - optional for now
+  rsvps?: RsvpEntry[]
 }
 export interface ConfirmationModalProps {
   isOpen: boolean

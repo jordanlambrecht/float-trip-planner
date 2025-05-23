@@ -27,7 +27,7 @@ const RSVP_OPTIONS: {
       "bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2",
     selectedClass:
       "bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1",
-    textClass: "text-teal-text dark:text-green-400",
+    textClass: "text-teal-text ",
   },
   {
     label: "Still not sure",
@@ -35,7 +35,7 @@ const RSVP_OPTIONS: {
     baseClass:
       "bg-yellow hover:bg-yellow-medium border-yellow-dark focus:outline-none focus:ring-2",
     selectedClass: "bg-yellow-medium  ring-2 ring-yellow-medium ring-offset-1",
-    textClass: "text-yellow-text dark:text-yellow-400",
+    textClass: "text-yellow-text ",
   },
   {
     label: "For sure not coming",
@@ -105,6 +105,13 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     )
   }
 
+  // Add this function to handle message updates
+  const updateParticipantMessage = (id: string, message: string) => {
+    setParticipants(
+      participants.map((p) => (p.id === id ? { ...p, message } : p))
+    )
+  }
+
   const requestClearAllParticipants = () => {
     setIsClearAllModalOpen(true)
   }
@@ -149,12 +156,13 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     startTransition(async () => {
       // Ensure the submissions match the Omit<ParticipantVote, "id"> type
       const submissions: Omit<ParticipantVote, "id">[] = validParticipants.map(
-        ({ name, option1Vote, option2Vote, rsvp }) => ({
+        ({ name, option1Vote, option2Vote, rsvp, message }) => ({
           // Include rsvp
           name,
           option1Vote,
           option2Vote,
           rsvp, // Add rsvp to submission
+          message, // Include the message in the submission
         })
       )
       // The @ts-ignore might no longer be needed if types align
@@ -240,7 +248,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         {participants.map((p, index) => (
           <div
             key={p.id}
-            className='p-4 space-y-4 border rounded-lg shadow-sm bg-background/0 dark:bg-background-dm/50 border-background-dm'
+            className='p-4 space-y-4 border rounded-lg shadow-sm bg-background/0  border-background-dm'
           >
             <div className='flex items-center'>
               <input
@@ -248,7 +256,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                 value={p.name}
                 onChange={(e) => updateParticipantName(p.id, e.target.value)}
                 placeholder={`Voter ${index + 1} Name`}
-                className='focus:outline-none grow p-2.5 font-mono text-sm border border-text-dm dark:bg-background/25 rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark '
+                className='focus:outline-none grow p-2.5 font-mono text-sm border border-text-dm  rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark '
                 required
               />
               {participants.length > 1 && (
@@ -288,7 +296,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
 
             {/*  RSVP Section */}
             <div className='pt-3 mt-3 border-t border-background-dm'>
-              <p className='mb-2 text-sm font-medium text-center text-gray-textdark dark:text-gray-textlight'>
+              <p className='mb-2 text-sm font-medium text-center text-gray-textdark '>
                 RSVP Status:
               </p>
               <div className='grid grid-cols-3 gap-2 sm:gap-3'>
@@ -311,6 +319,19 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                   )
                 })}
               </div>
+            </div>
+            {/* Message Section */}
+            <div className='pt-3 mt-3 border-t border-background-dm'>
+              <p className='mb-2 text-sm font-medium text-center text-gray-textdark '>
+                Is There Anything You'd Like to Share With the Class?
+              </p>
+              <textarea
+                value={p.message ?? ""}
+                onChange={(e) => updateParticipantMessage(p.id, e.target.value)}
+                placeholder='Optional message'
+                rows={2}
+                className='w-full focus:outline-none p-2.5 font-mono text-sm border border-text-dm  rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
+              />
             </div>
           </div>
         ))}

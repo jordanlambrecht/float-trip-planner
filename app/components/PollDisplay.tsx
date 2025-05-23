@@ -37,7 +37,7 @@ const PollDisplay = ({
         <div className='p-4 sm:p-8'>
           {/* Compare to Last Year Button */}
           <div className='flex flex-row justify-between items-start mb-4'>
-            <h2>Pre-RSVP</h2>
+            <h2 className='font-bold'>Pre-RSVP</h2>
 
             <div className='flex justify-end mb-4'>
               <button

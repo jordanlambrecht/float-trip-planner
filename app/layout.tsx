@@ -17,7 +17,7 @@ const kumbhSans = Kumbh_Sans({
   subsets: ["latin"],
   variable: "--font-kumbh-sans",
   display: "swap",
-  weight: "700",
+  weight: ["400", "500", "600", "700", "800"],
 })
 
 interface LayoutProps {
@@ -27,7 +27,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <PlausibleProvider
-      domain='niobrara.jordy.world'
+      domain='niobrara.jordanlambrecht.com'
       trackOutboundLinks
       trackLocalhost={process.env.NODE_ENV !== "production"}
       selfHosted

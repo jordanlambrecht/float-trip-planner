@@ -5,25 +5,52 @@ import type { DetailRowProps, TripOptionDetails } from "@types"
 function renderValue(val: string | string[]) {
   if (Array.isArray(val)) {
     return val.map((item, i) => (
-      <span key={i} className='block'>
-        {item}
-      </span>
+      <ul key={i} className='block'>
+        <li>— {item}</li>
+      </ul>
     ))
   }
   return val
 }
 
+// Mobile and Desktop optimized version of DetailRow
 const DetailRow = ({ label, value1, value2 }: DetailRowProps) => (
-  <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-baseline border-b border-background-dm py-2.5 last:border-b-0 text-center'>
-    <span className='pr-3 font-mono text-xs text-right uppercase sm:text-sm text-text/55 '>
-      {label}:
-    </span>
-    <span className='px-3 font-mono text-xs sm:text-sm text-text '>
-      {renderValue(value1)}
-    </span>
-    <span className='px-3 font-mono text-xs sm:text-sm text-text '>
-      {renderValue(value2)}
-    </span>
+  <div>
+    {/* Mobile layout: Stacked with label at top */}
+    <div className='block sm:hidden border-b border-background-dm py-4 last:border-b-0'>
+      <div className='mb-2 font-mono text-sm uppercase font-medium text-center'>
+        {label}
+      </div>
+
+      <div className='md:hidden grid grid-cols-2 gap-2'>
+        <div className='p-2 text-center'>
+          <div className='text-xs uppercase mb-1 font-mono text-text/70'>
+            Option A
+          </div>
+          <div className='font-mono text-sm'>{renderValue(value1)}</div>
+        </div>
+
+        <div className='p-2 text-center'>
+          <div className='text-xs uppercase mb-1 font-mono text-text/70'>
+            Option B
+          </div>
+          <div className='font-mono text-sm'>{renderValue(value2)}</div>
+        </div>
+      </div>
+    </div>
+
+    {/* Desktop layout: Three column grid row */}
+    <div className='hidden sm:grid sm:grid-cols-[150px_1fr_1fr] border-b border-background-dm py-1 last:border-b-0'>
+      <div className='font-mono text-sm uppercase py-2 px-3 text-left'>
+        {label}
+      </div>
+      <div className='p-2 font-mono text-sm text-center'>
+        {renderValue(value1)}
+      </div>
+      <div className='p-2 font-mono text-sm text-center'>
+        {renderValue(value2)}
+      </div>
+    </div>
   </div>
 )
 
@@ -32,9 +59,21 @@ interface TripDetailsProps {
   option2: TripOptionDetails
 }
 
+// Responsive approach with different layouts for mobile and desktop
 const TripDetails = ({ option1, option2 }: TripDetailsProps) => {
   return (
     <div className='mb-6 border-t sm:mb-8 border-background-dm'>
+      {/* Column headers - only visible on desktop */}
+      <div className='hidden sm:grid sm:grid-cols-[150px_1fr_1fr] py-3'>
+        <div></div>
+        <div className='text-center font-mono text-base font-bold'>
+          Option A
+        </div>
+        <div className='text-center font-mono text-base font-bold'>
+          Option B
+        </div>
+      </div>
+
       <DetailRow
         label='Avg Daytime Temp'
         value1={option1.daytimeTemps}

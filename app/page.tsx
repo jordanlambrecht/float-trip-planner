@@ -10,6 +10,8 @@ import Schedule from "./components/Schedule"
 import RsvpList from "./components/RsvpList" // Import RsvpList
 import { MeteorShowerGuide } from "./components"
 import Link from "next/link"
+import CoolResources from "./components/CoolResources"
+import Itinerary from "./components/Itinerary"
 const Page = () => {
   const [pollResults, setPollResults] = useState<PollResultsData | null>(null)
   // Separate state for rsvps to make passing to RsvpList cleaner
@@ -96,8 +98,8 @@ const Page = () => {
   }
 
   return (
-    <>
-      <section className='flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 selection:bg-pink-dark selection:text-white'>
+    <div className='px-2 w-full flex flex-col justify-start items-center mx-auto gap-y-12'>
+      <section className='flex flex-col items-center justify-center min-h-screen p-4 sm:p-6'>
         <PollDisplay
           view={view}
           pollResults={pollResults}
@@ -108,40 +110,12 @@ const Page = () => {
           isFetching={isFetching && !pollResults}
         />
       </section>
-      <Schedule />
       <RsvpList rsvps={rsvps} />
+      <Schedule />
+      <Itinerary />
       <MeteorShowerGuide />
-      <section>
-        Cool Sources:
-        <ul>
-          <li>
-            <Link href='https://www.timeanddate.com/moon/phases/@7317387'>
-              Moon phase chart
-            </Link>
-          </li>
-          <li>
-            <Link href='https://www.cleardarksky.com/clmt/c/WNSGNEct.html'>
-              Clear Sky Chart
-            </Link>
-          </li>
-          <li>
-            <Link href='https://www.amsmeteors.org/meteor-showers/meteor-shower-calendar/'>
-              2025 Meteor Shower Calendar
-            </Link>
-          </li>
-          <li>
-            <Link href='https://weatherspark.com/y/5292/Average-Weather-in-Valentine-Nebraska-United-States-Year-Round'>
-              Climate Averages for Valentine Nebraska
-            </Link>
-          </li>
-          <li>
-            <Link href='https://www.usclimatedata.com/climate/valentine/nebraska/united-states/usne0494'>
-              National Climate Data
-            </Link>
-          </li>
-        </ul>
-      </section>
-    </>
+      <CoolResources />
+    </div>
   )
 }
 

@@ -86,7 +86,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
 
   return (
     <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
-      <div className='max-w-4xl mx-auto flex flex-col gap-y-24'>
+      <div className='max-w-4xl mx-auto flex flex-col gap-y-12'>
         {years.map((year) => {
           // Filter RSVPs based on whether it's a past year or current/future year
           const filteredRsvps = filterRsvpsForYear(rsvpsByYear[year], year)

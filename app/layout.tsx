@@ -31,10 +31,10 @@ const Layout = ({ children }: LayoutProps) => {
       trackOutboundLinks
       trackLocalhost={process.env.NODE_ENV !== "production"}
       selfHosted
+      hash
       taggedEvents
       customDomain='https://analytics.jordy.world'
       enabled
-      hash
     >
       <html
         lang='en'

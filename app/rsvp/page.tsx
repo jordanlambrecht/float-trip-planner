@@ -7,7 +7,7 @@ import PageHeader from "../components/PageHeader"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "RSVP",
+  title: "RSVP, AUG 21th - 24th",
   description: "Float on, brudduh.",
 }
 

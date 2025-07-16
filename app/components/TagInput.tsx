@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, KeyboardEvent } from "react"
+import { useState, KeyboardEvent, useEffect } from "react"
 import clsx from "clsx"
 
 interface TagInputProps {
@@ -20,6 +20,36 @@ const TagInput = ({
 }: TagInputProps) => {
   const [inputValue, setInputValue] = useState("")
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
+
+  // Handle virtual keyboard on mobile
+  useEffect(() => {
+    const handleViewportChange = () => {
+      // Detect if virtual keyboard is open by checking viewport height change
+      const viewportHeight = window.visualViewport?.height || window.innerHeight
+      const windowHeight = window.screen.height
+      const heightDifference = windowHeight - viewportHeight
+      
+      // If height difference is significant, keyboard is likely open
+      setIsKeyboardOpen(heightDifference > 150)
+    }
+
+    // Listen for visual viewport changes (better for detecting keyboard)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportChange)
+    } else {
+      // Fallback for older browsers
+      window.addEventListener('resize', handleViewportChange)
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportChange)
+      } else {
+        window.removeEventListener('resize', handleViewportChange)
+      }
+    }
+  }, [])
 
   const filteredSuggestions = predefinedTags.filter(
     (tag) =>
@@ -108,12 +138,19 @@ const TagInput = ({
           onFocus={() => setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
           placeholder={tags.length === 0 ? placeholder : ""}
-          className="w-full font-mono text-sm bg-transparent border-none outline-none"
+          className="w-full font-mono text-base bg-transparent border-none outline-none"
+          style={{ fontSize: '16px' }} // Prevent zoom on iOS
         />
       </div>
 
       {showSuggestions && (filteredSuggestions.length > 0 || shouldShowAddOption) && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto">
+        <div className={clsx(
+          "absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto",
+          // Adjust positioning and height when keyboard is open
+          isKeyboardOpen 
+            ? "max-h-32 bottom-full mb-1" // Show above input when keyboard is open
+            : "max-h-48 top-full" // Show below input normally
+        )}>
           {filteredSuggestions.map((suggestion, index) => (
             <button
               key={index}

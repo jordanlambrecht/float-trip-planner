@@ -6,6 +6,7 @@ import { Footer, BackToTop } from "@components"
 import type { ReactNode } from "react"
 // import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
 import PlausibleProvider from "next-plausible"
+import type { Metadata } from "next"
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -22,6 +23,15 @@ const kumbhSans = Kumbh_Sans({
 
 interface LayoutProps {
   children: ReactNode
+}
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://niobrara.jordanlambrecht.com"),
+  title: {
+    template: "%s | 2025 Niobrara Float Trip",
+    default: "2025 Niobrara Float Trip",
+  },
+  description: "",
 }
 
 const Layout = ({ children }: LayoutProps) => {
@@ -41,20 +51,16 @@ const Layout = ({ children }: LayoutProps) => {
         className={`${kumbhSans.variable} ${ibmPlexMono.variable} antialiased`}
       >
         <head>
-          <title>2025 Niobrara Float Trip</title>
-          <meta
-            name='description'
-            content='Help us determine the best time for a Niobrara float trip!'
-          />
+          {/* <title>2025 Niobrara Float Trip</title> */}
           <meta
             name='viewport'
-            content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+            content='width=device-width, initial-scale=1.0, viewport-fit=cover'
           />
           <link rel='icon' href='/favicon.png' sizes='any' />
         </head>
-        <body className='transition-all duration-300 ease-in bg-background text-text overflow-x-hidden selection:bg-pink-dark selection:text-white'>
+        <body className='transition-all duration-300 ease-in bg-background text-text overflow-x-hidden selection:bg-pink-dark selection:text-white min-h-screen'>
           {/* <ThemeToggleWrapper /> */}
-          <main className='flex flex-col justify-start items-center w-full'>
+          <main className='flex flex-col justify-start items-center w-full min-h-screen'>
             {children}
           </main>
           <Footer />

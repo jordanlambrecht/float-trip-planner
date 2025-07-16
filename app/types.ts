@@ -147,7 +147,7 @@ export interface ActualRsvpParticipant {
 }
 
 export interface ActualRsvpFormProps {
-  onFormSubmitSuccess: () => void
+  onFormSubmitSuccess?: () => void
   rsvps?: ActualRsvpEntry[]
 }
 

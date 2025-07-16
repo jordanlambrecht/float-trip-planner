@@ -115,3 +115,40 @@
     writing-mode: vertical-lr;
   }
 }
+
+/* Mobile scrolling fixes for virtual keyboard */
+@layer utilities {
+  /* Ensure body can scroll when virtual keyboard is open */
+  @media (max-width: 768px) {
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+      /* Allow natural scrolling */
+      -webkit-overflow-scrolling: touch;
+      /* Prevent zoom on input focus */
+      touch-action: manipulation;
+    }
+    
+    /* Prevent body scroll lock when keyboard is open */
+    body {
+      position: relative !important;
+      overflow-y: auto !important;
+    }
+    
+    /* Ensure form containers remain scrollable */
+    main {
+      min-height: 100vh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improve input focus behavior on mobile */
+    input[type="text"], 
+    input[type="email"], 
+    input[type="tel"], 
+    textarea {
+      font-size: 16px; /* Prevent zoom on iOS */
+      transform: translateZ(0); /* Force hardware acceleration */
+    }
+  }
+}

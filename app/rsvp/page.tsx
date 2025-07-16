@@ -1,71 +1,33 @@
-"use client"
-
-import { useState, useEffect, useCallback, useTransition } from "react"
 import type { ActualRsvpEntry } from "@types"
 import { getActualRsvsAction } from "@actions"
 import ActualRsvpForm from "../components/ActualRsvpForm"
 import ActualRsvpList from "../components/ActualRsvpList"
 import TagSummary from "../components/TagSummary"
 import PageHeader from "../components/PageHeader"
+import { Metadata } from "next"
 
-const RsvpPage = () => {
-  const [actualRsvps, setActualRsvps] = useState<ActualRsvpEntry[]>([])
-  const [isLoading, startTransition] = useTransition()
-  const [error, setError] = useState<string | null>(null)
+export const metadata: Metadata = {
+  title: "RSVP – 2025 Niobrara Float",
+  description: "Float on, brudduh.",
+}
 
-  const fetchActualRsvps = useCallback(async () => {
-    startTransition(async () => {
-      setError(null)
-      try {
-        const data = await getActualRsvsAction()
-        if ("error" in data) {
-          setError(data.error)
-          console.error("Error fetching actual RSVPs:", data.error)
-        } else {
-          setActualRsvps(data)
-        }
-      } catch (error) {
-        setError("Failed to load RSVP data")
-        console.error("Error fetching actual RSVPs:", error)
-      }
-    })
-  }, [])
+const RsvpPage = async () => {
+  // Fetch initial data server-side
+  const rsvpData = await getActualRsvsAction()
 
-  useEffect(() => {
-    fetchActualRsvps()
-  }, [fetchActualRsvps])
-
-  const handleActualRsvpSubmitSuccess = () => {
-    fetchActualRsvps()
-  }
-
-  // Loading state
-  if (isLoading && actualRsvps.length === 0) {
-    return (
-      <div className='flex items-center justify-center min-h-screen'>
-        <p className='font-mono text-lg'>Loading RSVP form...</p>
-      </div>
-    )
-  }
-
-  // Error state
-  if (error && actualRsvps.length === 0) {
+  // Handle error case
+  if ("error" in rsvpData) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen p-4 text-center'>
         <p className='font-mono text-lg text-red-600'>
           Error loading RSVP data:
         </p>
-        <p className='font-mono text-red-500'>{error}</p>
-        <button
-          onClick={fetchActualRsvps}
-          disabled={isLoading}
-          className='px-4 py-2 mt-4 font-mono text-sm text-white rounded bg-pink-dark hover:bg-opacity-90 disabled:opacity-50'
-        >
-          {isLoading ? "Retrying..." : "Try Again"}
-        </button>
+        <p className='font-mono text-red-500'>{rsvpData.error}</p>
       </div>
     )
   }
+
+  const actualRsvps = rsvpData
 
   return (
     <div className='px-2 w-full max-w-full flex flex-col justify-start items-center mx-auto gap-y-12 overflow-x-hidden'>
@@ -87,10 +49,7 @@ const RsvpPage = () => {
 
       {/* RSVP Form Section */}
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <ActualRsvpForm
-          onFormSubmitSuccess={handleActualRsvpSubmitSuccess}
-          rsvps={actualRsvps}
-        />
+        <ActualRsvpForm rsvps={actualRsvps} />
       </section>
 
       {/* Tag Summary Section */}

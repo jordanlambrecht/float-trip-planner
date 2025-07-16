@@ -12,7 +12,7 @@ interface PollDisplayProps {
   onFormSubmitSuccess: () => void
   onResetToForm: () => void
   error: string | null
-  isFetching: boolean
+  isFetching?: boolean
 }
 
 const PollDisplay = ({
@@ -22,22 +22,25 @@ const PollDisplay = ({
   onFormSubmitSuccess,
   onResetToForm,
   error,
-  isFetching,
+  isFetching = false,
 }: PollDisplayProps) => {
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false)
   const currentYear = new Date().getFullYear()
 
   return (
     <>
-      <div className='py-4 my-16 text-center w-full'>
-        <h1 className='text-4xl font-bold'>Niobrara 2025</h1>
-        <span className='font-mono text-lg'>Hooray!</span>
-      </div>
-      <div className='w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg '>
+      <div className='w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg opacity-75'>
         <div className='p-4 sm:p-8'>
           {/* Compare to Last Year Button */}
           <div className='flex flex-row justify-between items-start mb-4'>
-            <h2 className='font-bold'>Pre-RSVP</h2>
+            <div>
+              <h2 className='line-through font-bold text-gray-600'>
+                Pre-RSVP Results (Closed)
+              </h2>
+              <p className='text-sm font-mono text-green-700 mt-1'>
+                ✅ August 21st-24th has been selected!
+              </p>
+            </div>
 
             <div className='flex justify-end mb-4'>
               <button
@@ -48,10 +51,9 @@ const PollDisplay = ({
               </button>
             </div>
           </div>
-          <p className='font-mono max-w-lg mb-8'>
-            {" "}
-            Just trying to get a general feel of when people are interested in
-            going. No need for hard answers yet.
+          <p className='font-mono max-w-lg mb-8 text-gray-600'>
+            The pre-RSVP voting period has ended. Based on the results below,
+            August 21st-24th was selected as the trip dates.
           </p>
 
           <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-center mb-1'>
@@ -66,17 +68,13 @@ const PollDisplay = ({
           />
 
           <div className='min-h-[300px]'>
-            {isFetching && view === "results" && (
-              <div className='p-4 font-mono text-center'>
-                Refreshing results...
-              </div>
-            )}
+            {/* Always show results for closed poll, no loading state */}
             <PollViewSwitcher
-              view={view}
+              view='results'
               pollResults={pollResults}
               tripOptions={tripOptions}
-              onFormSubmitSuccess={onFormSubmitSuccess}
-              onResetToForm={onResetToForm}
+              onFormSubmitSuccess={() => {}} // Disabled
+              onResetToForm={() => {}} // Disabled
               error={error}
             />
           </div>

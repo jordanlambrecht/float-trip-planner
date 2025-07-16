@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Jordan Lambrecht//Niobrara Float Trip//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:niobrara-float-trip-2025@jordanlambrecht.com
+DTSTART;VALUE=DATE:20250822
+DTEND;VALUE=DATE:20250825
+SUMMARY:🦦🌊 2025 Niobrara Float Trip ⛺️✨
+DESCRIPTION:Hell yeah, brudduh. Remember your sunscreen + river shoes. \n\nWebsite: https://niobrara.jordanlambrecht.com\nPhone: 402-957-3995
+LOCATION:Sharp's Landing\, 90048 Sparks River Road\, Sparks\, Nebraska 69220
+ORGANIZER;CN=Jordan Lambrecht:mailto:me@jordanlambrecht.com
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Niobrara Float Trip tomorrow!
+END:VALARM
+END:VEVENT
+END:VCALENDAR

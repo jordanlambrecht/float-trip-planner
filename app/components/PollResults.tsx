@@ -76,11 +76,15 @@ const PollResults = ({
       </div>
 
       <div className='mt-6 text-center sm:mt-8'>
+        <p className='font-mono text-sm text-gray-600 mb-2'>
+          Voting has closed - August 21st-24th selected
+        </p>
+        {/* Disabled button */}
         <button
-          onClick={onResetToForm}
-          className='font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 border border-gray text-gray-textdark bg-gray-cardbg hover:bg-gray-pagebg hover:border-gray-textlight rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2'
+          disabled
+          className='font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 border border-gray text-gray-400 bg-gray-100 rounded-md cursor-not-allowed opacity-50'
         >
-          &lt;- Cancel and Start Over
+          Voting Closed
         </button>
       </div>
     </div>

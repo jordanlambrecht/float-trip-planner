@@ -32,8 +32,8 @@ export const tripOptionsStaticDetails: {
   },
   option2: {
     id: "option_2",
-    title: "AUGUST 21st-24th, 2025",
-    subTitle: "Option B",
+    title: "AUGUST 21st-24th, 2025 ✅ SELECTED",
+    subTitle: "Option B - WINNER",
     daytimeTemps: "Avg 86.5°F",
     eveningTemps: "Avg 58.0°F",
     moonPhase: "🌚 New Moon (Sat)",
@@ -122,4 +122,37 @@ export const DESIGN_VOTE_PREFERENCES: {
       textColor: "text-pink-text",
     },
   },
+]
+
+export const VOLUNTEER_ROLES: string[] = [
+  "Plan/Cook Friday Dinner",
+  "Plan/Cook Saturday Breakfast",
+  "Plan/Cook Saturday Dinner",
+  "Plan/Cook Sunday Breakfast",
+  "Float Snack Queen",
+  "Play Bartender",
+  "Be Float DJ",
+]
+
+export const PREDEFINED_ITEMS: string[] = [
+  "Tent",
+  "Sleeping Bag",
+  "Pillow",
+  "Cooler",
+  "Chairs",
+  "Bug Spray",
+  "Sunscreen",
+  "Water Bottles",
+  "Snacks",
+  "Games",
+  "Firewood",
+  "Kayak",
+  "Paddleboard",
+  "Floaties",
+  "Fishing Gear",
+  "Grill",
+  "Propane",
+  "Lantern",
+  "Headlamp",
+  "First Aid Kit",
 ]

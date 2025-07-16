@@ -2,7 +2,7 @@
 
 import "./globals.css"
 import { IBM_Plex_Mono, Kumbh_Sans } from "next/font/google"
-import { Footer } from "@components"
+import { Footer, BackToTop } from "@components"
 import type { ReactNode } from "react"
 // import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
 import PlausibleProvider from "next-plausible"
@@ -41,31 +41,24 @@ const Layout = ({ children }: LayoutProps) => {
         className={`${kumbhSans.variable} ${ibmPlexMono.variable} antialiased`}
       >
         <head>
-          <title>Niobrara Float Trip Poll</title>
+          <title>2025 Niobrara Float Trip</title>
           <meta
             name='description'
             content='Help us determine the best time for a Niobrara float trip!'
           />
-          <link rel='icon' href='/favicon.png' sizes='any' />
-          {/* Add script to prevent flash of wrong theme */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-              (function() {
-                const theme = localStorage.getItem('theme') ||
-                  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                if (theme === 'dark') document.documentElement.classList.add('dark');
-              })();
-            `,
-            }}
+          <meta
+            name='viewport'
+            content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
           />
+          <link rel='icon' href='/favicon.png' sizes='any' />
         </head>
-        <body className='transition-all duration-300 ease-in bg-background text-text   max-w-vw selection:bg-pink-dark selection:text-white'>
+        <body className='transition-all duration-300 ease-in bg-background text-text overflow-x-hidden selection:bg-pink-dark selection:text-white'>
           {/* <ThemeToggleWrapper /> */}
-          <main className='flex flex-col justify-start items-center'>
+          <main className='flex flex-col justify-start items-center w-full'>
             {children}
           </main>
           <Footer />
+          <BackToTop />
         </body>
       </html>
     </PlausibleProvider>

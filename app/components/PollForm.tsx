@@ -28,14 +28,14 @@ const RSVP_OPTIONS: {
       "bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1",
     textClass: "text-teal-text ",
   },
-  {
-    label: "Undecided",
-    value: "maybe",
-    baseClass:
-      "bg-yellow hover:bg-yellow-medium border-yellow-dark focus:outline-none focus:ring-2",
-    selectedClass: "bg-yellow-medium  ring-2 ring-yellow-medium ring-offset-1",
-    textClass: "text-yellow-text ",
-  },
+  // {
+  //   label: "Undecided",
+  //   value: "maybe",
+  //   baseClass:
+  //     "bg-yellow hover:bg-yellow-medium border-yellow-dark focus:outline-none focus:ring-2",
+  //   selectedClass: "bg-yellow-medium  ring-2 ring-yellow-medium ring-offset-1",
+  //   textClass: "text-yellow-text ",
+  // },
   {
     label: "For sure not coming",
     value: "no",

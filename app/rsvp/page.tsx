@@ -4,7 +4,9 @@ import ActualRsvpForm from "../components/ActualRsvpForm"
 import ActualRsvpList from "../components/ActualRsvpList"
 import TagSummary from "../components/TagSummary"
 import PageHeader from "../components/PageHeader"
+import Schedule from "../components/Schedule"
 import { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "RSVP, AUG 21th - 24th",
@@ -50,6 +52,18 @@ const RsvpPage = async () => {
       {/* RSVP Form Section */}
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
         <ActualRsvpForm rsvps={actualRsvps} />
+      </section>
+
+      <Schedule />
+
+      {/* Learn About Trip Button */}
+      <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
+        <Link
+          href='/'
+          className='inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-blue-dark rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2'
+        >
+          🏞️ Trip Details & Such
+        </Link>
       </section>
 
       {/* Tag Summary Section */}

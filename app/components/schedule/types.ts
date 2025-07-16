@@ -6,4 +6,5 @@ export interface ScheduleItem {
   bgColor: string
   textColor: string
   borderColor: string
+  date: string
 }

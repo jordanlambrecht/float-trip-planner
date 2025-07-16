@@ -7,7 +7,8 @@ interface ScheduleCardProps {
 }
 
 const ScheduleCard = ({ item }: ScheduleCardProps) => {
-  const { dayAbbr, dayLabel, activity, bgColor, textColor, borderColor } = item
+  const { dayAbbr, dayLabel, activity, bgColor, textColor, borderColor, date } =
+    item
 
   // Split the day abbreviation into individual letters for stacking
   const letters = dayAbbr.split("")
@@ -53,6 +54,9 @@ const ScheduleCard = ({ item }: ScheduleCardProps) => {
               {letter}
             </span>
           ))}
+        </div>
+        <div>
+          <span className='my-1 font-mono'>{date}</span>
         </div>
       </div>
 

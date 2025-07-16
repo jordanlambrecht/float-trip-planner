@@ -11,6 +11,7 @@ const scheduleData: ScheduleItem[] = [
     bgColor: "bg-pink-300",
     textColor: "text-pink-700",
     borderColor: "border-pink-400",
+    date: "AUG 21",
   },
   {
     id: "fri",
@@ -20,6 +21,7 @@ const scheduleData: ScheduleItem[] = [
     bgColor: "bg-blue-300",
     textColor: "text-blue-700",
     borderColor: "border-blue-400",
+    date: "AUG 22",
   },
   {
     id: "sat",
@@ -29,6 +31,7 @@ const scheduleData: ScheduleItem[] = [
     bgColor: "bg-green-300",
     textColor: "text-green-700",
     borderColor: "border-green-400",
+    date: "AUG 23",
   },
   {
     id: "sun",
@@ -38,6 +41,7 @@ const scheduleData: ScheduleItem[] = [
     bgColor: "bg-purple-300",
     textColor: "text-purple-700",
     borderColor: "border-purple-400",
+    date: "AUG 24",
   },
 ]
 

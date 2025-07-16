@@ -23,7 +23,7 @@ const ConfirmationModal = ({
         <div className='flex items-stretch'>
           <div className='flex items-center justify-center py-2'>
             <Image
-              src={iconSrc || "/confirmation-icon.png"}
+              src={iconSrc || "/dead-pixel.png"}
               alt='Confirmation Icon'
               width={33}
               height={33}

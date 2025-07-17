@@ -12,7 +12,7 @@ const Itinerary = () => {
             {/* BONUS DAY */}
             <div>
               <h3 className='mb-2 text-pink-dark'>
-                Bonus Day: Merritt Reservoir
+                Bonus Day: Merritt Reservoir (AUG 21)
               </h3>
               <p className='max-w-lg font-mono mb-4'>
                 Merritt Reservoir continuously ranks in the top five of the
@@ -48,7 +48,7 @@ const Itinerary = () => {
             {/* DAY 01 */}
             <div>
               <h3 className='mb-2 text-blue-dark'>
-                Day 01: Arrival + Dinner + Hangs
+                Day 01 (AUG 22): Arrival + Dinner + Hangs
               </h3>
               <p className='max-w-lg font-mono mb-4'>
                 Arrive at the campsite, set up tents, and get settled in. We
@@ -75,7 +75,7 @@ const Itinerary = () => {
             </div>
             {/* DAY 02 */}
             <div>
-              <h3 className='mb-2 text-teal-dark'>Day 02: Float</h3>
+              <h3 className='mb-2 text-teal-dark'>Day 02 (AUG 23): Float</h3>
               <p className='max-w-lg font-mono mb-4'>Self-Explanatory.</p>
 
               <ul className='font-mono'>
@@ -108,7 +108,9 @@ const Itinerary = () => {
             </div>
             {/* DAY 03 */}
             <div>
-              <h3 className='mb-2 text-purple-dark'>Day 03: Departure</h3>
+              <h3 className='mb-2 text-purple-dark'>
+                Day 03 (AUG 24): Departure
+              </h3>
               <p className='max-w-lg font-mono mb-4'>
                 We&apos;ll start packing up camp and make breakfast before
                 heading home

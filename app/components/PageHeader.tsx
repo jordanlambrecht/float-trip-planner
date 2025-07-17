@@ -28,7 +28,7 @@ const PageHeader = () => {
               : "text-gray-textdark hover:bg-gray-100 border border-gray-textlight"
           )}
         >
-          Home
+          HOME
         </Link>
         <Link
           href='/rsvp'

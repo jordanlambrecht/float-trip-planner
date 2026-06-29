@@ -1487,7 +1487,7 @@ const ActualRsvpForm = ({
                   </div>
                   <span className='text-sm font-mono text-gray-textdark select-none flex items-center'>
                     <span className='mr-2'>🤡</span>
-                    3.5 More Years of This Bullshit
+                    Republicans
                   </span>
                 </div>
               </div>

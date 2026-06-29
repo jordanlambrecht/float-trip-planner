@@ -71,7 +71,7 @@ const Itinerary = () => {
                   <span className='font-bold'>— Activities:</span> Whatever
                 </li>
                 <li>
-                  <span className='font-bold'>—Today&apos;s Food:</span> Snacks
+                  <span className='font-bold'>— Today&apos;s Food:</span> Snacks
                   + Dinner + Weed
                 </li>
               </ul>

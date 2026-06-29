@@ -1,7 +1,8 @@
-"use client"
+'use client'
 
-import type { ActualRsvpEntry, RSVPStatus } from "@types"
-import clsx from "clsx"
+import type { ActualRsvpEntry, RSVPStatus } from '@types'
+import clsx from 'clsx'
+import { TRIP_YEAR, TRIP_DATES_NO_YEAR } from '@tripConfig'
 
 interface ActualRsvpListProps {
   rsvps: ActualRsvpEntry[]
@@ -9,23 +10,31 @@ interface ActualRsvpListProps {
 
 const getRsvpEmoji = (status: RSVPStatus): string => {
   switch (status) {
-    case "yes":
-      return "✅"
-    case "no":
-      return "❌"
+    case 'yes':
+      return '✅'
+    case 'maybe_probably':
+      return '🤞'
+    case 'maybe_unlikely':
+      return '😬'
+    case 'no':
+      return '❌'
     default:
-      return "❔"
+      return '❔'
   }
 }
 
 const getRsvpColor = (status: RSVPStatus): string => {
   switch (status) {
-    case "yes":
-      return "border-green-500 bg-green-50"
-    case "no":
-      return "border-red-500 bg-red-50"
+    case 'yes':
+      return 'border-green-500 bg-green-50'
+    case 'maybe_probably':
+      return 'border-blue-500 bg-blue-50'
+    case 'maybe_unlikely':
+      return 'border-purple-500 bg-purple-50'
+    case 'no':
+      return 'border-red-500 bg-red-50'
     default:
-      return "border-gray-500 bg-gray-50"
+      return 'border-gray-500 bg-gray-50'
   }
 }
 
@@ -47,7 +56,7 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
     return (
       <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
         <div className='max-w-4xl mx-auto text-center'>
-          <h2 className='text-2xl font-bold mb-4'>2025 RSVPs</h2>
+          <h2 className='text-2xl font-bold mb-4'>{TRIP_YEAR} RSVPs</h2>
           <p className='font-mono text-gray-textlight'>
             No RSVPs submitted yet. Be the first!
           </p>
@@ -57,8 +66,14 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
   }
 
   // Separate RSVPs by status
-  const attendingRsvps = rsvps.filter((rsvp) => rsvp.rsvp_status === "yes")
-  const notAttendingRsvps = rsvps.filter((rsvp) => rsvp.rsvp_status === "no")
+  const attendingRsvps = rsvps.filter((rsvp) => rsvp.rsvp_status === 'yes')
+  const probablyRsvps = rsvps.filter(
+    (rsvp) => rsvp.rsvp_status === 'maybe_probably'
+  )
+  const unlikelyRsvps = rsvps.filter(
+    (rsvp) => rsvp.rsvp_status === 'maybe_unlikely'
+  )
+  const notAttendingRsvps = rsvps.filter((rsvp) => rsvp.rsvp_status === 'no')
 
   const renderRsvpSection = (
     title: string,
@@ -77,7 +92,7 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
             <div
               key={rsvp.id}
               className={clsx(
-                "p-4 rounded-lg border-2 transition-all duration-200",
+                'p-4 rounded-lg border-2 transition-all duration-200',
                 getRsvpColor(rsvp.rsvp_status)
               )}
             >
@@ -128,11 +143,21 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
     <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
       <div className='max-w-4xl mx-auto'>
         <h2 className='text-2xl font-bold mb-6'>
-          2025 Trip RSVPs - August 21st-24th
+          {TRIP_YEAR} Trip RSVPs - {TRIP_DATES_NO_YEAR}
         </h2>
 
-        {renderRsvpSection("Attending", attendingRsvps, "yes")}
-        {renderRsvpSection("Not Attending", notAttendingRsvps, "no")}
+        {renderRsvpSection('Attending', attendingRsvps, 'yes')}
+        {renderRsvpSection(
+          'Maybe But Probably',
+          probablyRsvps,
+          'maybe_probably'
+        )}
+        {renderRsvpSection(
+          'Maybe But Unlikely',
+          unlikelyRsvps,
+          'maybe_unlikely'
+        )}
+        {renderRsvpSection('Not Attending', notAttendingRsvps, 'no')}
       </div>
     </section>
   )

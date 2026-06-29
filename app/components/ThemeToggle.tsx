@@ -1,21 +1,21 @@
 // app/components/ThemeToggle.tsx
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
 export default function ThemeToggle() {
   const [isMounted, setIsMounted] = useState(false)
   const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedTheme = localStorage.getItem("theme")
+    if (typeof window !== 'undefined') {
+      const storedTheme = localStorage.getItem('theme')
       if (storedTheme) {
         return storedTheme
       }
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light"
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
     }
-    return "light" // Default theme before client-side check
+    return 'light' // Default theme before client-side check
   })
 
   useEffect(() => {
@@ -25,18 +25,18 @@ export default function ThemeToggle() {
   useEffect(() => {
     if (isMounted) {
       // Only set data-theme for dark mode, remove it for light mode
-      if (theme === "dark") {
-        document.documentElement.setAttribute("data-theme", "dark")
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark')
       } else {
-        document.documentElement.removeAttribute("data-theme")
+        document.documentElement.removeAttribute('data-theme')
       }
       // Persist the theme choice in localStorage
-      localStorage.setItem("theme", theme)
+      localStorage.setItem('theme', theme)
     }
   }, [theme, isMounted])
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
+    setTheme(theme === 'dark' ? 'light' : 'dark')
   }
 
   if (!isMounted) {
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       className='relative w-16 h-8 p-1 transition-colors duration-300 rounded-full shadow-inner bg-primary focus:outline-none focus:ring-2  focus:ring-pink-dark focus:ring-offset-2'
       aria-label={
-        theme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+        theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
       }
     >
       <div className='relative flex items-center self-center justify-center w-full h-full mx-auto'>
@@ -57,7 +57,7 @@ export default function ThemeToggle() {
         <svg
           xmlns='http://www.w3.org/2000/svg'
           className={`relative self-center z-50 h-4 w-4 text-yellow-400 transition-opacity duration-300 ease-in-out ${
-            theme === "dark" ? "opacity-100" : "opacity-50"
+            theme === 'dark' ? 'opacity-100' : 'opacity-50'
           }`}
           fill='currentColor'
           viewBox='0 0 24 24'
@@ -93,7 +93,7 @@ export default function ThemeToggle() {
       {/* Toggle Circle */}
       <div
         className={`absolute top-1 h-6 w-6 transform rounded-full bg-black shadow-md transition-transform duration-300 ease-in-out ${
-          theme === "dark" ? "left-9" : "left-1"
+          theme === 'dark' ? 'left-9' : 'left-1'
         } floatAnimation`}
       />
     </button>

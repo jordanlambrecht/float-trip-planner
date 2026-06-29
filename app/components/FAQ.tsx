@@ -1,7 +1,7 @@
 // app/components/FAQ.tsx
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState } from 'react'
 
 interface FAQItem {
   question: string
@@ -10,25 +10,31 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "Do I really need river shoes?",
-    answer: "Yes. It will hurt.",
+    question: 'Do I really need river shoes?',
+    answer:
+      'Yes. It will hurt. If you forget yours, the campground shop sells them.',
   },
   {
-    question: "What if the weather is bad?",
-    answer: "Idk stop being such a sissy.",
+    question: 'What if the weather is bad?',
+    answer: 'Idk stop being such a sissy.',
   },
   {
-    question: "How deep is it?",
-    answer: "Not very.",
+    question: 'How deep is it?',
+    answer: 'Not very.',
   },
   {
-    question: "Can I bring a buddy?",
+    question: 'Can I bring a buddy?',
     answer: "Only if they're chill and/or interesting.",
   },
   {
-    question: "Are there showers?",
+    question: 'Are there showers? Where do I poop?',
     answer:
-      "The main office at the campground has a little storefront and private showers. Check out their website.",
+      'The main office at the campground has real flushing toilets, private showers, and a little storefront. Check out their website.',
+  },
+  {
+    question: 'Is there cell service?',
+    answer:
+      "NO. When you are close, please text the group your arrival time. If we notice you haven't shown up when expected, we will drive to a place with service and contact you. It's also recommended you share your location with the group (iPhone).",
   },
   {
     question: "How do I get to Sharp's Campground?",
@@ -36,7 +42,7 @@ const faqData: FAQItem[] = [
       "Type the words 'Sharp's Campground' into your preferred navigation app.",
   },
   {
-    question: "Can I arrive late or leave early?",
+    question: 'Can I arrive late or leave early?',
     answer: "I'm not your mom idc.",
   },
 ]
@@ -78,7 +84,7 @@ const FAQ = () => {
                 </h3>
                 <span
                   className={`text-pink-dark text-xl transition-transform duration-200 ${
-                    openItems.has(index) ? "rotate-45" : ""
+                    openItems.has(index) ? 'rotate-45' : ''
                   }`}
                 >
                   +
@@ -88,7 +94,7 @@ const FAQ = () => {
             {openItems.has(index) && (
               <div className='px-4 py-3 bg-none border-t border-gray-200'>
                 <div className='text-gray-700 leading-relaxed font-mono'>
-                  {typeof item.answer === "string" ? (
+                  {typeof item.answer === 'string' ? (
                     <p>{item.answer}</p>
                   ) : (
                     item.answer

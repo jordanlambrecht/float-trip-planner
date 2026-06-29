@@ -1,11 +1,29 @@
-import { DESIGN_VOTE_PREFERENCES } from "@pollConfig"
+import { DESIGN_VOTE_PREFERENCES } from '@pollConfig'
 export type VotePreference =
-  | "works_best"
-  | "works_not_preferred"
-  | "idc"
-  | "doesnt_work"
+  | 'works_best'
+  | 'works_not_preferred'
+  | 'idc'
+  | 'doesnt_work'
 
-export type RSVPStatus = "yes" | "no"
+export type RSVPStatus = 'yes' | 'no' | 'maybe_probably' | 'maybe_unlikely'
+
+export const MAYBE_RSVP_STATUSES: RSVPStatus[] = [
+  'maybe_probably',
+  'maybe_unlikely',
+]
+
+// Everything except a hard "no" goes through the full RSVP flow
+// (phone, items, volunteer roles) since they might show up.
+export const isAttendingStatus = (
+  status: RSVPStatus | null | undefined
+): boolean =>
+  status === 'yes' || status === 'maybe_probably' || status === 'maybe_unlikely'
+
+// Firm yeses plus probable maybes - the people whose gear and roles count
+// toward planning (tag summary, inventory board, roles board).
+export const isLikelyComing = (
+  status: RSVPStatus | null | undefined
+): boolean => status === 'yes' || status === 'maybe_probably'
 
 export interface ParticipantVote {
   id: string
@@ -73,7 +91,7 @@ export interface DetailRowProps {
 }
 
 export interface PollViewSwitcherProps {
-  view: "form" | "results"
+  view: 'form' | 'results'
   pollResults: PollResultsData | null
   tripOptions: { option1: TripOptionDetails; option2: TripOptionDetails }
   onFormSubmitSuccess: () => void
@@ -156,4 +174,21 @@ export interface Comment {
   comment: string
   commenter_name: string
   date_created: string
+}
+
+export interface SpotifyTrack {
+  id: string
+  name: string
+  artists: string
+  albumImage: string | null
+  url: string
+}
+
+export interface SpotifyPlaylist {
+  name: string
+  description: string
+  cover: string | null
+  url: string
+  total: number
+  tracks: SpotifyTrack[]
 }

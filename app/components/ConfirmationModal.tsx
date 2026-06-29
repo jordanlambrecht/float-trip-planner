@@ -1,16 +1,16 @@
 // app/components/ConfirmationModal.tsx
 
-import Image from "next/image"
-import type { ConfirmationModalProps } from "@types"
+import Image from 'next/image'
+import type { ConfirmationModalProps } from '@types'
 
 const ConfirmationModal = ({
   isOpen,
   onClose,
   onConfirm,
-  title = "Are you sure?",
+  title = 'Are you sure?',
   message,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
   iconSrc,
 }: ConfirmationModalProps) => {
   if (!isOpen) {
@@ -23,7 +23,7 @@ const ConfirmationModal = ({
         <div className='flex items-stretch'>
           <div className='flex items-center justify-center py-2'>
             <Image
-              src={iconSrc || "/dead-pixel.png"}
+              src={iconSrc || '/dead-pixel.png'}
               alt='Confirmation Icon'
               width={33}
               height={33}

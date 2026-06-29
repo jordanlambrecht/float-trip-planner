@@ -1,6 +1,7 @@
 // app/components/PollResults.tsx
 
-import type { PollResultsProps } from "@types"
+import type { PollResultsProps } from '@types'
+import { PREVIOUS_TRIP_YEAR, PREVIOUS_TRIP_DATES_NO_YEAR } from '@tripConfig'
 
 const PollResults = ({
   results,
@@ -8,7 +9,7 @@ const PollResults = ({
   onResetToForm,
 }: PollResultsProps) => {
   const renderResultCell = (
-    optionId: "option1" | "option2",
+    optionId: 'option1' | 'option2',
     preference: (typeof votePreferences)[0]
   ) => {
     const optionData = results[optionId]
@@ -37,7 +38,7 @@ const PollResults = ({
       >
         <div
           className={`absolute top-0 left-0 h-full ${barColor} z-0`}
-          style={{ width: `${percentage}%`, transition: "width 0.5s ease-out" }}
+          style={{ width: `${percentage}%`, transition: 'width 0.5s ease-out' }}
         ></div>
 
         {/* Content on top of bar */}
@@ -60,7 +61,7 @@ const PollResults = ({
         <div className='space-y-2 sm:space-y-3'>
           {votePreferences.map((pref) => (
             <div key={`option1-${pref.value}`}>
-              {renderResultCell("option1", pref)}
+              {renderResultCell('option1', pref)}
             </div>
           ))}
         </div>
@@ -69,7 +70,7 @@ const PollResults = ({
         <div className='space-y-2 sm:space-y-3'>
           {votePreferences.map((pref) => (
             <div key={`option2-${pref.value}`}>
-              {renderResultCell("option2", pref)}
+              {renderResultCell('option2', pref)}
             </div>
           ))}
         </div>
@@ -77,7 +78,8 @@ const PollResults = ({
 
       <div className='mt-6 text-center sm:mt-8'>
         <p className='font-mono text-sm text-gray-600 mb-2'>
-          Voting has closed - August 21st-24th selected
+          Voting has closed - {PREVIOUS_TRIP_DATES_NO_YEAR},{' '}
+          {PREVIOUS_TRIP_YEAR} selected
         </p>
         {/* Disabled button */}
         <button

@@ -4,11 +4,12 @@ PRODID:-//Jordan Lambrecht//Niobrara Float Trip//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:niobrara-float-trip-2025@jordanlambrecht.com
-DTSTART;VALUE=DATE:20250822
-DTEND;VALUE=DATE:20250825
-SUMMARY:🦦🌊 2025 Niobrara Float Trip ⛺️✨
-DESCRIPTION:Hell yeah, brudduh. Remember your sunscreen + river shoes. \n\nWebsite: https://niobrara.jordanlambrecht.com\nPhone: 402-957-3995
+UID:niobrara-float-trip-2026@jordanlambrecht.com
+DTSTAMP:20260611T000000Z
+DTSTART;VALUE=DATE:20260821
+DTEND;VALUE=DATE:20260824
+SUMMARY:🦦🌊 2026 Niobrara Float Trip ⛺️✨
+DESCRIPTION:Hell yeah\, brudduh. Remember your sunscreen + river shoes. \n\nWebsite: https://niobrara.jordanlambrecht.com\nPhone: 402-957-3995
 LOCATION:Sharp's Landing\, 90048 Sparks River Road\, Sparks\, Nebraska 69220
 ORGANIZER;CN=Jordan Lambrecht:mailto:me@jordanlambrecht.com
 STATUS:CONFIRMED

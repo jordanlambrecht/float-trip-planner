@@ -1,15 +1,15 @@
-"use client"
+'use client'
 
-import { ActualRsvpEntry } from "@types"
+import { ActualRsvpEntry, isLikelyComing } from '@types'
 
 interface TagSummaryProps {
   rsvps: ActualRsvpEntry[]
 }
 
 const TagSummary = ({ rsvps }: TagSummaryProps) => {
-  // Filter RSVPs to only include those who are coming (yes or maybe)
-  const attendingRsvps = rsvps.filter(
-    (rsvp) => rsvp.rsvp_status === "yes" || rsvp.rsvp_status === "maybe"
+  // Firm yeses plus probable maybes - their items factor into planning.
+  const attendingRsvps = rsvps.filter((rsvp) =>
+    isLikelyComing(rsvp.rsvp_status)
   )
 
   // Create a map of items to people bringing them
@@ -75,7 +75,7 @@ const TagSummary = ({ rsvps }: TagSummaryProps) => {
             Merrit Reservoir (Day Before)
           </h4>
           <p className='font-mono text-gray-textdark'>
-            {merritCount} {merritCount === 1 ? "person is" : "people are"}{" "}
+            {merritCount} {merritCount === 1 ? 'person is' : 'people are'}{' '}
             planning to come to Merrit Reservoir the day before.
           </p>
         </div>
@@ -93,7 +93,7 @@ const TagSummary = ({ rsvps }: TagSummaryProps) => {
                     {role}
                   </span>
                   <span className='font-mono text-sm text-gray-textdark'>
-                    {people.join(", ")}
+                    {people.join(', ')}
                   </span>
                 </div>
               ))}
@@ -114,7 +114,7 @@ const TagSummary = ({ rsvps }: TagSummaryProps) => {
                     {item}
                   </span>
                   <span className='font-mono text-sm text-gray-textdark'>
-                    {people.join(", ")}
+                    {people.join(', ')}
                   </span>
                 </div>
               ))}

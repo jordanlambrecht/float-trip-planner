@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import React, { useState, useEffect, useTransition } from "react"
-import type { Comment } from "@types"
-import { getCommentsAction, submitCommentAction } from "@actions"
+import React, { useState, useEffect, useTransition } from 'react'
+import type { Comment } from '@types'
+import { getCommentsAction, submitCommentAction } from '@actions'
 
 interface MessageWallProps {
   // Remove rsvps prop since we're fetching comments directly
@@ -11,8 +11,8 @@ interface MessageWallProps {
 const MessageWall = ({}: MessageWallProps) => {
   const [comments, setComments] = useState<Comment[]>([])
   const [loading, setLoading] = useState(true)
-  const [newComment, setNewComment] = useState("")
-  const [commenterName, setCommenterName] = useState("")
+  const [newComment, setNewComment] = useState('')
+  const [commenterName, setCommenterName] = useState('')
   const [isSubmitting, startTransition] = useTransition()
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitSuccess, setSubmitSuccess] = useState(false)
@@ -24,10 +24,10 @@ const MessageWall = ({}: MessageWallProps) => {
         if (Array.isArray(result)) {
           setComments(result)
         } else {
-          console.error("Error fetching comments:", result.error)
+          console.error('Error fetching comments:', result.error)
         }
       } catch (error) {
-        console.error("Error fetching comments:", error)
+        console.error('Error fetching comments:', error)
       } finally {
         setLoading(false)
       }
@@ -51,8 +51,8 @@ const MessageWall = ({}: MessageWallProps) => {
           commenterName.trim()
         )
         if (result.success) {
-          setNewComment("")
-          setCommenterName("")
+          setNewComment('')
+          setCommenterName('')
           setSubmitSuccess(true)
           // Refresh comments
           const updatedComments = await getCommentsAction()
@@ -62,11 +62,11 @@ const MessageWall = ({}: MessageWallProps) => {
           // Clear success message after 3 seconds
           setTimeout(() => setSubmitSuccess(false), 3000)
         } else {
-          setSubmitError(result.error || "Failed to submit comment")
+          setSubmitError(result.error || 'Failed to submit comment')
         }
       } catch (error) {
-        setSubmitError("An unexpected error occurred")
-        console.error("Comment submission error:", error)
+        setSubmitError('An unexpected error occurred')
+        console.error('Comment submission error:', error)
       }
     })
   }
@@ -74,10 +74,10 @@ const MessageWall = ({}: MessageWallProps) => {
   // Helper function to format the date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    return new Intl.DateTimeFormat('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     }).format(date)
   }
 
@@ -138,7 +138,7 @@ const MessageWall = ({}: MessageWallProps) => {
                     disabled={!newComment.trim() || isSubmitting}
                     className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-1 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
                   >
-                    {isSubmitting ? "Posting..." : "Post Comment"}
+                    {isSubmitting ? 'Posting...' : 'Post Comment'}
                   </button>
                 </div>
               </div>
@@ -196,7 +196,7 @@ const MessageWall = ({}: MessageWallProps) => {
                   disabled={!newComment.trim() || isSubmitting}
                   className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-1 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
                 >
-                  {isSubmitting ? "Posting..." : "Post Comment"}
+                  {isSubmitting ? 'Posting...' : 'Post Comment'}
                 </button>
               </div>
             </div>
@@ -204,26 +204,45 @@ const MessageWall = ({}: MessageWallProps) => {
         </div>
 
         <div className='grid grid-cols-1 gap-3'>
-          {comments.map((comment, index) => (
-            <div
-              key={`comment-${comment.id}`}
-              className='bg-background/25 px-5 rounded-lg border border-gray'
-            >
-              <div className='flex items-center mb-1'>
-                <span className='font-mono font-bold text-pink-dark  mr-2'>
-                  {comment.commenter_name
-                    ? comment.commenter_name
-                    : "Anonymous"}
-                </span>
-                <span className='text-xs text-gray-500 italic'>
-                  {formatDate(comment.date_created)}
-                </span>
-              </div>
-              <p className='font-mono text-gray-700  whitespace-pre-wrap'>
-                "{comment.comment}"
-              </p>
-            </div>
-          ))}
+          {comments.map((comment, index) => {
+            const commentYear = new Date(comment.date_created).getFullYear()
+            const prevYear =
+              index > 0
+                ? new Date(comments[index - 1].date_created).getFullYear()
+                : null
+            const showYearDivider =
+              prevYear !== null && prevYear !== commentYear
+
+            return (
+              <React.Fragment key={`comment-${comment.id}`}>
+                {/* Slim divider marking where one year's messages end */}
+                {showYearDivider && (
+                  <div className='flex items-center gap-3 my-2'>
+                    <div className='flex-1 h-px bg-gray-textlight/40' />
+                    <span className='font-mono text-xs text-gray-textlight uppercase tracking-widest'>
+                      {commentYear}
+                    </span>
+                    <div className='flex-1 h-px bg-gray-textlight/40' />
+                  </div>
+                )}
+                <div className='bg-background/25 px-5 rounded-lg border border-gray'>
+                  <div className='flex items-center mb-1'>
+                    <span className='font-mono font-bold text-pink-dark  mr-2'>
+                      {comment.commenter_name
+                        ? comment.commenter_name
+                        : 'Anonymous'}
+                    </span>
+                    <span className='text-xs text-gray-500 italic'>
+                      {formatDate(comment.date_created)}
+                    </span>
+                  </div>
+                  <p className='font-mono text-gray-700  whitespace-pre-wrap'>
+                    "{comment.comment}"
+                  </p>
+                </div>
+              </React.Fragment>
+            )
+          })}
         </div>
       </div>
     </section>

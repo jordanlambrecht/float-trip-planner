@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import clsx from "clsx"
+import { useState } from 'react'
+import clsx from 'clsx'
 
 interface CollapsibleSectionProps {
   title: string
@@ -16,12 +16,12 @@ const CollapsibleSection = ({
   subtitle,
   children,
   defaultCollapsed = true,
-  className = "",
+  className = '',
 }: CollapsibleSectionProps) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
 
   return (
-    <div className={clsx("w-full", className)}>
+    <div className={clsx('w-full', className)}>
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         className='w-full flex items-center justify-between p-4 border border-gray rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2 bg-none bg-transparent'
@@ -36,12 +36,12 @@ const CollapsibleSection = ({
         </div>
         <div className='flex items-center'>
           <span className='text-sm font-mono text-gray-textlight mr-2'>
-            {isCollapsed ? "Show" : "Hide"}
+            {isCollapsed ? 'Show' : 'Hide'}
           </span>
           <svg
             className={clsx(
-              "w-5 h-5 text-gray-textlight transition-transform duration-200",
-              isCollapsed ? "rotate-0" : "rotate-180"
+              'w-5 h-5 text-gray-textlight transition-transform duration-200',
+              isCollapsed ? 'rotate-0' : 'rotate-180'
             )}
             fill='none'
             stroke='currentColor'
@@ -59,8 +59,8 @@ const CollapsibleSection = ({
 
       <div
         className={clsx(
-          "overflow-hidden transition-all duration-300 ease-in-out",
-          isCollapsed ? "max-h-0" : "max-h-none"
+          'overflow-hidden transition-all duration-300 ease-in-out',
+          isCollapsed ? 'max-h-0' : 'max-h-none'
         )}
       >
         <div

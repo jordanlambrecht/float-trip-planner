@@ -1,16 +1,22 @@
-import type { ActualRsvpEntry } from "@types"
-import { getActualRsvsAction } from "@actions"
-import ActualRsvpForm from "../components/ActualRsvpForm"
-import ActualRsvpList from "../components/ActualRsvpList"
-import TagSummary from "../components/TagSummary"
-import PageHeader from "../components/PageHeader"
-import Schedule from "../components/Schedule"
-import { Metadata } from "next"
-import Link from "next/link"
+import type { ActualRsvpEntry } from '@types'
+import { getActualRsvsAction } from '@actions'
+import ActualRsvpForm from '../components/ActualRsvpForm'
+import ActualRsvpList from '../components/ActualRsvpList'
+import TagSummary from '../components/TagSummary'
+import PageHeader from '../components/PageHeader'
+import Schedule from '../components/Schedule'
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { TRIP_DATES_SHORT, TRIP_DATES_FULL } from '@tripConfig'
+
+// Render with live RSVP data at request time; never statically prerender this
+// page at build (which would require DATABASE_URL at build and serve a stale
+// snapshot of who's coming).
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: "RSVP, AUG 21th - 24th",
-  description: "Float on, brudduh.",
+  title: `RSVP, ${TRIP_DATES_SHORT}`,
+  description: 'Float on, brudduh.',
 }
 
 const RsvpPage = async () => {
@@ -18,7 +24,7 @@ const RsvpPage = async () => {
   const rsvpData = await getActualRsvsAction()
 
   // Handle error case
-  if ("error" in rsvpData) {
+  if ('error' in rsvpData) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen p-4 text-center'>
         <p className='font-mono text-lg text-red-600'>
@@ -37,13 +43,13 @@ const RsvpPage = async () => {
 
       {/* RSVP Header Section */}
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full bg-gradient-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6'>
+        <div className='w-full bg-linear-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6'>
           <div className='text-center mb-4'>
             <h1 className='text-3xl font-bold text-gray-800 mb-2'>
               RSVP for Niobrara Trip
             </h1>
             <p className='text-xl font-mono text-pink-dark mb-2'>
-              📅 AUGUST 21st-24th, 2025 📅
+              📅 {TRIP_DATES_FULL} 📅
             </p>
           </div>
         </div>

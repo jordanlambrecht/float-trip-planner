@@ -1,7 +1,7 @@
 // app/components/BackToTop.tsx
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false)
@@ -16,19 +16,19 @@ const BackToTop = () => {
     }
 
     // Add scroll event listener
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener('scroll', handleScroll)
 
     // Check initial scroll position
     handleScroll()
 
     // Cleanup
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     })
   }
 
@@ -46,8 +46,8 @@ const BackToTop = () => {
         focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2
         ${
           isVisible
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 translate-y-4 pointer-events-none"
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 translate-y-4 pointer-events-none'
         }
       `}
       aria-label='Back to top'

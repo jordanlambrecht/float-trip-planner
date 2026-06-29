@@ -1,47 +1,48 @@
-import React from "react"
-import ScheduleCard from "./schedule/ScheduleCard"
-import { ScheduleItem } from "./schedule/types"
+import React from 'react'
+import ScheduleCard from './schedule/ScheduleCard'
+import { ScheduleItem } from './schedule/types'
+import { TRIP_DAYS } from '@tripConfig'
 
 const scheduleData: ScheduleItem[] = [
   {
-    id: "thr",
-    dayAbbr: "THR",
-    dayLabel: "bonus day",
-    activity: "merritt reservoir",
-    bgColor: "bg-pink-300",
-    textColor: "text-pink-700",
-    borderColor: "border-pink-400",
-    date: "AUG 21",
+    id: 'thr',
+    dayAbbr: 'THR',
+    dayLabel: 'bonus day',
+    activity: 'merritt reservoir',
+    bgColor: 'bg-pink-300',
+    textColor: 'text-pink-700',
+    borderColor: 'border-pink-400',
+    date: TRIP_DAYS.bonus,
   },
   {
-    id: "fri",
-    dayAbbr: "FRI",
-    dayLabel: "day 01",
-    activity: "mosey in + camp",
-    bgColor: "bg-blue-300",
-    textColor: "text-blue-700",
-    borderColor: "border-blue-400",
-    date: "AUG 22",
+    id: 'fri',
+    dayAbbr: 'FRI',
+    dayLabel: 'day 01',
+    activity: 'mosey in + camp',
+    bgColor: 'bg-blue-300',
+    textColor: 'text-blue-700',
+    borderColor: 'border-blue-400',
+    date: TRIP_DAYS.day1,
   },
   {
-    id: "sat",
-    dayAbbr: "SAT",
-    dayLabel: "day 03",
-    activity: "float + hang",
-    bgColor: "bg-green-300",
-    textColor: "text-green-700",
-    borderColor: "border-green-400",
-    date: "AUG 23",
+    id: 'sat',
+    dayAbbr: 'SAT',
+    dayLabel: 'day 02',
+    activity: 'float + hang',
+    bgColor: 'bg-green-300',
+    textColor: 'text-green-700',
+    borderColor: 'border-green-400',
+    date: TRIP_DAYS.day2,
   },
   {
-    id: "sun",
-    dayAbbr: "SUN",
-    dayLabel: "day 04",
-    activity: "brekky + mosey out",
-    bgColor: "bg-purple-300",
-    textColor: "text-purple-700",
-    borderColor: "border-purple-400",
-    date: "AUG 24",
+    id: 'sun',
+    dayAbbr: 'SUN',
+    dayLabel: 'day 03',
+    activity: 'brekky + mosey out',
+    bgColor: 'bg-purple-300',
+    textColor: 'text-purple-700',
+    borderColor: 'border-purple-400',
+    date: TRIP_DAYS.day3,
   },
 ]
 

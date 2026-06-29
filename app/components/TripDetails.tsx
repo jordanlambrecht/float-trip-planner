@@ -1,6 +1,6 @@
 // app/components/TripDetails.tsx
 
-import type { DetailRowProps, TripOptionDetails } from "@types"
+import type { DetailRowProps, TripOptionDetails } from '@types'
 
 function renderValue(val: string | string[]) {
   if (Array.isArray(val)) {

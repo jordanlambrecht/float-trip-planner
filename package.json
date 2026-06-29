@@ -5,28 +5,36 @@
   "author": "Jordan Lambrecht",
   "license": "MIT",
   "main": "app/page.tsx",
+  "packageManager": "pnpm@11.5.3",
   "scripts": {
-    "dev": "next dev",
+    "dev": "doppler run -- next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "migrate:season": "doppler run -- node scripts/migrate-2026-season.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
-    "autoprefixer": "^10.4.21",
+    "@tailwindcss/postcss": "^4.3.1",
+    "autoprefixer": "^10.5.2",
     "clsx": "^2.1.1",
-    "next": "^15.4.1",
-    "next-plausible": "^3.12.4",
-    "pg": "^8.16.3",
-    "postcss": "^8.5.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.11"
+    "next": "^16.2.9",
+    "next-plausible": "^4.0.0",
+    "pg": "^8.22.0",
+    "postcss": "^8.5.16",
+    "prettier": "^3.9.1",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
-    "@types/node": "24.0.14",
-    "@types/react": "^19.1.8",
+    "@types/node": "26.0.1",
+    "@types/react": "^19.2.17",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
   },
   "keywords": [
     "nextjs",

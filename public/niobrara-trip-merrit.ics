@@ -4,11 +4,12 @@ PRODID:-//Jordan Lambrecht//Niobrara Float Trip//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:niobrara-float-trip-2025@jordanlambrecht.com
-DTSTART;VALUE=DATE:20250821
-DTEND;VALUE=DATE:20250825
-SUMMARY:🪐⛺️ 2025 Niobrara Float Trip 🦦🌊
-DESCRIPTION:Hell yeah, brudduh. Remember your sunscreen + river shoes. \n\nWebsite: https://niobrara.jordanlambrecht.com\nPhone: 402-957-3995
+UID:niobrara-float-trip-2026-merritt@jordanlambrecht.com
+DTSTAMP:20260611T000000Z
+DTSTART;VALUE=DATE:20260820
+DTEND;VALUE=DATE:20260824
+SUMMARY:🪐⛺️ 2026 Niobrara Float Trip 🦦🌊
+DESCRIPTION:Hell yeah\, brudduh. Remember your sunscreen + river shoes. Bonus night: post-peak Perseids + the Milky Way after moonset at Merritt Reservoir. \n\nWebsite: https://niobrara.jordanlambrecht.com\nPhone: 402-957-3995
 LOCATION:Merrit Dam\, Valentine\, NE 69201
 ORGANIZER;CN=Jordan Lambrecht:mailto:me@jordanlambrecht.com
 STATUS:CONFIRMED

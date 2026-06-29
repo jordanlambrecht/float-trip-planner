@@ -1,24 +1,24 @@
 // app/layout.tsx
 
-import "./globals.css"
-import { IBM_Plex_Mono, Kumbh_Sans } from "next/font/google"
-import { Footer, BackToTop } from "@components"
-import type { ReactNode } from "react"
+import './globals.css'
+import { IBM_Plex_Mono, Kumbh_Sans } from 'next/font/google'
+import { Footer, BackToTop } from '@components'
+import type { ReactNode } from 'react'
 // import ThemeToggleWrapper from "./components/ThemeToggleWrapper"
-import PlausibleProvider from "next-plausible"
-import type { Metadata } from "next"
+import PlausibleProvider from 'next-plausible'
+import type { Metadata } from 'next'
 
 const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-ibm-plex-mono",
-  display: "swap",
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
 })
 const kumbhSans = Kumbh_Sans({
-  subsets: ["latin"],
-  variable: "--font-kumbh-sans",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  subsets: ['latin'],
+  variable: '--font-kumbh-sans',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 interface LayoutProps {
@@ -26,32 +26,25 @@ interface LayoutProps {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://niobrara.jordanlambrecht.com"),
+  metadataBase: new URL('https://niobrara.jordanlambrecht.com'),
   title: {
-    template: "%s | 2025 Niobrara Float Trip",
-    default: "2025 Niobrara Float Trip",
+    template: '%s | 2026 Niobrara Float Trip',
+    default: '2026 Niobrara Float Trip',
   },
-  description: "",
+  description: '',
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  // v4: with the proxy configured in next.config.mjs, the provider needs no
+  // props - it uses the local proxied script + endpoint automatically.
   return (
-    <PlausibleProvider
-      domain='niobrara.jordanlambrecht.com'
-      trackOutboundLinks
-      trackLocalhost={process.env.NODE_ENV !== "production"}
-      selfHosted
-      hash
-      taggedEvents
-      customDomain='https://analytics.jordy.world'
-      enabled
-    >
+    <PlausibleProvider>
       <html
         lang='en'
         className={`${kumbhSans.variable} ${ibmPlexMono.variable} antialiased`}
       >
         <head>
-          {/* <title>2025 Niobrara Float Trip</title> */}
+          {/* <title>2026 Niobrara Float Trip</title> */}
           <meta
             name='viewport'
             content='width=device-width, initial-scale=1.0, viewport-fit=cover'

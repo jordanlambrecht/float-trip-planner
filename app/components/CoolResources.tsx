@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from 'next/link'
 
 const CoolResources = () => {
   return (
@@ -22,7 +22,7 @@ const CoolResources = () => {
               </li>
               <li>
                 <Link href='https://www.amsmeteors.org/meteor-showers/meteor-shower-calendar/'>
-                  2025 Meteor Shower Calendar →
+                  2026 Meteor Shower Calendar →
                 </Link>
               </li>
               <li>

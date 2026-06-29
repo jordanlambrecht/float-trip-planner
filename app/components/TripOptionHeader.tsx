@@ -1,13 +1,13 @@
 // app/components/TripOptionHeader.tsx
 
-import type { TripOptionDetails } from "@types"
+import type { TripOptionDetails } from '@types'
 
 interface TripOptionHeaderProps {
   option: TripOptionDetails
 }
 
 const TripOptionHeader = ({ option }: TripOptionHeaderProps) => {
-  const [month, dates, year] = option.title.split(" ")
+  const [month, dates, year] = option.title.split(' ')
   return (
     <div className='px-2 py-3 text-center'>
       <p className='font-sans text-xs tracking-wider uppercase text-text '>

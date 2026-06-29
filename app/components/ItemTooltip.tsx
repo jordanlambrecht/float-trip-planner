@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
 interface ItemTooltipProps {
   item: string
@@ -10,7 +10,7 @@ interface ItemTooltipProps {
     needed_items?: string[]
   }>
   children: React.ReactNode
-  type: "need" | "extra" // Determines which direction to check
+  type: 'need' | 'extra' // Determines which direction to check
   isSelected?: boolean // Show tooltip when selected
   activeTooltip?: string | null // Currently active tooltip
   onTooltipChange?: (item: string | null) => void // Callback to change active tooltip
@@ -31,14 +31,14 @@ export function ItemTooltip({
   useEffect(() => {
     let people: string[] = []
 
-    if (type === "need") {
+    if (type === 'need') {
       // Find people who have this item in their extra_items
       people = rsvps
         .filter((rsvp) => {
           const extraItems = rsvp.extra_items || []
           // Handle both direct matches and ride mapping
-          if (item === "A Ride") {
-            return extraItems.includes("Room in my car for carpooling")
+          if (item === 'A Ride') {
+            return extraItems.includes('Room in my car for carpooling')
           }
           return extraItems.includes(item)
         })
@@ -49,17 +49,12 @@ export function ItemTooltip({
         .filter((rsvp) => {
           const neededItems = rsvp.needed_items || []
           // Handle both direct matches and ride mapping
-          if (item === "Room in my car for carpooling") {
-            console.log(`Checking ${rsvp.name} for ride needs:`, neededItems)
-            return neededItems.includes("A Ride")
+          if (item === 'Room in my car for carpooling') {
+            return neededItems.includes('A Ride')
           }
           return neededItems.includes(item)
         })
         .map((rsvp) => rsvp.name)
-    }
-
-    if (item === "Room in my car for carpooling") {
-      console.log(`People who need rides for "${item}":`, people)
     }
 
     setPeopleWithItem(people)
@@ -92,8 +87,8 @@ export function ItemTooltip({
     onTooltipChange?.(null)
   }
 
-  const isLeftSide = type === "extra"
-  const headerColor = type === "extra" ? "text-red-300" : "text-green-300"
+  const isLeftSide = type === 'extra'
+  const headerColor = type === 'extra' ? 'text-red-300' : 'text-green-300'
 
   return (
     <div
@@ -105,42 +100,42 @@ export function ItemTooltip({
 
       {shouldShowTooltip && (
         <div
-          className={`absolute z-50 pointer-events-none 
-            ${/* Mobile: show above */ ""}
+          className={`absolute z-50 pointer-events-none
+            ${/* Mobile: show above */ ''}
             sm:top-1/2 sm:transform sm:-translate-y-1/2
-            ${/* Mobile: show above with bottom positioning */ ""}
+            ${/* Mobile: show above with bottom positioning */ ''}
             bottom-full mb-2
-            ${/* Desktop: show left/right */ ""}
+            ${/* Desktop: show left/right */ ''}
             sm:bottom-auto sm:mb-0
             ${
               isLeftSide
-                ? "sm:right-full sm:mr-3 right-0"
-                : "sm:left-full sm:ml-3 left-0"
+                ? 'sm:right-full sm:mr-3 right-0'
+                : 'sm:left-full sm:ml-3 left-0'
             }`}
         >
           {/* Tooltip arrow */}
           <div
             className={`absolute z-50
-              ${/* Mobile: arrow pointing down, centered */ ""}
+              ${/* Mobile: arrow pointing down, centered */ ''}
               top-full left-1/2 transform -translate-x-1/2
-              ${/* Desktop: arrow pointing left/right */ ""}
+              ${/* Desktop: arrow pointing left/right */ ''}
               sm:top-1/2 sm:left-auto sm:right-auto sm:transform sm:-translate-y-1/2
               ${
                 isLeftSide
-                  ? "sm:right-0 sm:translate-x-full"
-                  : "sm:left-0 sm:-translate-x-full"
+                  ? 'sm:right-0 sm:translate-x-full'
+                  : 'sm:left-0 sm:-translate-x-full'
               }`}
           >
             <div
               className={`w-0 h-0
-                ${/* Mobile: arrow pointing down */ ""}
-                border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[10px] border-t-gray-800
-                ${/* Desktop: arrow pointing left/right */ ""}
-                sm:border-l-0 sm:border-r-0 sm:border-t-[10px] sm:border-t-transparent sm:border-b-[10px] sm:border-b-transparent
+                ${/* Mobile: arrow pointing down */ ''}
+                border-l-10 border-l-transparent border-r-10 border-r-transparent border-t-10 border-t-gray-800
+                ${/* Desktop: arrow pointing left/right */ ''}
+                sm:border-l-0 sm:border-r-0 sm:border-t-10 sm:border-t-transparent sm:border-b-10 sm:border-b-transparent
                 ${
                   isLeftSide
-                    ? "sm:border-l-[10px] sm:border-l-gray-800"
-                    : "sm:border-r-[10px] sm:border-r-gray-800"
+                    ? 'sm:border-l-10 sm:border-l-gray-800'
+                    : 'sm:border-r-10 sm:border-r-gray-800'
                 }`}
             ></div>
           </div>
@@ -150,27 +145,27 @@ export function ItemTooltip({
             <div className={`font-semibold mb-2 ${headerColor}`}>
               {(() => {
                 // Special case headers for ride-related items
-                if (type === "need" && item === "A Ride") {
+                if (type === 'need' && item === 'A Ride') {
                   return peopleWithItem.length === 1
-                    ? "Can give rides:"
-                    : "Can give rides:"
+                    ? 'Can give rides:'
+                    : 'Can give rides:'
                 }
                 if (
-                  type === "extra" &&
-                  item === "Room in my car for carpooling"
+                  type === 'extra' &&
+                  item === 'Room in my car for carpooling'
                 ) {
                   return peopleWithItem.length === 1
-                    ? "Needs a ride:"
-                    : "Need rides:"
+                    ? 'Needs a ride:'
+                    : 'Need rides:'
                 }
                 // Default headers for other items
-                return type === "need"
+                return type === 'need'
                   ? peopleWithItem.length === 1
-                    ? "Has extra:"
-                    : "Have extra:"
+                    ? 'Has extra:'
+                    : 'Have extra:'
                   : peopleWithItem.length === 1
-                  ? "Needs this:"
-                  : "Need this:"
+                    ? 'Needs this:'
+                    : 'Need this:'
               })()}
             </div>
             <div className='space-y-1'>

@@ -1,4 +1,5 @@
-import Link from "next/link"
+import Link from 'next/link'
+import { TRIP_DAYS } from '@tripConfig'
 
 const Itinerary = () => {
   return (
@@ -12,12 +13,14 @@ const Itinerary = () => {
             {/* BONUS DAY */}
             <div>
               <h3 className='mb-2 text-pink-dark'>
-                Bonus Day: Merritt Reservoir (AUG 21)
+                Bonus Day: Merritt Reservoir ({TRIP_DAYS.bonus})
               </h3>
               <p className='max-w-lg font-mono mb-4'>
                 Merritt Reservoir continuously ranks in the top five of the
-                darkest place on planet Earth. The trip lines up perfectly with
-                multiple meteor showers.
+                darkest place on planet Earth. The Perseids stay active through
+                August 24th, so once the moon sets (12:21 AM Thursday) expect
+                post-peak stragglers, the occasional fireball, and the full
+                Milky Way.
               </p>
               <p className='max-w-lg font-mono mb-4'>
                 This day is optional since it falls outside of the weekend and
@@ -48,7 +51,7 @@ const Itinerary = () => {
             {/* DAY 01 */}
             <div>
               <h3 className='mb-2 text-blue-dark'>
-                Day 01 (AUG 22): Arrival + Dinner + Hangs
+                Day 01 ({TRIP_DAYS.day1}): Arrival + Dinner + Hangs
               </h3>
               <p className='max-w-lg font-mono mb-4'>
                 Arrive at the campsite, set up tents, and get settled in. We
@@ -75,7 +78,9 @@ const Itinerary = () => {
             </div>
             {/* DAY 02 */}
             <div>
-              <h3 className='mb-2 text-teal-dark'>Day 02 (AUG 23): Float</h3>
+              <h3 className='mb-2 text-teal-dark'>
+                Day 02 ({TRIP_DAYS.day2}): Float
+              </h3>
               <p className='max-w-lg font-mono mb-4'>Self-Explanatory.</p>
 
               <ul className='font-mono'>
@@ -109,7 +114,7 @@ const Itinerary = () => {
             {/* DAY 03 */}
             <div>
               <h3 className='mb-2 text-purple-dark'>
-                Day 03 (AUG 24): Departure
+                Day 03 ({TRIP_DAYS.day3}): Departure
               </h3>
               <p className='max-w-lg font-mono mb-4'>
                 We&apos;ll start packing up camp and make breakfast before
@@ -128,7 +133,7 @@ const Itinerary = () => {
                   <span className='font-bold'>— Breakfast:</span> Around 09:30
                 </li>
                 <li>
-                  <span className='font-bold'>— Hangout and/or Pack:</span>{" "}
+                  <span className='font-bold'>— Hangout and/or Pack:</span>{' '}
                   Whenever
                 </li>
               </ul>

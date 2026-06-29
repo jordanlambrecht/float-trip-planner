@@ -1,16 +1,16 @@
 // app/components/PollForm.tsx
-"use client"
+'use client'
 
-import { FormEvent, useState, useTransition } from "react"
-import cn from "clsx"
+import { useState, useTransition } from 'react'
+import cn from 'clsx'
 import type {
   PollFormProps,
   VotePreference,
   ParticipantVote,
   RSVPStatus,
-} from "@types"
-import { ConfirmationModal } from "@components"
-import { submitPollAction } from "@actions"
+} from '@types'
+import { ConfirmationModal } from '@components'
+import { submitPollAction } from '@actions'
 
 const RSVP_OPTIONS: {
   label: string
@@ -20,13 +20,13 @@ const RSVP_OPTIONS: {
   textClass: string
 }[] = [
   {
-    label: "Coming",
-    value: "yes",
+    label: 'Coming',
+    value: 'yes',
     baseClass:
-      "bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2",
+      'bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2',
     selectedClass:
-      "bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1",
-    textClass: "text-teal-text ",
+      'bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1',
+    textClass: 'text-teal-text ',
   },
   // {
   //   label: "Undecided",
@@ -37,19 +37,19 @@ const RSVP_OPTIONS: {
   //   textClass: "text-yellow-text ",
   // },
   {
-    label: "For sure not coming",
-    value: "no",
-    baseClass: "bg-orange-light hover:bg-orange border-orange-medium",
+    label: 'For sure not coming',
+    value: 'no',
+    baseClass: 'bg-orange-light hover:bg-orange border-orange-medium',
     selectedClass:
-      "bg-orange-dark text-white ring-2 ring-orange-dark ring-offset-1",
-    textClass: "text-orange-text",
+      'bg-orange-dark text-white ring-2 ring-orange-dark ring-offset-1',
+    textClass: 'text-orange-text',
   },
 ]
 
 const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
   const getInitialParticipant = (): ParticipantVote => ({
     id: Date.now().toString() + Math.random().toString(36).substring(2),
-    name: "",
+    name: '',
     option1Vote: null,
     option2Vote: null,
     rsvp: null,
@@ -80,7 +80,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
 
   const updateParticipantVote = (
     id: string,
-    optionKey: "option1Vote" | "option2Vote",
+    optionKey: 'option1Vote' | 'option2Vote',
     vote: VotePreference
   ) => {
     setParticipants(
@@ -118,14 +118,13 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     setSuccessMessage(null)
   }
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     setError(null)
     setSuccessMessage(null)
 
-    const validParticipants = participants.filter((p) => p.name.trim() !== "")
+    const validParticipants = participants.filter((p) => p.name.trim() !== '')
     if (validParticipants.length === 0) {
-      setError("Please add at least one participant with a name.")
+      setError('Please add at least one participant with a name.')
       return
     }
 
@@ -150,7 +149,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     }
 
     startTransition(async () => {
-      const submissions: Omit<ParticipantVote, "id">[] = validParticipants.map(
+      const submissions: Omit<ParticipantVote, 'id'>[] = validParticipants.map(
         ({ name, option1Vote, option2Vote, rsvp, message }) => ({
           name,
           option1Vote,
@@ -166,29 +165,29 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         const submittedNames = validParticipants.map((p) => p.name)
         setSuccessMessage(
           result.message ||
-            "Thanks you kindly. Your preferences have been submitted."
+            'Thanks you kindly. Your preferences have been submitted.'
         )
         onFormSubmitSuccess(submittedNames)
       } else {
-        setError(result.error || "An unexpected error occurred.")
+        setError(result.error || 'An unexpected error occurred.')
       }
     })
   }
 
   const renderVoteCell = (
     participantId: string,
-    optionKey: "option1Vote" | "option2Vote",
+    optionKey: 'option1Vote' | 'option2Vote',
     currentVote: VotePreference | null,
     voteOption: (typeof votePreferences)[0]
   ) => {
     const isSelected = currentVote === voteOption.value
     const config = voteOption.formCellConfig
     const baseClasses =
-      "w-full p-3 font-mono text-xs sm:text-sm uppercase tracking-wider border rounded-md text-center transition-all duration-150 ease-in-out"
-    const focusClasses = "focus:outline-none focus:ring-2 focus:ring-offset-1"
+      'w-full p-3 font-mono text-xs sm:text-sm uppercase tracking-wider border rounded-md text-center transition-all duration-150 ease-in-out'
+    const focusClasses = 'focus:outline-none focus:ring-2 focus:ring-offset-1'
 
     let cellClassName
-    if (voteOption.value === "works_best" && !isSelected) {
+    if (voteOption.value === 'works_best' && !isSelected) {
       cellClassName = `${baseClasses} ${focusClasses} bg-pink-light hover:bg-pink border-pink-medium text-pink-dark`
     } else {
       cellClassName = cn(baseClasses, focusClasses, {
@@ -278,12 +277,12 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
             <div className='grid grid-cols-2 gap-3 sm:gap-4'>
               <div className='space-y-2 sm:space-y-3'>
                 {votePreferences.map((pref) =>
-                  renderVoteCell(p.id, "option1Vote", p.option1Vote, pref)
+                  renderVoteCell(p.id, 'option1Vote', p.option1Vote, pref)
                 )}
               </div>
               <div className='space-y-2 sm:space-y-3'>
                 {votePreferences.map((pref) =>
-                  renderVoteCell(p.id, "option2Vote", p.option2Vote, pref)
+                  renderVoteCell(p.id, 'option2Vote', p.option2Vote, pref)
                 )}
               </div>
             </div>
@@ -302,7 +301,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                       type='button'
                       onClick={() => updateParticipantRSVP(p.id, option.value)}
                       className={cn(
-                        "w-full p-2.5 font-mono text-xs sm:text-sm rounded-md border text-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1",
+                        'w-full p-2.5 font-mono text-xs sm:text-sm rounded-md border text-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1',
                         isSelected ? option.selectedClass : option.baseClass,
                         !isSelected && option.textClass
                       )}
@@ -320,7 +319,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                 Is There Anything You'd Like to Share With the Class?
               </p>
               <textarea
-                value={p.message ?? ""}
+                value={p.message ?? ''}
                 onChange={(e) => updateParticipantMessage(p.id, e.target.value)}
                 placeholder='Optional message'
                 rows={2}
@@ -344,7 +343,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
             disabled={isPending || participants.length === 0}
             className='flex-1 font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 bg-pink-dark text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2 disabled:opacity-60'
           >
-            {isPending ? "Submitting..." : "Submit All Votes"}{" "}
+            {isPending ? 'Submitting...' : 'Submit All Votes'}{' '}
           </button>
         </div>
       </div>
@@ -352,7 +351,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
         isOpen={isClearAllModalOpen}
         onClose={() => setIsClearAllModalOpen(false)}
         onConfirm={performClearAllParticipants}
-        iconSrc={"/deadPixel.png"}
+        iconSrc={'/deadPixel.png'}
         title='Clear All Voters?'
         message='Are you sure you want to clear all voter entries? This will remove all names and selections from the current form.'
         confirmText='Clear All'

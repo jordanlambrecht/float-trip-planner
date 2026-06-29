@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
   FormEvent,
@@ -7,18 +7,24 @@ import {
   Fragment,
   useEffect,
   useRef,
-} from "react" // Added useEffect and useRef
-import cn from "clsx"
+} from 'react' // Added useEffect and useRef
+import cn from 'clsx'
+import Link from 'next/link'
 import type {
   ActualRsvpFormData,
   ActualRsvpFormProps,
   RSVPStatus,
-} from "@types"
-import ConfirmationModal from "./ConfirmationModal"
-import TagInput from "./TagInput"
-import { ItemTooltip } from "./ItemTooltip"
-import { submitActualRsvpAction, getPredefinedItemsAction } from "@actions" // Added getPredefinedItemsAction
-import { VOLUNTEER_ROLES } from "../pollConfig"
+} from '@types'
+import { isAttendingStatus, MAYBE_RSVP_STATUSES } from '@types'
+import {
+  MAYBE_OPTIONS_CUTOFF,
+  MAYBE_DECISION_DEADLINE_LABEL,
+} from '@tripConfig'
+import ConfirmationModal from './ConfirmationModal'
+import TagInput from './TagInput'
+import { ItemTooltip } from './ItemTooltip'
+import { submitActualRsvpAction, getPredefinedItemsAction } from '@actions' // Added getPredefinedItemsAction
+import { VOLUNTEER_ROLES } from '../pollConfig'
 
 // Define AdditionalPerson type
 interface AdditionalPerson {
@@ -35,21 +41,37 @@ const RSVP_OPTIONS: {
   textClass: string
 }[] = [
   {
-    label: "Coming",
-    value: "yes",
+    label: 'Coming',
+    value: 'yes',
     baseClass:
-      "bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2",
+      'bg-teal-light hover:bg-teal border-teal-medium focus:outline-none focus:ring-2',
     selectedClass:
-      "bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1",
-    textClass: "text-teal-text",
+      'bg-teal-dark text-white ring-2 ring-teal-dark ring-offset-1',
+    textClass: 'text-teal-text',
+  },
+  {
+    label: 'Maybe But Probably',
+    value: 'maybe_probably',
+    baseClass: 'bg-blue-light hover:bg-blue border-blue-medium',
+    selectedClass:
+      'bg-blue-dark text-white ring-2 ring-blue-dark ring-offset-1',
+    textClass: 'text-blue-text',
+  },
+  {
+    label: 'Maybe But Unlikely',
+    value: 'maybe_unlikely',
+    baseClass: 'bg-purple-light hover:bg-purple border-purple-medium',
+    selectedClass:
+      'bg-purple-dark text-white ring-2 ring-purple-dark ring-offset-1',
+    textClass: 'text-purple-text',
   },
   {
     label: "Can't Make It",
-    value: "no",
-    baseClass: "bg-orange-light hover:bg-orange border-orange-medium",
+    value: 'no',
+    baseClass: 'bg-orange-light hover:bg-orange border-orange-medium',
     selectedClass:
-      "bg-orange-dark text-white ring-2 ring-orange-dark ring-offset-1",
-    textClass: "text-orange-text",
+      'bg-orange-dark text-white ring-2 ring-orange-dark ring-offset-1',
+    textClass: 'text-orange-text',
   },
 ]
 
@@ -58,9 +80,9 @@ const TOTAL_STEPS = 8 // Define total steps for the wizard (includes allergies, 
 // Phone number formatting helper
 const formatPhoneNumber = (value: string): string => {
   // Remove all non-numeric characters
-  const numbers = value.replace(/\D/g, "")
+  const numbers = value.replace(/\D/g, '')
 
-  if (numbers.length === 0) return ""
+  if (numbers.length === 0) return ''
   if (numbers.length <= 3) return `(${numbers}`
   if (numbers.length <= 6) return `(${numbers.slice(0, 3)}) ${numbers.slice(3)}`
   return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(
@@ -76,17 +98,17 @@ const ActualRsvpForm = ({
   const [currentStep, setCurrentStep] = useState(1)
   const formRef = useRef<HTMLDivElement>(null) // Ref for the form container
   const [formData, setFormData] = useState<ActualRsvpFormData>({
-    name: "",
-    phone: "",
+    name: '',
+    phone: '',
     rsvp_status: null,
     items_bringing: [],
     volunteer_roles: [],
     merrit_reservoir: false,
-    message: "",
+    message: '',
     extra_items: [],
     needed_items: [],
     allergies: [],
-    note: "",
+    note: '',
   })
 
   const [additionalPeople, setAdditionalPeople] = useState<AdditionalPerson[]>(
@@ -99,8 +121,8 @@ const ActualRsvpForm = ({
   const [dynamicPredefinedItems, setDynamicPredefinedItems] = useState<
     string[]
   >([])
-  const [customExtraFields, setCustomExtraFields] = useState<string[]>([""])
-  const [customNeededFields, setCustomNeededFields] = useState<string[]>([""])
+  const [customExtraFields, setCustomExtraFields] = useState<string[]>([''])
+  const [customNeededFields, setCustomNeededFields] = useState<string[]>([''])
   const [editingExtraField, setEditingExtraField] = useState<number | null>(
     null
   )
@@ -114,6 +136,15 @@ const ActualRsvpForm = ({
     Set<number>
   >(new Set())
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null)
+  // Maybe options vanish the last week of July. Decided in an effect (not at
+  // render) so statically prerendered HTML never mismatches on hydration.
+  const [maybesAvailable, setMaybesAvailable] = useState(true)
+
+  useEffect(() => {
+    if (new Date() >= MAYBE_OPTIONS_CUTOFF) {
+      setMaybesAvailable(false)
+    }
+  }, [])
 
   // Helper function to map storage keys to display text
   const getDisplayText = (item: string): string => {
@@ -123,21 +154,22 @@ const ActualRsvpForm = ({
 
   // Helper function to format items list for display
   const formatItemsForDisplay = (items: string[]): string => {
-    if (!items || items.length === 0) return ""
-    return items.map(getDisplayText).join(", ")
+    if (!items || items.length === 0) return ''
+    return items.map(getDisplayText).join(', ')
   }
 
-  // Helper function to scroll to the top of the form
+  // Bring the form back into view only when its top has scrolled out of the
+  // viewport. Scrolling unconditionally on every step change yanks the page
+  // around even when the form is already fully visible, which is jarring.
   const scrollToFormTop = () => {
-    console.log("scrollToFormTop called for step:", currentStep)
-    if (formRef.current) {
-      console.log("Scrolling to form top, element found:", !!formRef.current)
+    if (!formRef.current) return
+    const { top } = formRef.current.getBoundingClientRect()
+    const isOutOfView = top < 0 || top > window.innerHeight
+    if (isOutOfView) {
       formRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+        behavior: 'smooth',
+        block: 'start',
       })
-    } else {
-      console.log("formRef.current is null")
     }
   }
 
@@ -148,7 +180,7 @@ const ActualRsvpForm = ({
     return {
       count: totalGuests,
       isPlural,
-      text: isPlural ? "buddies" : "buddy",
+      text: isPlural ? 'buddies' : 'buddy',
       youText: isPlural ? "y'all are" : "you're",
     }
   }
@@ -163,13 +195,13 @@ const ActualRsvpForm = ({
     setCustomExtraFields(newFields)
 
     // Update form data with non-empty custom fields
-    const nonEmptyFields = newFields.filter((field) => field.trim() !== "")
+    const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.extra_items || []).filter((item) =>
       [
-        "Tent",
-        "Sleeping Bag",
-        "Chairs",
-        "Room in my car for carpooling",
+        'Tent',
+        'Sleeping Bag',
+        'Chairs',
+        'Room in my car for carpooling',
       ].includes(item)
     )
     setFormData({
@@ -188,15 +220,15 @@ const ActualRsvpForm = ({
     setCustomNeededFields(newFields)
 
     // Update form data with non-empty custom fields
-    const nonEmptyFields = newFields.filter((field) => field.trim() !== "")
+    const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.needed_items || []).filter((item) =>
       [
-        "Tent",
-        "Sleeping Bag",
-        "Chairs",
-        "A Ride",
-        "River Shoes",
-        "Inflatable Mattress",
+        'Tent',
+        'Sleeping Bag',
+        'Chairs',
+        'A Ride',
+        'River Shoes',
+        'Inflatable Mattress',
       ].includes(item)
     )
     setFormData({
@@ -210,13 +242,13 @@ const ActualRsvpForm = ({
     const newFields = [...customExtraFields]
     const fieldValue = newFields[index].trim()
 
-    if (fieldValue !== "") {
+    if (fieldValue !== '') {
       // Mark this field as completed
       setCompletedExtraFields((prev) => new Set([...prev, index]))
 
       // Add new empty field if this is the last field and has content
       if (index === newFields.length - 1) {
-        newFields.push("")
+        newFields.push('')
         setCustomExtraFields(newFields)
       }
     }
@@ -226,13 +258,13 @@ const ActualRsvpForm = ({
     const newFields = [...customNeededFields]
     const fieldValue = newFields[index].trim()
 
-    if (fieldValue !== "") {
+    if (fieldValue !== '') {
       // Mark this field as completed
       setCompletedNeededFields((prev) => new Set([...prev, index]))
 
       // Add new empty field if this is the last field and has content
       if (index === newFields.length - 1) {
-        newFields.push("")
+        newFields.push('')
         setCustomNeededFields(newFields)
       }
     }
@@ -260,21 +292,21 @@ const ActualRsvpForm = ({
     // Ensure there's always at least one field, and it's empty
     if (
       newFields.length === 0 ||
-      newFields[newFields.length - 1].trim() !== ""
+      newFields[newFields.length - 1].trim() !== ''
     ) {
-      newFields.push("")
+      newFields.push('')
     }
 
     setCustomExtraFields(newFields)
 
     // Update form data
-    const nonEmptyFields = newFields.filter((field) => field.trim() !== "")
+    const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.extra_items || []).filter((item) =>
       [
-        "Tent",
-        "Sleeping Bag",
-        "Chairs",
-        "Room in my car for carpooling",
+        'Tent',
+        'Sleeping Bag',
+        'Chairs',
+        'Room in my car for carpooling',
       ].includes(item)
     )
     setFormData({
@@ -304,23 +336,23 @@ const ActualRsvpForm = ({
     // Ensure there's always at least one field, and it's empty
     if (
       newFields.length === 0 ||
-      newFields[newFields.length - 1].trim() !== ""
+      newFields[newFields.length - 1].trim() !== ''
     ) {
-      newFields.push("")
+      newFields.push('')
     }
 
     setCustomNeededFields(newFields)
 
     // Update form data
-    const nonEmptyFields = newFields.filter((field) => field.trim() !== "")
+    const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.needed_items || []).filter((item) =>
       [
-        "Tent",
-        "Sleeping Bag",
-        "Chairs",
-        "A Ride",
-        "River Shoes",
-        "Inflatable Mattress",
+        'Tent',
+        'Sleeping Bag',
+        'Chairs',
+        'A Ride',
+        'River Shoes',
+        'Inflatable Mattress',
       ].includes(item)
     )
     setFormData({
@@ -338,7 +370,7 @@ const ActualRsvpForm = ({
       } else {
         // Fallback to empty array if there's an error fetching dynamic ones
         setDynamicPredefinedItems([])
-        console.error("Error fetching predefined items:", items.error)
+        console.error('Error fetching predefined items:', items.error)
       }
     }
     fetchItems()
@@ -346,7 +378,7 @@ const ActualRsvpForm = ({
 
   // Handle "Can't Make It" submission when user reaches step 7
   useEffect(() => {
-    if (currentStep === 7 && formData.rsvp_status === "no") {
+    if (currentStep === 7 && formData.rsvp_status === 'no') {
       handleCannotMakeItSubmit()
     }
   }, [currentStep, formData.rsvp_status])
@@ -354,8 +386,8 @@ const ActualRsvpForm = ({
   const addPerson = () => {
     const newPerson: AdditionalPerson = {
       id: Date.now().toString() + Math.random().toString(36).substring(2),
-      name: "",
-      phone: "",
+      name: '',
+      phone: '',
     }
     setAdditionalPeople([...additionalPeople, newPerson])
     setSuccessMessage(null)
@@ -382,7 +414,7 @@ const ActualRsvpForm = ({
   }
 
   const updateFormData = (field: keyof ActualRsvpFormData, value: any) => {
-    if (field === "phone") {
+    if (field === 'phone') {
       value = formatPhoneNumber(value)
     }
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -425,21 +457,21 @@ const ActualRsvpForm = ({
 
   const performClearAll = () => {
     setFormData({
-      name: "",
-      phone: "",
+      name: '',
+      phone: '',
       rsvp_status: null,
       items_bringing: [],
       volunteer_roles: [],
       merrit_reservoir: false,
-      message: "",
+      message: '',
       extra_items: [],
       needed_items: [],
       allergies: [],
-      note: "",
+      note: '',
     })
     setAdditionalPeople([])
-    setCustomExtraFields([""])
-    setCustomNeededFields([""])
+    setCustomExtraFields([''])
+    setCustomNeededFields([''])
     setEditingExtraField(null)
     setEditingNeededField(null)
     setCompletedExtraFields(new Set())
@@ -453,26 +485,20 @@ const ActualRsvpForm = ({
 
   // Navigation functions
   const nextStep = () => {
-    console.log(
-      "nextStep called, current step:",
-      currentStep,
-      "going to:",
-      currentStep + 1
-    )
     setError(null) // Clear previous errors
     // Step 1 Validation
     if (currentStep === 1) {
       if (!formData.name.trim()) {
-        setError("Please enter your name.")
+        setError('Please enter your name.')
         return
       }
       if (!formData.rsvp_status) {
-        setError("Please select an RSVP status.")
+        setError('Please select an RSVP status.')
         return
       }
 
       // If they selected "Can't Make It", go to special step
-      if (formData.rsvp_status === "no") {
+      if (formData.rsvp_status === 'no') {
         setCurrentStep(10) // Go to "Can't Make It" step (moved to step 10)
         // Scroll to top of form when going to Can't Make It step
         scrollToFormTop()
@@ -482,31 +508,31 @@ const ActualRsvpForm = ({
     // Additional People Validation (on step 1)
     if (currentStep === 1) {
       for (const person of additionalPeople) {
-        if (person.name.trim() === "") {
+        if (person.name.trim() === '') {
           setError(
-            "Please fill in names for all additional people or remove empty entries before proceeding."
+            'Please fill in names for all additional people or remove empty entries before proceeding.'
           )
           return
         }
       }
     }
 
-    // Step 2 Phone Number Validation (only if RSVP is "yes")
-    if (currentStep === 2 && formData.rsvp_status === "yes") {
+    // Step 2 Phone Number Validation (anyone who might come)
+    if (currentStep === 2 && isAttendingStatus(formData.rsvp_status)) {
       if (!formData.phone?.trim()) {
-        setError("Please enter your phone number.")
+        setError('Please enter your phone number.')
         return
       }
       // Validate phone number length (should be 14 characters: (555) 123-4567)
       if (formData.phone.length !== 14) {
-        setError("Please enter a complete phone number.")
+        setError('Please enter a complete phone number.')
         return
       }
       for (const person of additionalPeople) {
         if (!person.phone.trim()) {
           setError(
             `Please enter a phone number for ${
-              person.name || "additional guest"
+              person.name || 'additional guest'
             }.`
           )
           return
@@ -514,7 +540,7 @@ const ActualRsvpForm = ({
         if (person.phone.length !== 14) {
           setError(
             `Please enter a complete phone number for ${
-              person.name || "additional guest"
+              person.name || 'additional guest'
             }.`
           )
           return
@@ -522,7 +548,6 @@ const ActualRsvpForm = ({
       }
     }
     if (currentStep < TOTAL_STEPS) {
-      console.log("Setting step from", currentStep, "to", currentStep + 1)
       setCurrentStep(currentStep + 1)
       // Scroll to top of form on mobile when advancing to next step
       scrollToFormTop()
@@ -543,11 +568,11 @@ const ActualRsvpForm = ({
             onFormSubmitSuccess()
           }
         } else {
-          setError(result.error || "Failed to submit RSVP.")
+          setError(result.error || 'Failed to submit RSVP.')
         }
       } catch (err) {
-        setError("An unexpected error occurred.")
-        console.error("Cannot make it submission error:", err)
+        setError('An unexpected error occurred.')
+        console.error('Cannot make it submission error:', err)
       }
     })
   }
@@ -573,55 +598,58 @@ const ActualRsvpForm = ({
       currentStep !== 11
     ) {
       // This function should only be callable from the last step's button or the "Can't Make It" step
-      console.warn("handleSubmit called from incorrect step:", currentStep)
+      console.warn('handleSubmit called from incorrect step:', currentStep)
       return
     }
 
     if (!formData.name.trim()) {
-      setError("Please enter your name.")
+      setError('Please enter your name.')
       setCurrentStep(1)
       return
     }
     if (!formData.rsvp_status) {
-      setError("Please select an RSVP status.")
+      setError('Please select an RSVP status.')
       setCurrentStep(1)
       return
     }
-    if (formData.rsvp_status === "yes" && !formData.phone?.trim()) {
-      setError("Please enter your phone number.")
+    if (isAttendingStatus(formData.rsvp_status) && !formData.phone?.trim()) {
+      setError('Please enter your phone number.')
       setCurrentStep(2)
       return
     }
     if (
-      formData.rsvp_status === "yes" &&
+      isAttendingStatus(formData.rsvp_status) &&
       formData.phone &&
       formData.phone.length !== 14
     ) {
-      setError("Please enter a complete phone number.")
+      setError('Please enter a complete phone number.')
       setCurrentStep(2)
       return
     }
     for (const person of additionalPeople) {
-      if (person.name.trim() === "") {
+      if (person.name.trim() === '') {
         setError(
-          "Please fill in names for all additional people or remove empty entries."
+          'Please fill in names for all additional people or remove empty entries.'
         )
         setCurrentStep(1)
         return
       }
-      if (formData.rsvp_status === "yes" && !person.phone.trim()) {
+      if (isAttendingStatus(formData.rsvp_status) && !person.phone.trim()) {
         setError(
           `Please enter a phone number for ${
-            person.name || "additional guest"
+            person.name || 'additional guest'
           }.`
         )
         setCurrentStep(2)
         return
       }
-      if (formData.rsvp_status === "yes" && person.phone.length !== 14) {
+      if (
+        isAttendingStatus(formData.rsvp_status) &&
+        person.phone.length !== 14
+      ) {
         setError(
           `Please enter a complete phone number for ${
-            person.name || "additional guest"
+            person.name || 'additional guest'
           }.`
         )
         setCurrentStep(2)
@@ -645,7 +673,7 @@ const ActualRsvpForm = ({
                 items_bringing: [], // Assuming additional guests don't bring items
                 volunteer_roles: [], // Assuming additional guests don't volunteer
                 merrit_reservoir: formData.merrit_reservoir,
-                message: "",
+                message: '',
                 note: `Additional guest for ${formData.name}`,
               }
               const additionalResult = await submitActualRsvpAction(
@@ -658,15 +686,15 @@ const ActualRsvpForm = ({
                 )
                 setError(
                   (prevError) =>
-                    (prevError ? prevError + "; " : "") +
+                    (prevError ? prevError + '; ' : '') +
                     `Failed to submit for ${person.name}: ${additionalResult.error}`
                 )
               }
             }
           }
-          setSuccessMessage(result.message || "RSVP submitted successfully!")
+          setSuccessMessage(result.message || 'RSVP submitted successfully!')
           // Go to appropriate confirmation step based on current step and RSVP status
-          if (currentStep === 10 || formData.rsvp_status === "no") {
+          if (currentStep === 10 || formData.rsvp_status === 'no') {
             setCurrentStep(11) // Go to decline confirmation step
           } else {
             setCurrentStep(9) // Go to success confirmation for accepted RSVPs
@@ -677,11 +705,11 @@ const ActualRsvpForm = ({
             onFormSubmitSuccess()
           }
         } else {
-          setError(result.error || "Failed to submit RSVP.")
+          setError(result.error || 'Failed to submit RSVP.')
         }
       } catch (err) {
-        setError("An unexpected error occurred.")
-        console.error("Submission error:", err)
+        setError('An unexpected error occurred.')
+        console.error('Submission error:', err)
       }
     })
   }
@@ -705,11 +733,11 @@ const ActualRsvpForm = ({
                   type='text'
                   id='name'
                   value={formData.name}
-                  onChange={(e) => updateFormData("name", e.target.value)}
+                  onChange={(e) => updateFormData('name', e.target.value)}
                   className='focus:outline-none w-full p-2.5 font-mono text-base border border-text-dm rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
                   placeholder='Jean-Luc Picard'
                 />
-                <div className='ml-3 w-8 h-8 flex-shrink-0'></div>
+                <div className='ml-3 w-8 h-8 shrink-0'></div>
               </div>
             </div>
 
@@ -717,10 +745,10 @@ const ActualRsvpForm = ({
             <div className='space-y-6 mt-6'>
               {additionalPeople.map((person, index) => {
                 const placeholders = [
-                  "Geordi La Forge",
-                  "William Riker",
-                  "Worf",
-                  "Dr. Beverly Crusher",
+                  'Geordi La Forge',
+                  'William Riker',
+                  'Worf',
+                  'Dr. Beverly Crusher',
                 ]
                 return (
                   <div key={person.id} className='flex items-center'>
@@ -734,12 +762,12 @@ const ActualRsvpForm = ({
                         placeholders[index] || `Guest ${index + 1} Name`
                       }
                       className='focus:outline-none w-full p-2.5 font-mono text-base border border-text-dm rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
-                      style={{ paddingRight: "3rem" }}
+                      style={{ paddingRight: '3rem' }}
                     />
                     <button
                       type='button'
                       onClick={() => removePerson(person.id)}
-                      className='ml-3 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors flex-shrink-0'
+                      className='ml-3 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors shrink-0'
                       aria-label='Remove person'
                     >
                       <svg
@@ -768,18 +796,22 @@ const ActualRsvpForm = ({
                 disabled={additionalPeople.length >= 4}
                 className='w-full font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-4 border border-gray text-gray-textdark bg-gray-cardbg/80 hover:bg-gray-pagebg hover:border-gray-textlight rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
               >
-                + Add Another Person{" "}
-                {additionalPeople.length >= 4 ? "(Max 5 Total)" : ""}
+                + Add Another Person{' '}
+                {additionalPeople.length >= 4 ? '(Max 5 Total)' : ''}
               </button>
             </div>
 
             {/* RSVP Status */}
             <div className='mt-8'>
               <h3 className='mb-3 text-lg font-semibold text-gray-textdark'>
-                Are {additionalPeople.length > 0 ? "y'all" : "you"} coming?
+                Are {additionalPeople.length > 0 ? "y'all" : 'you'} coming?
               </h3>
               <div className='grid grid-cols-2 gap-2 sm:gap-3'>
-                {RSVP_OPTIONS.map((option) => {
+                {RSVP_OPTIONS.filter(
+                  (option) =>
+                    maybesAvailable ||
+                    !MAYBE_RSVP_STATUSES.includes(option.value)
+                ).map((option) => {
                   const isSelected = formData.rsvp_status === option.value
                   return (
                     <button
@@ -787,7 +819,7 @@ const ActualRsvpForm = ({
                       type='button'
                       onClick={() => updateRSVPStatus(option.value)}
                       className={cn(
-                        "w-full p-2.5 font-mono text-xs sm:text-sm rounded-md border text-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1",
+                        'w-full p-2.5 font-mono text-xs sm:text-sm rounded-md border text-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-1',
                         isSelected ? option.selectedClass : option.baseClass,
                         !isSelected && option.textClass
                       )}
@@ -798,16 +830,25 @@ const ActualRsvpForm = ({
                   )
                 })}
               </div>
+              {formData.rsvp_status &&
+                MAYBE_RSVP_STATUSES.includes(formData.rsvp_status) && (
+                  <div className='mt-3 p-3 rounded-md border-2 border-yellow-medium bg-yellow/50'>
+                    <p className='font-mono text-sm text-gray-textdark'>
+                      ⚠️ Please make a decision by{' '}
+                      {MAYBE_DECISION_DEADLINE_LABEL}
+                    </p>
+                  </div>
+                )}
             </div>
           </Fragment>
         )
       case 2: // Phone Numbers (conditional)
         return (
           <Fragment>
-            {formData.rsvp_status === "yes" ? (
+            {isAttendingStatus(formData.rsvp_status) ? (
               <div className='space-y-4'>
                 <h3 className='text-lg font-semibold text-gray-textdark'>
-                  Phone Number{getGuestInfo().isPlural ? "s" : ""}
+                  Phone Number{getGuestInfo().isPlural ? 's' : ''}
                 </h3>
 
                 {/* Main person phone */}
@@ -822,7 +863,7 @@ const ActualRsvpForm = ({
                     type='tel'
                     id='phone'
                     value={formData.phone}
-                    onChange={(e) => updateFormData("phone", e.target.value)}
+                    onChange={(e) => updateFormData('phone', e.target.value)}
                     className='focus:outline-none w-full p-2.5 font-mono text-base border border-text-dm rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
                     placeholder='(555) 123-4567'
                     maxLength={14}
@@ -869,8 +910,8 @@ const ActualRsvpForm = ({
                 htmlFor='items_bringing'
                 className='mb-2 block text-lg font-semibold text-gray-textdark'
               >
-                (Optional) What{" "}
-                {getGuestInfo().isPlural ? "are y'all" : "are you"} bringing?
+                (Optional) What{' '}
+                {getGuestInfo().isPlural ? "are y'all" : 'are you'} bringing?
               </label>
               <p className='mb-3 text-sm text-gray-textlight'>
                 Communal things so David doesn't overpack
@@ -900,12 +941,12 @@ const ActualRsvpForm = ({
                   </label>
                   <div className='space-y-3'>
                     {[
-                      "Tent",
-                      "Sleeping Bag",
-                      "Chairs",
-                      "Room in my car for carpooling",
-                      "River Shoes",
-                      "Inflatable Mattress",
+                      'Tent',
+                      'Sleeping Bag',
+                      'Chairs',
+                      'Room in my car for carpooling',
+                      'River Shoes',
+                      'Inflatable Mattress',
                     ].map((item) => {
                       const isSelected = (formData.extra_items || []).includes(
                         item
@@ -923,38 +964,38 @@ const ActualRsvpForm = ({
                           <div
                             className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                               isSelected
-                                ? "border-teal-dark bg-teal-50"
-                                : "border-gray-300 hover:border-gray-400"
+                                ? 'border-teal-dark bg-teal-50'
+                                : 'border-gray-300 hover:border-gray-400'
                             }`}
                             onClick={() => {
                               const currentItems = formData.extra_items || []
                               const currentNeeds = formData.needed_items || []
                               const customExtras = customExtraFields.filter(
-                                (field) => field.trim() !== ""
+                                (field) => field.trim() !== ''
                               )
                               const customNeeds = customNeededFields.filter(
-                                (field) => field.trim() !== ""
+                                (field) => field.trim() !== ''
                               )
 
                               const predefinedExtras = currentItems.filter(
                                 (i) =>
                                   [
-                                    "Tent",
-                                    "Sleeping Bag",
-                                    "Chairs",
-                                    "Room in my car for carpooling",
-                                    "River Shoes",
-                                    "Inflatable Mattress",
+                                    'Tent',
+                                    'Sleeping Bag',
+                                    'Chairs',
+                                    'Room in my car for carpooling',
+                                    'River Shoes',
+                                    'Inflatable Mattress',
                                   ].includes(i)
                               )
                               const predefinedNeeds = currentNeeds.filter((i) =>
                                 [
-                                  "Tent",
-                                  "Sleeping Bag",
-                                  "Chairs",
-                                  "A Ride",
-                                  "River Shoes",
-                                  "Inflatable Mattress",
+                                  'Tent',
+                                  'Sleeping Bag',
+                                  'Chairs',
+                                  'A Ride',
+                                  'River Shoes',
+                                  'Inflatable Mattress',
                                 ].includes(i)
                               )
 
@@ -966,10 +1007,10 @@ const ActualRsvpForm = ({
                               let newPredefinedNeeds = predefinedNeeds
                               if (!isSelected) {
                                 // Adding to extra items, so remove conflicting needed items
-                                if (item === "Room in my car for carpooling") {
+                                if (item === 'Room in my car for carpooling') {
                                   // Remove "A Ride" from needed items
                                   newPredefinedNeeds = predefinedNeeds.filter(
-                                    (i) => i !== "A Ride"
+                                    (i) => i !== 'A Ride'
                                   )
                                 } else {
                                   // For other items, remove the same item from needed items
@@ -1002,8 +1043,8 @@ const ActualRsvpForm = ({
                               <div
                                 className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                                   isSelected
-                                    ? "bg-teal-dark border-teal-dark"
-                                    : "border-gray-300 bg-white hover:border-gray-400"
+                                    ? 'bg-teal-dark border-teal-dark'
+                                    : 'border-gray-300 bg-white hover:border-gray-400'
                                 }`}
                               >
                                 {isSelected && (
@@ -1022,7 +1063,7 @@ const ActualRsvpForm = ({
                     {/* Custom extra items fields */}
                     <div className='mt-4 space-y-3'>
                       {customExtraFields.map((field, index) => {
-                        const hasContent = field.trim() !== ""
+                        const hasContent = field.trim() !== ''
                         const isCompleted =
                           completedExtraFields.has(index) && hasContent
                         const isEditing = editingExtraField === index
@@ -1107,7 +1148,7 @@ const ActualRsvpForm = ({
                                     handleCustomExtraFieldComplete(index)
                                   }}
                                   onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
+                                    if (e.key === 'Enter') {
                                       e.currentTarget.blur()
                                     }
                                   }}
@@ -1143,12 +1184,12 @@ const ActualRsvpForm = ({
                   </label>
                   <div className='space-y-3'>
                     {[
-                      "Tent",
-                      "Sleeping Bag",
-                      "Chairs",
-                      "A Ride",
-                      "River Shoes",
-                      "Inflatable Mattress",
+                      'Tent',
+                      'Sleeping Bag',
+                      'Chairs',
+                      'A Ride',
+                      'River Shoes',
+                      'Inflatable Mattress',
                     ].map((item, index) => {
                       // Use the display text directly for needed_items
                       const storageKey = item
@@ -1168,38 +1209,38 @@ const ActualRsvpForm = ({
                           <div
                             className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                               isSelected
-                                ? "border-red-500 bg-red-50"
-                                : "border-gray-300 hover:border-gray-400"
+                                ? 'border-red-500 bg-red-50'
+                                : 'border-gray-300 hover:border-gray-400'
                             }`}
                             onClick={() => {
                               const currentNeeds = formData.needed_items || []
                               const currentItems = formData.extra_items || []
                               const customExtras = customExtraFields.filter(
-                                (field) => field.trim() !== ""
+                                (field) => field.trim() !== ''
                               )
                               const customNeeds = customNeededFields.filter(
-                                (field) => field.trim() !== ""
+                                (field) => field.trim() !== ''
                               )
 
                               const predefinedExtras = currentItems.filter(
                                 (i) =>
                                   [
-                                    "Tent",
-                                    "Sleeping Bag",
-                                    "Chairs",
-                                    "Room in my car for carpooling",
-                                    "River Shoes",
-                                    "Inflatable Mattress",
+                                    'Tent',
+                                    'Sleeping Bag',
+                                    'Chairs',
+                                    'Room in my car for carpooling',
+                                    'River Shoes',
+                                    'Inflatable Mattress',
                                   ].includes(i)
                               )
                               const predefinedNeeds = currentNeeds.filter((i) =>
                                 [
-                                  "Tent",
-                                  "Sleeping Bag",
-                                  "Chairs",
-                                  "A Ride",
-                                  "River Shoes",
-                                  "Inflatable Mattress",
+                                  'Tent',
+                                  'Sleeping Bag',
+                                  'Chairs',
+                                  'A Ride',
+                                  'River Shoes',
+                                  'Inflatable Mattress',
                                 ].includes(i)
                               )
 
@@ -1213,10 +1254,10 @@ const ActualRsvpForm = ({
                               let newPredefinedExtras = predefinedExtras
                               if (!isSelected) {
                                 // Adding to needed items, so remove conflicting extra items
-                                if (storageKey === "A Ride") {
+                                if (storageKey === 'A Ride') {
                                   // Remove "Room in my car for carpooling" from extra items
                                   newPredefinedExtras = predefinedExtras.filter(
-                                    (i) => i !== "Room in my car for carpooling"
+                                    (i) => i !== 'Room in my car for carpooling'
                                   )
                                 } else {
                                   // For other items, remove the same item from extra items
@@ -1249,8 +1290,8 @@ const ActualRsvpForm = ({
                               <div
                                 className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                                   isSelected
-                                    ? "bg-red-500 border-red-500"
-                                    : "border-gray-300 bg-white hover:border-gray-400"
+                                    ? 'bg-red-500 border-red-500'
+                                    : 'border-gray-300 bg-white hover:border-gray-400'
                                 }`}
                               >
                                 {isSelected && (
@@ -1269,7 +1310,7 @@ const ActualRsvpForm = ({
                     {/* Custom needed items fields */}
                     <div className='mt-4 space-y-3'>
                       {customNeededFields.map((field, index) => {
-                        const hasContent = field.trim() !== ""
+                        const hasContent = field.trim() !== ''
                         const isCompleted =
                           completedNeededFields.has(index) && hasContent
                         const isEditing = editingNeededField === index
@@ -1354,7 +1395,7 @@ const ActualRsvpForm = ({
                                     handleCustomNeededFieldComplete(index)
                                   }}
                                   onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
+                                    if (e.key === 'Enter') {
                                       e.currentTarget.blur()
                                     }
                                   }}
@@ -1395,17 +1436,17 @@ const ActualRsvpForm = ({
               </label>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
                 {[
-                  { name: "Eggs", emoji: "🥚" },
-                  { name: "Nuts", emoji: "🥜" },
-                  { name: "I'm Vegan", emoji: "🌱" },
-                  { name: "Eating Fish Freaks Me Out", emoji: "🐟" },
-                  { name: "I'm Vegetarian", emoji: "🥬" },
-                  { name: "I'm GF", emoji: "🌾" },
-                  { name: "Soy", emoji: "🫘" },
-                  { name: "Latex?", emoji: "🧤" },
-                  { name: "Milk", emoji: "🥛" },
-                  { name: "Sesame", emoji: "🪢" },
-                  { name: "Something Else", emoji: "🤷‍♀️" },
+                  { name: 'Eggs', emoji: '🥚' },
+                  { name: 'Nuts', emoji: '🥜' },
+                  { name: "I'm Vegan", emoji: '🌱' },
+                  { name: 'Eating Fish Freaks Me Out', emoji: '🐟' },
+                  { name: "I'm Vegetarian", emoji: '🥬' },
+                  { name: "I'm GF", emoji: '🌾' },
+                  { name: 'Soy', emoji: '🫘' },
+                  { name: 'Latex?', emoji: '🧤' },
+                  { name: 'Milk', emoji: '🥛' },
+                  { name: 'Sesame', emoji: '🪢' },
+                  { name: 'Something Else', emoji: '🤷‍♀️' },
                 ].map((allergy) => {
                   const isSelected = (formData.allergies || []).includes(
                     allergy.name
@@ -1415,8 +1456,8 @@ const ActualRsvpForm = ({
                       key={allergy.name}
                       className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                         isSelected
-                          ? "border-red-500 bg-red-50"
-                          : "border-gray-300 hover:border-gray-400"
+                          ? 'border-red-500 bg-red-50'
+                          : 'border-gray-300 hover:border-gray-400'
                       }`}
                       onClick={() => handleAllergyToggle(allergy.name)}
                     >
@@ -1430,8 +1471,8 @@ const ActualRsvpForm = ({
                         <div
                           className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                             isSelected
-                              ? "bg-red-500 border-red-500"
-                              : "border-gray-300 bg-white hover:border-gray-400"
+                              ? 'bg-red-500 border-red-500'
+                              : 'border-gray-300 bg-white hover:border-gray-400'
                           }`}
                         >
                           {isSelected && (
@@ -1486,8 +1527,8 @@ const ActualRsvpForm = ({
                       key={role}
                       className={`flex items-center space-x-4 p-4 rounded-md border-2 transition-colors cursor-pointer ${
                         isSelected
-                          ? "border-teal-dark bg-teal-50"
-                          : "border-gray-300 hover:border-gray-400"
+                          ? 'border-teal-dark bg-teal-50'
+                          : 'border-gray-300 hover:border-gray-400'
                       }`}
                       onClick={() => handleVolunteerRoleToggle(role)}
                     >
@@ -1501,8 +1542,8 @@ const ActualRsvpForm = ({
                         <div
                           className={`w-8 h-8 rounded border-2 flex items-center justify-center cursor-pointer ${
                             isSelected
-                              ? "bg-teal-dark border-teal-dark"
-                              : "border-gray-300 bg-white hover:border-gray-400"
+                              ? 'bg-teal-dark border-teal-dark'
+                              : 'border-gray-300 bg-white hover:border-gray-400'
                           }`}
                         >
                           {isSelected && (
@@ -1531,10 +1572,10 @@ const ActualRsvpForm = ({
                 <div
                   className={`flex items-center space-x-4 p-6 rounded-md border-2 transition-colors cursor-pointer ${
                     formData.merrit_reservoir === true
-                      ? "border-teal-dark bg-teal-50"
-                      : "border-gray-300 hover:border-gray-400"
+                      ? 'border-teal-dark bg-teal-50'
+                      : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  onClick={() => updateFormData("merrit_reservoir", true)}
+                  onClick={() => updateFormData('merrit_reservoir', true)}
                 >
                   <div className='relative'>
                     <input
@@ -1542,14 +1583,14 @@ const ActualRsvpForm = ({
                       id='merrit_yes'
                       name='merrit_reservoir'
                       checked={formData.merrit_reservoir === true}
-                      onChange={() => updateFormData("merrit_reservoir", true)}
+                      onChange={() => updateFormData('merrit_reservoir', true)}
                       className='sr-only'
                     />
                     <div
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${
                         formData.merrit_reservoir === true
-                          ? "bg-teal-dark border-teal-dark"
-                          : "border-gray-300 bg-white hover:border-gray-400"
+                          ? 'bg-teal-dark border-teal-dark'
+                          : 'border-gray-300 bg-white hover:border-gray-400'
                       }`}
                     >
                       {formData.merrit_reservoir === true && (
@@ -1566,10 +1607,10 @@ const ActualRsvpForm = ({
                 <div
                   className={`flex items-center space-x-4 p-6 rounded-md border-2 transition-colors cursor-pointer ${
                     formData.merrit_reservoir === false
-                      ? "border-teal-dark bg-teal-50"
-                      : "border-gray-300 hover:border-gray-400"
+                      ? 'border-teal-dark bg-teal-50'
+                      : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  onClick={() => updateFormData("merrit_reservoir", false)}
+                  onClick={() => updateFormData('merrit_reservoir', false)}
                 >
                   <div className='relative'>
                     <input
@@ -1577,14 +1618,14 @@ const ActualRsvpForm = ({
                       id='merrit_no'
                       name='merrit_reservoir'
                       checked={formData.merrit_reservoir === false}
-                      onChange={() => updateFormData("merrit_reservoir", false)}
+                      onChange={() => updateFormData('merrit_reservoir', false)}
                       className='sr-only'
                     />
                     <div
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${
                         formData.merrit_reservoir === false
-                          ? "bg-teal-dark border-teal-dark"
-                          : "border-gray-300 bg-white hover:border-gray-400"
+                          ? 'bg-teal-dark border-teal-dark'
+                          : 'border-gray-300 bg-white hover:border-gray-400'
                       }`}
                     >
                       {formData.merrit_reservoir === false && (
@@ -1618,6 +1659,10 @@ const ActualRsvpForm = ({
                       "font-semibold",
                       formData.rsvp_status === "yes"
                         ? "text-teal-dark"
+                        : formData.rsvp_status === "maybe_probably"
+                        ? "text-blue-dark"
+                        : formData.rsvp_status === "maybe_unlikely"
+                        ? "text-purple-dark"
                         : formData.rsvp_status === "no"
                         ? "text-orange-dark"
                         : ""
@@ -1630,6 +1675,13 @@ const ActualRsvpForm = ({
                       : "Not selected"}
                   </span>
                 </p>
+                {formData.rsvp_status &&
+                  MAYBE_RSVP_STATUSES.includes(formData.rsvp_status) && (
+                    <p className='font-mono text-xs text-orange-dark'>
+                      ⚠️ Reminder: maybes must switch to a final answer by{" "}
+                      {MAYBE_DECISION_DEADLINE_LABEL}.
+                    </p>
+                  )}
                 <p>
                   <strong>Bringing:</strong>{" "}
                   {formData.items_bringing && formData.items_bringing.length > 0
@@ -1696,7 +1748,7 @@ const ActualRsvpForm = ({
               <textarea
                 id='message'
                 value={formData.message}
-                onChange={(e) => updateFormData("message", e.target.value)}
+                onChange={(e) => updateFormData('message', e.target.value)}
                 rows={4}
                 className='w-full focus:outline-none p-2.5 font-mono text-base border border-text-dm rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
                 placeholder='Looking forward to floating with everyone and not drowning! 🚣‍♀️'
@@ -1725,8 +1777,8 @@ const ActualRsvpForm = ({
                 <a
                   href={
                     formData.merrit_reservoir
-                      ? "/niobrara-trip-merrit.ics"
-                      : "/niobrara-trip.ics"
+                      ? '/niobrara-trip-merrit.ics'
+                      : '/niobrara-trip.ics'
                   }
                   className='text-teal-600 hover:text-teal-800 underline font-medium'
                   download
@@ -1735,7 +1787,13 @@ const ActualRsvpForm = ({
                 </a>
               </div>
 
-              <div className='mt-8'>
+              <div className='mt-8 flex flex-col items-center gap-4'>
+                <Link
+                  href='/'
+                  className='inline-block font-mono uppercase text-sm tracking-wider py-2.5 px-8 bg-pink-dark text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2 transition-colors'
+                >
+                  Go to Home Page
+                </Link>
                 <button
                   type='button'
                   onClick={() => {
@@ -1774,7 +1832,7 @@ const ActualRsvpForm = ({
                 <textarea
                   id='decline_message'
                   value={formData.message}
-                  onChange={(e) => updateFormData("message", e.target.value)}
+                  onChange={(e) => updateFormData('message', e.target.value)}
                   rows={4}
                   className='w-full focus:outline-none p-2.5 font-mono text-base border border-text-dm rounded-md focus:ring-1 focus:ring-pink-dark focus:border-pink-dark'
                   placeholder={`Hope you all have a great time and don't drown! 🌊`}
@@ -1788,7 +1846,7 @@ const ActualRsvpForm = ({
                   disabled={isPending}
                   className='w-full font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 bg-orange-dark text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-orange-dark focus:ring-offset-2 disabled:opacity-60 sm:w-auto'
                 >
-                  {isPending ? "Submitting..." : "Submit Response"}
+                  {isPending ? 'Submitting...' : 'Submit Response'}
                 </button>
               </div>
 
@@ -1835,7 +1893,13 @@ const ActualRsvpForm = ({
                 )}
               </div>
 
-              <div className='mt-8'>
+              <div className='mt-8 flex flex-col items-center gap-4'>
+                <Link
+                  href='/'
+                  className='inline-block font-mono uppercase text-sm tracking-wider py-2.5 px-8 bg-pink-dark text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2 transition-colors'
+                >
+                  Go to Home Page
+                </Link>
                 <button
                   type='button'
                   onClick={() => {
@@ -1885,7 +1949,7 @@ const ActualRsvpForm = ({
             )}
         </div>
 
-        <div className='min-h-[250px]'>{renderStepContent()}</div>
+        <div className='min-h-62.5'>{renderStepContent()}</div>
 
         {/* Error and Success Messages (centralized) */}
         {/* Ensure these are not inside a conditionally rendered Fragment that might unmount them */}
@@ -1913,8 +1977,8 @@ const ActualRsvpForm = ({
                   onClick={prevStep}
                   disabled={isPending || currentStep === 1}
                   className={cn(
-                    "font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-4 border border-gray text-gray-textdark bg-gray-cardbg hover:bg-gray-pagebg hover:border-gray-textlight rounded-md transition-colors disabled:opacity-60",
-                    currentStep === 1 && "invisible" // Hide Previous on first step
+                    'font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-4 border border-gray text-gray-textdark bg-gray-cardbg hover:bg-gray-pagebg hover:border-gray-textlight rounded-md transition-colors disabled:opacity-60',
+                    currentStep === 1 && 'invisible' // Hide Previous on first step
                   )}
                 >
                   Previous
@@ -1936,7 +2000,7 @@ const ActualRsvpForm = ({
                     disabled={isPending}
                     className='w-full font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 bg-pink-dark text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2 disabled:opacity-60 sm:w-auto'
                   >
-                    {isPending ? "Submitting..." : "Submit RSVP"}
+                    {isPending ? 'Submitting...' : 'Submit RSVP'}
                   </button>
                 )}
               </>

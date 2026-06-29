@@ -1,6 +1,6 @@
-import { PollForm, PollResults } from "@components"
-import { PollViewSwitcherProps } from "@types"
-import { DESIGN_VOTE_PREFERENCES } from "@pollConfig"
+import { PollForm, PollResults } from '@components'
+import { PollViewSwitcherProps } from '@types'
+import { DESIGN_VOTE_PREFERENCES } from '@pollConfig'
 
 const PollViewSwitcher = ({
   view,
@@ -10,7 +10,7 @@ const PollViewSwitcher = ({
   onResetToForm,
   error,
 }: PollViewSwitcherProps) => {
-  if (view === "form") {
+  if (view === 'form') {
     return (
       <PollForm
         tripOptions={tripOptions}

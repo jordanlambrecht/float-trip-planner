@@ -1,7 +1,9 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import type { ActualRsvpEntry } from "@types"
+import { useState } from 'react'
+import type { ActualRsvpEntry } from '@types'
+
+import VenmoCard from './VenmoCard'
 
 interface CostCalculatorProps {
   rsvps?: ActualRsvpEntry[]
@@ -13,7 +15,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
   if (!rsvps) {
     return (
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6'>
+        <div className='w-full bg-linear-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6'>
           <div className='text-center'>
             <h2 className='text-2xl font-bold text-gray-800 mb-2'>
               💰 Trip Cost Calculator
@@ -26,7 +28,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
   }
 
   // Count people coming
-  const attendees = rsvps.filter((rsvp) => rsvp.rsvp_status === "yes")
+  const attendees = rsvps.filter((rsvp) => rsvp.rsvp_status === 'yes')
   const totalPeople = attendees.length
   const merrittAttendees = attendees.filter(
     (rsvp) => rsvp.merrit_reservoir
@@ -46,8 +48,8 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
   const coolerTubeRentalCost = coolerTubesNeeded * 12 // $12 per cooler tube
   const totalTubeCost = tubeRentalCost + coolerTubeRentalCost
 
-  // Food estimate
-  const foodCostPerPerson = 25
+  // Food estimate - chip in what you want, this is the suggested amount
+  const foodCostPerPerson = 45
   const totalFoodCost = totalPeople * foodCostPerPerson
 
   // Merrit park pass
@@ -75,8 +77,8 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               onClick={() => setShowPerPerson(true)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 showPerPerson
-                  ? "bg-orange-dark text-white"
-                  : "text-gray-600 hover:text-gray-800"
+                  ? 'bg-orange-dark text-white'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Per Person
@@ -85,8 +87,8 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               onClick={() => setShowPerPerson(false)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 !showPerPerson
-                  ? "bg-orange-dark text-white"
-                  : "text-gray-600 hover:text-gray-800"
+                  ? 'bg-orange-dark text-white'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Total Cost
@@ -139,7 +141,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
                 </span>
               </div>
               <div className='flex justify-between'>
-                <span>Food Estimate ({totalPeople} × $25):</span>
+                <span>Food Estimate ({totalPeople} × $45):</span>
                 <span className='font-mono'>
                   $
                   {showPerPerson
@@ -171,7 +173,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               <div className='space-y-2'>
                 <div className='flex justify-between text-lg font-semibold'>
                   <span>
-                    {showPerPerson ? "Cost Per Person:" : "Total Trip Cost:"}
+                    {showPerPerson ? 'Cost Per Person:' : 'Total Trip Cost:'}
                   </span>
                   <span className='font-mono text-green-700'>
                     $
@@ -204,15 +206,31 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               <p>
                 • Cooler tubes calculated for {coolerTubesNeeded} cooler tubes
               </p>
-              <p>• Food cost is an estimate</p>
+              <p>
+                • Food is chip-in-whatever-you-want — $45 is the suggested
+                amount
+              </p>
+              <p>
+                • Tube rentals, cooler tubes, and camping are{' '}
+                <span className='font-bold'>not optional</span> — everyone
+                covers their share of those
+              </p>
               {merrittAttendees > 0 && (
                 <p>
                   • Merrit pass needed for {merrittAttendees} attendee
-                  {merrittAttendees > 1 ? "s" : ""}
+                  {merrittAttendees > 1 ? 's' : ''}
                 </p>
               )}
             </div>
           </div>
+        </div>
+
+        {/* Payment */}
+        <div className='mt-6 pt-5 border-t border-yellow-medium/50'>
+          <p className='font-mono text-xs text-gray-500 text-center mb-3'>
+            No rush or anything, I guess.
+          </p>
+          <VenmoCard />
         </div>
       </div>
     </section>

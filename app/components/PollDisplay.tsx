@@ -1,12 +1,13 @@
-"use client"
-import { useState } from "react"
-import { TripDetails, TripOptionHeader, PollViewSwitcher } from "@components"
-import YearComparisonModal from "./YearComparisonModal"
-import type { PollResultsData } from "@types"
-import type { tripOptionsStaticDetails as TripOptionsType } from "@pollConfig"
+'use client'
+import { useState } from 'react'
+import { TripDetails, TripOptionHeader, PollViewSwitcher } from '@components'
+import YearComparisonModal from './YearComparisonModal'
+import type { PollResultsData } from '@types'
+import type { tripOptionsStaticDetails as TripOptionsType } from '@pollConfig'
+import { POLL_YEAR, PREVIOUS_TRIP_DATES_NO_YEAR } from '@tripConfig'
 
 interface PollDisplayProps {
-  view: "form" | "results"
+  view: 'form' | 'results'
   pollResults: PollResultsData | null
   tripOptions: typeof TripOptionsType
   onFormSubmitSuccess: () => void
@@ -25,7 +26,9 @@ const PollDisplay = ({
   isFetching = false,
 }: PollDisplayProps) => {
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false)
-  const currentYear = new Date().getFullYear()
+  // This poll is a historical artifact of the year it ran, so the
+  // comparison modal anchors to that year, not the current one.
+  const pollYear = POLL_YEAR
 
   return (
     <>
@@ -35,10 +38,10 @@ const PollDisplay = ({
           <div className='flex flex-row justify-between items-start mb-4'>
             <div>
               <h2 className='line-through font-bold text-gray-600'>
-                Pre-RSVP Results (Closed)
+                {pollYear} Pre-RSVP Results (Archived)
               </h2>
               <p className='text-sm font-mono text-green-700 mt-1'>
-                ✅ August 21st-24th has been selected!
+                ✅ {PREVIOUS_TRIP_DATES_NO_YEAR}, {pollYear} was selected!
               </p>
             </div>
 
@@ -52,8 +55,9 @@ const PollDisplay = ({
             </div>
           </div>
           <p className='font-mono max-w-lg mb-8 text-gray-600'>
-            The pre-RSVP voting period has ended. Based on the results below,
-            August 21st-24th was selected as the trip dates.
+            The {pollYear} pre-RSVP voting period has ended. Based on the
+            results below, {PREVIOUS_TRIP_DATES_NO_YEAR} was selected as the{' '}
+            {pollYear} trip dates.
           </p>
 
           <div className='grid grid-cols-[auto_1fr_1fr] sm:grid-cols-[150px_1fr_1fr] items-center mb-1'>
@@ -67,7 +71,7 @@ const PollDisplay = ({
             option2={tripOptions.option2}
           />
 
-          <div className='min-h-[300px]'>
+          <div className='min-h-75'>
             {/* Always show results for closed poll, no loading state */}
             <PollViewSwitcher
               view='results'
@@ -85,7 +89,7 @@ const PollDisplay = ({
       <YearComparisonModal
         isOpen={isComparisonModalOpen}
         onClose={() => setIsComparisonModalOpen(false)}
-        currentYear={currentYear}
+        currentYear={pollYear}
         currentYearData={tripOptions}
       />
     </>

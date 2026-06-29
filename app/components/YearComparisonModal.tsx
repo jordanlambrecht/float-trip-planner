@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react"
-import type { HistoricalYearData, TripOptionDetails } from "@types"
-import { getHistoricalYearDataAction } from "@actions"
+import { useState, useEffect } from 'react'
+import type { HistoricalYearData, TripOptionDetails } from '@types'
+import { getHistoricalYearDataAction } from '@actions'
 
 interface YearComparisonModalProps {
   isOpen: boolean
@@ -36,7 +36,7 @@ const YearComparisonModal = ({
 
     const result = await getHistoricalYearDataAction(previousYear)
 
-    if ("error" in result) {
+    if ('error' in result) {
       setError(result.error)
       setHistoricalData(null)
     } else {
@@ -119,31 +119,31 @@ const YearComparisonModal = ({
                     <div className='space-y-2 text-sm font-mono'>
                       {historicalData.daytimeTemps && (
                         <div>
-                          <span className='text-gray-textlight'>Daytime:</span>{" "}
+                          <span className='text-gray-textlight'>Daytime:</span>{' '}
                           {historicalData.daytimeTemps}
                         </div>
                       )}
                       {historicalData.eveningTemps && (
                         <div>
-                          <span className='text-gray-textlight'>Evening:</span>{" "}
+                          <span className='text-gray-textlight'>Evening:</span>{' '}
                           {historicalData.eveningTemps}
                         </div>
                       )}
                       {historicalData.wind && (
                         <div>
-                          <span className='text-gray-textlight'>Wind:</span>{" "}
+                          <span className='text-gray-textlight'>Wind:</span>{' '}
                           {historicalData.wind}
                         </div>
                       )}
                       {historicalData.humidity && (
                         <div>
-                          <span className='text-gray-textlight'>Humidity:</span>{" "}
+                          <span className='text-gray-textlight'>Humidity:</span>{' '}
                           {historicalData.humidity}
                         </div>
                       )}
                       {historicalData.rain && (
                         <div>
-                          <span className='text-gray-textlight'>Rain:</span>{" "}
+                          <span className='text-gray-textlight'>Rain:</span>{' '}
                           {historicalData.rain}
                         </div>
                       )}
@@ -157,7 +157,7 @@ const YearComparisonModal = ({
                     <div className='space-y-2 text-sm font-mono'>
                       {historicalData.moonPhase && (
                         <div>
-                          <span className='text-gray-textlight'>Moon:</span>{" "}
+                          <span className='text-gray-textlight'>Moon:</span>{' '}
                           {historicalData.moonPhase}
                         </div>
                       )}
@@ -165,7 +165,7 @@ const YearComparisonModal = ({
                         <div>
                           <span className='text-gray-textlight'>
                             Visibility:
-                          </span>{" "}
+                          </span>{' '}
                           {historicalData.skyVisibility}
                         </div>
                       )}
@@ -174,8 +174,8 @@ const YearComparisonModal = ({
                           <div>
                             <span className='text-gray-textlight'>
                               Meteors:
-                            </span>{" "}
-                            {historicalData.meteorActivity.join(", ")}
+                            </span>{' '}
+                            {historicalData.meteorActivity.join(', ')}
                           </div>
                         )}
                     </div>

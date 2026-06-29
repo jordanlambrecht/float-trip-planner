@@ -1,6 +1,6 @@
-"use client"
-import { useState } from "react"
-import clsx from "clsx"
+'use client'
+import { useState } from 'react'
+import clsx from 'clsx'
 
 interface MeteorShower {
   name: string
@@ -18,64 +18,24 @@ interface MeteorShower {
 
 const METEOR_SHOWERS: MeteorShower[] = [
   {
-    name: "Perseids",
-    peakDates: "July 17 - August 24 (Peak: August 12-13)",
-    radiant: "Perseus constellation",
-    zhr: "50-100 meteors per hour at peak",
-    velocity: "59 km/s (fast, bright meteors)",
-    parentBody: "Comet 109P/Swift-Tuttle",
-    discoveryYear: "First recorded by Chinese astronomers in 36 AD",
+    name: 'Perseids',
+    peakDates: 'July 17 - August 24 (Peak: August 12-13)',
+    radiant: 'Perseus constellation',
+    zhr: '50-100 meteors per hour at peak; reduced post-peak rates during trip nights (Aug 20-23)',
+    velocity: '59 km/s (fast, bright meteors)',
+    parentBody: 'Comet 109P/Swift-Tuttle',
+    discoveryYear: 'First recorded by Chinese astronomers in 36 AD',
     story:
       "The Perseids are perhaps the most famous meteor shower, originating from debris left by Comet Swift-Tuttle, which orbits the sun every 133 years. The comet last passed close to Earth in 1992 and won't return until 2126. As Earth passes through this debris trail each summer, particles burn up in our atmosphere at tremendous speeds, creating the brilliant 'shooting stars' we see. The shower gets its name from the Perseus constellation, where the meteors appear to radiate from. Ancient Chinese astronomers first recorded this shower nearly 2,000 years ago, calling it 'tears of the weaver girl.'",
     viewingTips: [
-      "Look northeast after 10 PM",
-      "Perseus rises higher throughout the night",
-      "Best viewing is typically 2-4 AM when Perseus is highest",
-      "Meteors can appear anywhere in the sky, not just near Perseus",
+      'Wait for moonset (between 12:21 AM and 3:02 AM over the trip nights)',
+      'Look northeast - Perseus rises higher throughout the night',
+      'Best viewing is typically 2-4 AM when Perseus is highest',
+      'Meteors can appear anywhere in the sky, not just near Perseus',
     ],
-    bestViewingTime: "2:00 AM - 4:00 AM local time",
+    bestViewingTime: '2:00 AM - 4:00 AM local time',
     radiantPosition:
-      "Perseus constellation rises in the northeast around 10 PM from Valentine, NE, reaching optimal height (60-70° above horizon) around 3 AM",
-  },
-  {
-    name: "Alpha Capricornids",
-    peakDates: "July 3 - August 15 (Peak: July 30)",
-    radiant: "Capricornus constellation",
-    zhr: "5-10 meteors per hour (low rate but notable fireballs)",
-    velocity: "23 km/s (slow, producing bright fireballs)",
-    parentBody: "Comet 169P/NEAT",
-    discoveryYear: "First identified as distinct shower in 1995",
-    story:
-      "The Alpha Capricornids may have a low hourly rate, but they're famous for producing spectacular fireballs - extremely bright meteors that can outshine Venus and sometimes fragment dramatically across the sky. This shower originates from Comet 169P/NEAT, discovered in 2002. What makes this shower special isn't quantity but quality: the meteors move relatively slowly through our atmosphere, giving them more time to heat up and create stunning, long-lasting streaks. These fireballs can sometimes be bright enough to cast shadows and leave persistent trains visible for several seconds.",
-    viewingTips: [
-      "Look south-southwest after 10 PM",
-      "Capricornus is visible but low in southern sky",
-      "Watch for slow-moving, bright fireballs",
-      "Quality over quantity - fewer meteors but more spectacular",
-    ],
-    bestViewingTime: "11:00 PM - 2:00 AM local time",
-    radiantPosition:
-      "Capricornus is low in the southern sky from Valentine, NE, reaching maximum height of only 25-30° above the southern horizon around midnight",
-  },
-  {
-    name: "Delta Aquarids",
-    peakDates: "July 12 - August 23 (Peak: July 28-29)",
-    radiant: "Aquarius constellation",
-    zhr: "15-20 meteors per hour",
-    velocity: "41 km/s (medium speed)",
-    parentBody: "Possibly Comet 96P/Machholz",
-    discoveryYear: "First recorded observations in the 1870s",
-    story:
-      "The Delta Aquarids are actually two separate meteor streams - the Southern and Northern Delta Aquarids - that appear to come from the same region of sky. The Southern Delta Aquarids are more prominent and likely originate from Comet 96P/Machholz, though this connection isn't definitively proven. These meteors are best observed from southern latitudes, making them a challenge to view from Nebraska. The shower produces medium-speed meteors that often appear yellow or orange in color. Historically, this shower was often overlooked because it peaks during the height of summer when the more famous Perseids are also active.",
-    viewingTips: [
-      "Look south after 10 PM",
-      "Aquarius is relatively low from northern latitudes",
-      "Best viewed in pre-dawn hours (2-4 AM)",
-      "Meteors may appear yellowish-orange in color",
-    ],
-    bestViewingTime: "2:00 AM - 4:00 AM local time",
-    radiantPosition:
-      "Aquarius rises in the southeast around 10 PM from Valentine, NE, reaching maximum height of about 35-40° above the southern horizon before dawn",
+      'Perseus constellation rises in the northeast around 10 PM from Valentine, NE, reaching optimal height (60-70° above horizon) around 3 AM',
   },
 ]
 
@@ -108,8 +68,8 @@ const MeteorShowerCard = ({
           </div>
           <div
             className={clsx(
-              "transform transition-transform duration-200",
-              isExpanded ? "rotate-180" : "rotate-0"
+              'transform transition-transform duration-200',
+              isExpanded ? 'rotate-180' : 'rotate-0'
             )}
           >
             <svg
@@ -147,19 +107,19 @@ const MeteorShowerCard = ({
               </h4>
               <ul className='space-y-1 text-sm font-mono'>
                 <li>
-                  <span className='text-gray-textlight'>Radiant:</span>{" "}
+                  <span className='text-gray-textlight'>Radiant:</span>{' '}
                   {shower.radiant}
                 </li>
                 <li>
-                  <span className='text-gray-textlight'>Velocity:</span>{" "}
+                  <span className='text-gray-textlight'>Velocity:</span>{' '}
                   {shower.velocity}
                 </li>
                 <li>
-                  <span className='text-gray-textlight'>Parent Body:</span>{" "}
+                  <span className='text-gray-textlight'>Parent Body:</span>{' '}
                   {shower.parentBody}
                 </li>
                 <li>
-                  <span className='text-gray-textlight'>Discovery:</span>{" "}
+                  <span className='text-gray-textlight'>Discovery:</span>{' '}
                   {shower.discoveryYear}
                 </li>
               </ul>

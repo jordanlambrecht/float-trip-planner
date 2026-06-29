@@ -223,12 +223,7 @@ const ActualRsvpForm = ({
     const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.needed_items || []).filter((item) =>
       [
-        'Tent',
-        'Sleeping Bag',
-        'Chairs',
-        'A Ride',
-        'River Shoes',
-        'Inflatable Mattress',
+        'Chairs',``
       ].includes(item)
     )
     setFormData({
@@ -347,12 +342,7 @@ const ActualRsvpForm = ({
     const nonEmptyFields = newFields.filter((field) => field.trim() !== '')
     const currentPredefined = (formData.needed_items || []).filter((item) =>
       [
-        'Tent',
-        'Sleeping Bag',
         'Chairs',
-        'A Ride',
-        'River Shoes',
-        'Inflatable Mattress',
       ].includes(item)
     )
     setFormData({

@@ -13,7 +13,9 @@ import {
   claimItemAction,
   claimRoleAction,
   getPredefinedItemsAction,
+  getSpotifyPlaylistAction,
 } from '../actions'
+import type { SpotifyPlaylist } from '../types'
 
 const mockQuery = vi.mocked(query)
 
@@ -226,6 +228,144 @@ describe('claimRoleAction', () => {
       'Play Bartender',
       'Grocery Shopper',
     ])
+  })
+})
+
+describe('getSpotifyPlaylistAction', () => {
+  const jsonResponse = (body: any, ok = true, status = 200): any => ({
+    ok,
+    status,
+    json: async () => body,
+  })
+
+  // A playlist item shaped like the Spotify API response. added_by carries only
+  // the user ID (never a name), which is the whole reason the action does a
+  // second lookup.
+  const item = (id: string, name: string, addedById: string | null): any => ({
+    added_by: addedById ? { id: addedById } : null,
+    track: {
+      id,
+      name,
+      external_urls: { spotify: `https://open.spotify.com/track/${id}` },
+      artists: [{ name: 'Some Artist' }],
+      album: { images: [{ url: 'big.jpg' }, { url: 'small.jpg' }] },
+    },
+  })
+
+  // Routes the three endpoints the action hits (token -> playlist -> user
+  // profiles). `users` maps a Spotify user ID to its profile, or `ok: false`
+  // to simulate a failed profile lookup. Returns the list of user IDs actually
+  // looked up so tests can assert de-duplication.
+  const installFetch = (
+    items: any[],
+    users: Record<string, { ok?: boolean; display_name?: string | null }> = {}
+  ) => {
+    const userLookups: string[] = []
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url.includes('accounts.spotify.com/api/token')) {
+        return jsonResponse({ access_token: 'test-token' })
+      }
+      if (url.includes('/v1/playlists/')) {
+        return jsonResponse({
+          name: 'Float Trip Soundtrack',
+          description: 'songs',
+          external_urls: { spotify: 'https://open.spotify.com/playlist/xyz' },
+          images: [{ url: 'cover.jpg' }],
+          tracks: { total: items.length, items },
+        })
+      }
+      const userId = url.match(/\/v1\/users\/([^?]+)/)?.[1]
+      if (userId) {
+        const decoded = decodeURIComponent(userId)
+        userLookups.push(decoded)
+        const profile = users[decoded]
+        if (profile?.ok === false) return jsonResponse({}, false, 404)
+        return jsonResponse({ display_name: profile?.display_name ?? null })
+      }
+      throw new Error(`unexpected fetch: ${url}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    return { fetchMock, userLookups }
+  }
+
+  beforeEach(() => {
+    vi.stubEnv('SPOTIFY_CLIENT_ID', 'client-id')
+    vi.stubEnv('SPOTIFY_CLIENT_SECRET', 'client-secret')
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    vi.unstubAllEnvs()
+  })
+
+  it('returns an error (and never calls Spotify) when credentials are missing', async () => {
+    vi.stubEnv('SPOTIFY_CLIENT_ID', '')
+    const { fetchMock } = installFetch([])
+
+    const result = await getSpotifyPlaylistAction()
+
+    expect(result).toEqual({ error: expect.stringMatching(/credentials/i) })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('resolves each adder ID to their Spotify display name', async () => {
+    installFetch([item('t1', 'Song One', 'user_a')], {
+      user_a: { display_name: 'Heath' },
+    })
+
+    const result = (await getSpotifyPlaylistAction()) as SpotifyPlaylist
+
+    expect('error' in result).toBe(false)
+    expect(result.tracks[0]).toMatchObject({
+      id: 't1',
+      name: 'Song One',
+      artists: 'Some Artist',
+      albumImage: 'small.jpg', // last (smallest) album image
+      addedBy: 'Heath',
+    })
+  })
+
+  it('falls back to the raw user ID when the profile has no display name', async () => {
+    installFetch([item('t1', 'Song One', 'user_a')], {
+      user_a: { display_name: '   ' }, // whitespace-only counts as unset
+    })
+
+    const result = (await getSpotifyPlaylistAction()) as SpotifyPlaylist
+    expect(result.tracks[0].addedBy).toBe('user_a')
+  })
+
+  it('falls back to the raw user ID when the profile lookup fails', async () => {
+    installFetch([item('t1', 'Song One', 'user_a')], { user_a: { ok: false } })
+
+    const result = (await getSpotifyPlaylistAction()) as SpotifyPlaylist
+    expect(result.tracks[0].addedBy).toBe('user_a')
+  })
+
+  it('looks up each unique adder only once, across all their tracks', async () => {
+    const { userLookups } = installFetch(
+      [
+        item('t1', 'One', 'user_a'),
+        item('t2', 'Two', 'user_a'),
+        item('t3', 'Three', 'user_b'),
+      ],
+      { user_a: { display_name: 'Heath' }, user_b: { display_name: 'Jordy' } }
+    )
+
+    const result = (await getSpotifyPlaylistAction()) as SpotifyPlaylist
+
+    expect([...userLookups].sort()).toEqual(['user_a', 'user_b'])
+    expect(result.tracks.map((t) => t.addedBy)).toEqual([
+      'Heath',
+      'Heath',
+      'Jordy',
+    ])
+  })
+
+  it('leaves addedBy null when a track has no recorded adder', async () => {
+    installFetch([item('t1', 'Song One', null)])
+
+    const result = (await getSpotifyPlaylistAction()) as SpotifyPlaylist
+    expect(result.tracks[0].addedBy).toBeNull()
   })
 })
 

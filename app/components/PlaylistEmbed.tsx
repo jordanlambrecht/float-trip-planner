@@ -137,6 +137,11 @@ const PlaylistEmbed = () => {
                       <p className='font-mono text-xs text-gray-textlight truncate'>
                         {track.artists}
                       </p>
+                      {track.addedBy && (
+                        <p className='font-mono text-xs text-gray-textlight/70 truncate'>
+                          added by {track.addedBy}
+                        </p>
+                      )}
                     </div>
                   </Link>
                 </li>

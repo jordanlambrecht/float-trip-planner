@@ -730,7 +730,7 @@ export async function getSpotifyPlaylistAction(): Promise<
     const { access_token } = await tokenRes.json()
 
     const fields =
-      'name,description,external_urls,images,tracks.total,tracks.items(track(id,name,external_urls,artists(name),album(images)))'
+      'name,description,external_urls,images,tracks.total,tracks.items(added_by.id,track(id,name,external_urls,artists(name),album(images)))'
     const playlistRes = await fetch(
       `https://api.spotify.com/v1/playlists/${playlistId}?fields=${encodeURIComponent(
         fields
@@ -748,17 +748,55 @@ export async function getSpotifyPlaylistAction(): Promise<
     const items: any[] = Array.isArray(data.tracks?.items)
       ? data.tracks.items
       : []
+
+    // added_by only carries the (anonymous) Spotify user ID, so resolve each
+    // unique adder once via the public profile endpoint to get a display name.
+    const adderIds = Array.from(
+      new Set(
+        items
+          .map((item) => item?.added_by?.id)
+          .filter((id: unknown): id is string => Boolean(id))
+      )
+    )
+    const adderNames = new Map<string, string>()
+    await Promise.all(
+      adderIds.map(async (id) => {
+        try {
+          const userRes = await fetch(
+            `https://api.spotify.com/v1/users/${encodeURIComponent(id)}`,
+            {
+              headers: { Authorization: `Bearer ${access_token}` },
+              cache: 'no-store',
+            }
+          )
+          if (!userRes.ok) return
+          const user = await userRes.json()
+          const displayName =
+            typeof user.display_name === 'string' && user.display_name.trim()
+              ? user.display_name.trim()
+              : id
+          adderNames.set(id, displayName)
+        } catch {
+          // Leave unresolved; the track falls back to the raw ID below.
+        }
+      })
+    )
+
     const tracks = items
-      .map((item) => item?.track)
-      .filter((track) => track && track.id)
-      .map((track) => ({
-        id: track.id as string,
-        name: track.name as string,
-        artists: (track.artists || []).map((a: any) => a.name).join(', '),
-        albumImage:
-          track.album?.images?.[track.album.images.length - 1]?.url ?? null,
-        url: (track.external_urls?.spotify ?? SPOTIFY_PLAYLIST_URL) as string,
-      }))
+      .filter((item) => item?.track && item.track.id)
+      .map((item) => {
+        const track = item.track
+        const adderId: string | null = item?.added_by?.id ?? null
+        return {
+          id: track.id as string,
+          name: track.name as string,
+          artists: (track.artists || []).map((a: any) => a.name).join(', '),
+          albumImage:
+            track.album?.images?.[track.album.images.length - 1]?.url ?? null,
+          url: (track.external_urls?.spotify ?? SPOTIFY_PLAYLIST_URL) as string,
+          addedBy: adderId ? adderNames.get(adderId) ?? adderId : null,
+        }
+      })
 
     return {
       name: data.name ?? 'Playlist',

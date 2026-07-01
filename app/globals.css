@@ -80,6 +80,28 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Brand-pink scrollbars everywhere: the page itself and any inner scroll
+     container (e.g. the Spotify track list). Firefox uses scrollbar-color
+     (inherited); WebKit/Blink use the unscoped ::-webkit-scrollbar pseudos. */
+  html {
+    scrollbar-color: var(--color-pink-dark) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-pink-dark);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-pink-medium);
+  }
+
   h1,
   h2,
   h3 {

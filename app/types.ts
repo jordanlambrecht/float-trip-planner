@@ -182,6 +182,9 @@ export interface SpotifyTrack {
   artists: string
   albumImage: string | null
   url: string
+  // Display name of the Spotify user who added the track (falls back to their
+  // user ID when no display name is set). Null when the adder is unknown.
+  addedBy: string | null
 }
 
 export interface SpotifyPlaylist {

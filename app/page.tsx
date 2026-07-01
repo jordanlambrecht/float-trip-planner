@@ -86,8 +86,8 @@ const Page = () => {
       <PageHeader />
 
       {/* RSVP Call-to-Action Section */}
-      <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full bg-linear-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6 text-center'>
+      <section className='w-full flex flex-col items-center justify-center p-4 sm:p-6'>
+        <div className='w-full max-w-4xl bg-linear-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6 text-center shadow-2xl'>
           <h2 className='text-2xl font-bold text-gray-800 mb-2'>Wanna RSVP?</h2>
           <p className='text-lg font-mono text-pink-dark mb-4'>
             📅 {TRIP_DATES_FULL} 📅

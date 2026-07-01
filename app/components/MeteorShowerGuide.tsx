@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import clsx from 'clsx'
+import Collapse from './ui/Collapse'
+import { H2 } from './ui/Typography'
 
 interface MeteorShower {
   name: string
@@ -52,7 +54,7 @@ const MeteorShowerCard = ({
     <div className='border border-background-dm  rounded-lg  bg-white  overflow-hidden shadow'>
       <button
         onClick={onToggle}
-        className='w-full p-4 text-left hover:bg-gray-50 :bg-gray-700/50 transition-colors focus:outline-none '
+        className='w-full p-4 text-left hover:bg-gray-pagebg :bg-gray-textdark/50 transition-colors focus:outline-none '
       >
         <div className='flex items-center justify-between'>
           <div>
@@ -89,8 +91,8 @@ const MeteorShowerCard = ({
         </div>
       </button>
 
-      {isExpanded && (
-        <div className='px-4 pb-4 space-y-4 border-t border-gray-200 '>
+      <Collapse open={isExpanded}>
+        <div className='px-4 pb-4 space-y-4 border-t border-gray '>
           <div className='pt-4'>
             <h4 className='font-semibold font-ibm-plex-mono text-sm text-gray-textdark  mb-2'>
               Origin & History
@@ -145,7 +147,7 @@ const MeteorShowerCard = ({
             </div>
           </div>
         </div>
-      )}
+      </Collapse>
     </div>
   )
 }
@@ -161,7 +163,7 @@ const MeteorShowerGuide = () => {
     <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
       <div className='max-w-4xl mx-auto '>
         <div className='text-left mb-8'>
-          <h2>Meteor Shower Guide</h2>
+          <H2>Meteor Shower Guide</H2>
           <p className='text-gray-textlight max-w-lg  font-mono text-sm'>
             Viewing information for Valentine, Nebraska
             <br /> (42°52′25″N 100°33′1″W)

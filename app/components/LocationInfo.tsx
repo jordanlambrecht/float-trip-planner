@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { H2 } from './ui/Typography'
 
 const LOCATIONS = [
   {
@@ -27,12 +28,12 @@ const LOCATIONS = [
 
 const LocationInfo = () => {
   return (
-    <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-      <div className='w-full bg-teal-light/50 border-2 border-teal rounded-lg p-6'>
+    <section className='w-full flex flex-col items-center justify-center p-4 sm:p-6'>
+      <div className='w-full max-w-4xl bg-teal-light/50 border-2 border-teal rounded-lg p-6 shadow-2xl'>
         <div className='text-center mb-6'>
-          <h2 className='text-2xl font-bold text-gray-800 mb-2'>
+          <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
             📍 Where We're Staying
-          </h2>
+          </H2>
         </div>
 
         <div className='flex flex-col gap-y-8'>
@@ -54,7 +55,7 @@ const LocationInfo = () => {
                   >
                     {location.name}
                   </h3>
-                  <p className='font-mono text-sm text-gray-600'>
+                  <p className='font-mono text-sm text-gray-textlight'>
                     {location.nights}
                   </p>
                 </div>
@@ -63,19 +64,19 @@ const LocationInfo = () => {
                   {/* Location Details */}
                   <div className='space-y-4'>
                     <div>
-                      <h4 className='font-semibold text-gray-800 mb-2'>
+                      <h4 className='font-semibold text-gray-textdark mb-2'>
                         Address:
                       </h4>
-                      <p className='font-mono text-sm text-gray-600'>
+                      <p className='font-mono text-sm text-gray-textlight'>
                         {location.address}
                       </p>
                     </div>
 
                     <div>
-                      <h4 className='font-semibold text-gray-800 mb-2'>
+                      <h4 className='font-semibold text-gray-textdark mb-2'>
                         About:
                       </h4>
-                      <p className='text-sm text-gray-600'>{location.about}</p>
+                      <p className='text-sm text-gray-textlight'>{location.about}</p>
                     </div>
                   </div>
 

@@ -2,6 +2,8 @@
 'use client'
 
 import { useState } from 'react'
+import { H2 } from './ui/Typography'
+import Collapse from './ui/Collapse'
 
 interface FAQItem {
   question: string
@@ -61,11 +63,12 @@ const FAQ = () => {
   }
 
   return (
-    <section className='w-full max-w-4xl px-4 sm:px-6'>
-      <div className='mb-8'>
-        <h2 className='text-2xl font-bold text-gray-textdark mb-2 text-left'>
+    <section className='w-full flex flex-col items-center px-4 sm:px-6'>
+      <div className='w-full max-w-4xl'>
+        <div className='mb-8'>
+        <H2 className='text-2xl font-bold text-gray-textdark mb-2 text-left'>
           Frequently Asked Questions
-        </h2>
+        </H2>
       </div>
 
       <div className='space-y-3'>
@@ -76,10 +79,10 @@ const FAQ = () => {
           >
             <button
               onClick={() => toggleItem(index)}
-              className='w-full px-4 py-3 text-left bg-none hover:bg-gray-100 transition-colors focus:outline-none '
+              className='w-full px-4 py-3 text-left bg-none hover:bg-gray-pagebg transition-colors focus:outline-none '
             >
               <div className='flex justify-between items-center'>
-                <h3 className='font-semibold text-gray-800 pr-4 font-mono text-lg'>
+                <h3 className='font-semibold text-gray-textdark pr-4 font-mono text-lg'>
                   {item.question}
                 </h3>
                 <span
@@ -91,9 +94,9 @@ const FAQ = () => {
                 </span>
               </div>
             </button>
-            {openItems.has(index) && (
-              <div className='px-4 py-3 bg-none border-t border-gray-200'>
-                <div className='text-gray-700 leading-relaxed font-mono'>
+            <Collapse open={openItems.has(index)}>
+              <div className='px-4 py-3 bg-none border-t border-gray'>
+                <div className='text-gray-textdark leading-relaxed font-mono'>
                   {typeof item.answer === 'string' ? (
                     <p>{item.answer}</p>
                   ) : (
@@ -101,9 +104,10 @@ const FAQ = () => {
                   )}
                 </div>
               </div>
-            )}
+            </Collapse>
           </div>
         ))}
+      </div>
       </div>
     </section>
   )

@@ -216,12 +216,12 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
     <>
       <div className='space-y-6 sm:space-y-8'>
         {successMessage && (
-          <div className='p-3 mb-4 text-sm text-center text-green-700 bg-green-100 border border-green-200 rounded-md'>
+          <div className='p-3 mb-4 text-sm text-center text-green-text bg-green-light border border-green rounded-md'>
             {successMessage}
           </div>
         )}
         {error && (
-          <div className='p-3 mb-4 text-sm text-center text-red-700 bg-red-300 border border-red-400 rounded-md'>
+          <div className='p-3 mb-4 text-sm text-center text-red-text bg-red-medium border border-red-medium rounded-md'>
             {error}
           </div>
         )}
@@ -256,7 +256,7 @@ const PollForm = ({ votePreferences, onFormSubmitSuccess }: PollFormProps) => {
                 <button
                   type='button'
                   onClick={() => removeParticipant(p.id)}
-                  className='ml-3 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors'
+                  className='ml-3 p-1.5 text-red-dark hover:text-red-text hover:bg-red-light rounded-full transition-colors'
                   aria-label='Remove participant'
                 >
                   <svg

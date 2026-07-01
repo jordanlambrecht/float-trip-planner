@@ -1,16 +1,20 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import type { ActualRsvpEntry } from '@types'
 import { isLikelyComing } from '@types'
 import { claimRoleAction } from '@actions'
 import { VOLUNTEER_ROLES } from '@pollConfig'
+import SectionCard from './ui/SectionCard'
+import Pill from './ui/Pill'
+import ClaimDialog from './ui/ClaimDialog'
+import { H2, Muted } from './ui/Typography'
 
 interface RolesBoardProps {
   rsvps?: ActualRsvpEntry[]
   onClaimed?: () => void
-  // When embedded (e.g. inside PlanningTabs) skip the outer section/card and
-  // heading - the tab chrome provides those.
+  // When embedded (e.g. inside PlanningTabs) skip the outer card and heading -
+  // the tab chrome provides those.
   embedded?: boolean
 }
 
@@ -19,12 +23,9 @@ const RolesBoard = ({
   onClaimed,
   embedded = false,
 }: RolesBoardProps) => {
+  // null = dialog closed. '' + isCustom = custom role entry.
   const [claimingRole, setClaimingRole] = useState<string | null>(null)
   const [isCustomRole, setIsCustomRole] = useState(false)
-  const [customRoleName, setCustomRoleName] = useState('')
-  const [claimerName, setClaimerName] = useState('')
-  const [claimError, setClaimError] = useState<string | null>(null)
-  const [isPending, startTransition] = useTransition()
 
   const attending = rsvps.filter((rsvp) => isLikelyComing(rsvp.rsvp_status))
 
@@ -50,135 +51,67 @@ const RolesBoard = ({
   const openClaimDialog = (role: string | null) => {
     setIsCustomRole(role === null)
     setClaimingRole(role ?? '')
-    setCustomRoleName('')
-    setClaimerName('')
-    setClaimError(null)
   }
+  const closeClaimDialog = () => setClaimingRole(null)
 
-  const closeClaimDialog = () => {
-    setClaimingRole(null)
-    setIsCustomRole(false)
+  const handleSubmit = async (claimerName: string, customValue: string) => {
+    const role = isCustomRole ? customValue : (claimingRole ?? '')
+    const result = await claimRoleAction(role, claimerName)
+    if (result.success && onClaimed) onClaimed()
+    return result
   }
-
-  const submitClaim = () => {
-    const role = isCustomRole ? customRoleName.trim() : claimingRole
-    if (!role) return
-    setClaimError(null)
-    startTransition(async () => {
-      const result = await claimRoleAction(role, claimerName)
-      if (result.success) {
-        closeClaimDialog()
-        if (onClaimed) onClaimed()
-      } else {
-        setClaimError(result.error || 'Something went wrong.')
-      }
-    })
-  }
-
-  const canSubmit =
-    claimerName.trim().length > 0 &&
-    (!isCustomRole || customRoleName.trim().length > 0)
 
   const body = (
     <>
-      <p className='font-mono text-sm text-gray-textlight mb-6 max-w-xl'>
-        Volunteer roles, filled and unfilled.
-      </p>
+      <Muted className='mb-6 max-w-xl'>
+        Who&apos;s down for what. Tap any role to add yourself - more than one
+        person can be down for the same thing, and we&apos;ll sort out the
+        details later.
+      </Muted>
 
       <div className='flex flex-wrap gap-2'>
         {allRoles.map((role) => {
           const names = claimants(role)
           const filled = names.length > 0
-          return filled ? (
-            <span
+          return (
+            <Pill
               key={role}
-              className='inline-flex items-center gap-1.5 px-3 py-1.5 font-mono text-xs rounded-full bg-teal-light text-teal-text border border-teal-medium'
-            >
-              {role}
-              <span className='text-teal-dark font-bold'>
-                — {names.join(', ')}
-              </span>
-            </span>
-          ) : (
-            <button
-              key={role}
-              type='button'
+              variant={filled ? 'teal' : 'dashed'}
               onClick={() => openClaimDialog(role)}
-              className='inline-flex items-center px-3 py-1.5 font-mono text-xs rounded-full text-gray-textlight border border-dashed border-gray-textlight/60 hover:text-gray-textdark hover:border-gray-textdark hover:scale-105 transition-all cursor-pointer'
             >
               {role}
-              <span className='ml-1.5 italic'>— open</span>
-            </button>
+              {filled ? (
+                <span className='text-teal-dark font-bold'>
+                  — {names.join(', ')}
+                </span>
+              ) : (
+                <span className='ml-1.5 italic'>— open</span>
+              )}
+            </Pill>
           )
         })}
-        <button
-          type='button'
-          onClick={() => openClaimDialog(null)}
-          className='px-3 py-1.5 font-mono text-xs rounded-full text-gray-textlight border border-dashed border-gray-textlight/60 hover:text-gray-textdark hover:border-gray-textdark transition-colors cursor-pointer'
-        >
+        <Pill variant='dashed' onClick={() => openClaimDialog(null)}>
           ➕ custom role
-        </button>
+        </Pill>
       </div>
     </>
   )
 
-  const dialog = claimingRole !== null && (
-    <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm'>
-      <div className='w-full max-w-sm p-6 rounded-lg shadow-xl bg-cardbg border border-gray-300'>
-        <h3 className='text-lg font-bold text-gray-textdark mb-1'>
-          {isCustomRole
-            ? 'Adding A Role'
-            : `You're claiming: ${claimingRole}`}
-        </h3>
-        <p className='font-mono text-sm text-gray-textlight mb-4'>
-          {isCustomRole
-            ? "What's the role, and who are you? Use the same name you RSVP'd with."
-            : "Who are you? Use the same name you RSVP'd with."}
-        </p>
-        {isCustomRole && (
-          <input
-            type='text'
-            value={customRoleName}
-            onChange={(e) => setCustomRoleName(e.target.value)}
-            placeholder='The role'
-            autoFocus
-            className='w-full p-2.5 font-mono text-base border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-pink-dark focus:border-pink-dark mb-3'
-          />
-        )}
-        <input
-          type='text'
-          value={claimerName}
-          onChange={(e) => setClaimerName(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && canSubmit) submitClaim()
-          }}
-          placeholder='Your name'
-          autoFocus={!isCustomRole}
-          className='w-full p-2.5 font-mono text-base border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-pink-dark focus:border-pink-dark mb-3'
-        />
-        {claimError && (
-          <p className='font-mono text-xs text-red-600 mb-3'>{claimError}</p>
-        )}
-        <div className='flex justify-end gap-2'>
-          <button
-            type='button'
-            onClick={closeClaimDialog}
-            disabled={isPending}
-            className='px-4 py-2 font-mono text-sm text-gray-textdark border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50'
-          >
-            Cancel
-          </button>
-          <button
-            type='button'
-            onClick={submitClaim}
-            disabled={isPending || !canSubmit}
-            className='px-4 py-2 font-mono text-sm text-white bg-pink-dark rounded-md hover:bg-opacity-90 disabled:opacity-50'
-          >
-            {isPending ? 'Claiming...' : "That's Me"}
-          </button>
-        </div>
-      </div>
-    </div>
+  const dialog = (
+    <ClaimDialog
+      open={claimingRole !== null}
+      isCustom={isCustomRole}
+      title={isCustomRole ? 'Adding a role' : `Down for: ${claimingRole}`}
+      prompt={
+        isCustomRole
+          ? "What's the role, and who are you? Use the same name you RSVP'd with."
+          : "Who are you? Use the same name you RSVP'd with."
+      }
+      customPlaceholder='The role'
+      submitLabel="I'm down"
+      onClose={closeClaimDialog}
+      onSubmit={handleSubmit}
+    />
   )
 
   if (embedded) {
@@ -191,13 +124,11 @@ const RolesBoard = ({
   }
 
   return (
-    <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
-      <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
-        <h2>Camp Counselors</h2>
-        {body}
-      </div>
+    <SectionCard>
+      <H2>Camp Counselors</H2>
+      {body}
       {dialog}
-    </section>
+    </SectionCard>
   )
 }
 

@@ -33,7 +33,7 @@ const PollViewSwitcher = ({
   return (
     <div className='py-10 text-center'>
       {error ? (
-        <p className='font-mono text-red-600'>Error: {error}</p>
+        <p className='font-mono text-red-dark'>Error: {error}</p>
       ) : (
         <p className='font-mono text-gray-textlight'>Loading results...</p>
       )}

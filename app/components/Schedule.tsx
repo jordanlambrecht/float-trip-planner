@@ -2,6 +2,7 @@ import React from 'react'
 import ScheduleCard from './schedule/ScheduleCard'
 import { ScheduleItem } from './schedule/types'
 import { TRIP_DAYS } from '@tripConfig'
+import { H2 } from './ui/Typography'
 
 const scheduleData: ScheduleItem[] = [
   {
@@ -9,9 +10,9 @@ const scheduleData: ScheduleItem[] = [
     dayAbbr: 'THR',
     dayLabel: 'bonus day',
     activity: 'merritt reservoir',
-    bgColor: 'bg-pink-300',
-    textColor: 'text-pink-700',
-    borderColor: 'border-pink-400',
+    bgColor: 'bg-pink-medium',
+    textColor: 'text-pink-text',
+    borderColor: 'border-pink-dark',
     date: TRIP_DAYS.bonus,
   },
   {
@@ -19,9 +20,9 @@ const scheduleData: ScheduleItem[] = [
     dayAbbr: 'FRI',
     dayLabel: 'day 01',
     activity: 'mosey in + camp',
-    bgColor: 'bg-blue-300',
-    textColor: 'text-blue-700',
-    borderColor: 'border-blue-400',
+    bgColor: 'bg-blue-medium',
+    textColor: 'text-blue-text',
+    borderColor: 'border-blue-dark',
     date: TRIP_DAYS.day1,
   },
   {
@@ -29,9 +30,9 @@ const scheduleData: ScheduleItem[] = [
     dayAbbr: 'SAT',
     dayLabel: 'day 02',
     activity: 'float + hang',
-    bgColor: 'bg-green-300',
-    textColor: 'text-green-700',
-    borderColor: 'border-green-400',
+    bgColor: 'bg-green-medium',
+    textColor: 'text-green-text',
+    borderColor: 'border-green-medium',
     date: TRIP_DAYS.day2,
   },
   {
@@ -39,9 +40,9 @@ const scheduleData: ScheduleItem[] = [
     dayAbbr: 'SUN',
     dayLabel: 'day 03',
     activity: 'brekky + mosey out',
-    bgColor: 'bg-purple-300',
-    textColor: 'text-purple-700',
-    borderColor: 'border-purple-400',
+    bgColor: 'bg-purple-medium',
+    textColor: 'text-purple-text',
+    borderColor: 'border-purple-dark',
     date: TRIP_DAYS.day3,
   },
 ]
@@ -50,7 +51,7 @@ const Schedule = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg '>
-        <h2>Schedule</h2>
+        <H2>Schedule</H2>
 
         <div className='flex h-full items-stretch justify-center lg:justify-center gap-2 md:gap-6'>
           {scheduleData.map((item) => (

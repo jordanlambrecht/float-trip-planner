@@ -1,6 +1,7 @@
 'use client'
 
 import type { ActualRsvpEntry, RSVPStatus } from '@types'
+import { H2 } from './ui/Typography'
 import { isAttendingStatus } from '@types'
 import clsx from 'clsx'
 import { useState, useEffect } from 'react'
@@ -39,15 +40,15 @@ const getRsvpEmoji = (status: RSVPStatus | null): string => {
 const getRsvpColor = (status: RSVPStatus | null): string => {
   switch (status) {
     case 'yes':
-      return 'border-green-500'
+      return 'border-green-dark'
     case 'maybe_probably':
-      return 'border-blue-500'
+      return 'border-blue-dark'
     case 'maybe_unlikely':
-      return 'border-purple-500'
+      return 'border-purple-dark'
     case 'no':
-      return 'border-red-500'
+      return 'border-red-dark'
     default:
-      return 'border-gray-500'
+      return 'border-gray-textlight'
   }
 }
 
@@ -112,9 +113,9 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
     return (
       <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
         <div className='max-w-4xl mx-auto'>
-          <h2 className='text-2xl font-bold mb-4'>
+          <H2 className='text-2xl font-bold mb-4'>
             {new Date().getFullYear()} RSVPs (So Far)
-          </h2>
+          </H2>
           <p className='font-mono text-gray-textlight'>
             Nobody has RSVP&apos;d yet.
           </p>
@@ -166,22 +167,22 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
           return (
             <div key={year} className='mb-8'>
               <div className='flex flex-col md:flex-row items-center justify-between mb-4'>
-                <h2 className='text-2xl font-bold'>
+                <H2 className='text-2xl font-bold'>
                   {year === currentYear
                     ? `${year} RSVPs (So Far)`
                     : `${year} Roll Call`}
-                </h2>
+                </H2>
 
                 {/* Toggle for current year only */}
                 {year === currentYear && (
-                  <div className='flex items-center space-x-2 bg-gray-100 rounded-lg p-1'>
+                  <div className='flex items-center space-x-2 bg-gray-pagebg rounded-lg p-1'>
                     <button
                       onClick={() => setView('coming')}
                       className={clsx(
                         'px-3 py-1 rounded-md text-sm font-medium transition-colors',
                         view === 'coming'
-                          ? 'bg-green-500 text-white'
-                          : 'text-gray-600 hover:text-gray-800'
+                          ? 'bg-green-dark text-white'
+                          : 'text-gray-textlight hover:text-gray-textdark'
                       )}
                     >
                       Coming (
@@ -192,8 +193,8 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                       className={clsx(
                         'px-3 py-1 rounded-md text-sm font-medium transition-colors',
                         view === 'maybe'
-                          ? 'bg-blue-500 text-white'
-                          : 'text-gray-600 hover:text-gray-800'
+                          ? 'bg-blue-dark text-white'
+                          : 'text-gray-textlight hover:text-gray-textdark'
                       )}
                     >
                       Maybe (
@@ -204,8 +205,8 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                       className={clsx(
                         'px-3 py-1 rounded-md text-sm font-medium transition-colors',
                         view === 'declined'
-                          ? 'bg-red-500 text-white'
-                          : 'text-gray-600 hover:text-gray-800'
+                          ? 'bg-red-dark text-white'
+                          : 'text-gray-textlight hover:text-gray-textdark'
                       )}
                     >
                       Nah (
@@ -254,7 +255,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                         {/* Name and RSVP Status */}
                         <div className='flex items-center justify-between mb-1'>
                           <div className='flex items-center gap-2'>
-                            <h3 className='font-mono text-lg font-bold text-gray-800'>
+                            <h3 className='font-mono text-lg font-bold text-gray-textdark'>
                               {year < currentYear
                                 ? formatNameWithInitials(rsvp.name)
                                 : rsvp.name}
@@ -262,14 +263,14 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                             {year === currentYear &&
                               rsvp.rsvp_status === 'yes' &&
                               rsvp.merrit_reservoir && (
-                                <span className='px-2 py-1 text-xs font-mono bg-blue-100 text-blue-800 rounded-full border border-blue-300'>
+                                <span className='px-2 py-1 text-xs font-mono bg-blue-light text-blue-text rounded-full border border-blue-medium'>
                                   🏞️ Merrit
                                 </span>
                               )}
                             {/* Maybe tier badge */}
                             {year === currentYear &&
                               getMaybeLabel(rsvp.rsvp_status) && (
-                                <span className='px-2 py-1 text-xs font-mono bg-gray-100 text-gray-700 rounded-full border border-gray-300'>
+                                <span className='px-2 py-1 text-xs font-mono bg-gray-pagebg text-gray-textdark rounded-full border border-gray'>
                                   {getMaybeLabel(rsvp.rsvp_status)}
                                 </span>
                               )}
@@ -437,7 +438,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                               {rsvp.extra_items &&
                                 rsvp.extra_items.length > 0 && (
                                   <div>
-                                    <span className='font-semibold text-blue-600'>
+                                    <span className='font-semibold text-blue-text'>
                                       Has Extra:{' '}
                                     </span>
                                     <span className='font-mono'>
@@ -450,7 +451,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                               {rsvp.needed_items &&
                                 rsvp.needed_items.length > 0 && (
                                   <div>
-                                    <span className='font-semibold text-orange-600'>
+                                    <span className='font-semibold text-orange-dark'>
                                       Needs if anyone has extra:{' '}
                                     </span>
                                     <span className='font-mono'>
@@ -473,7 +474,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                               aria-label={
                                 isExpanded ? 'Hide details' : 'Show details'
                               }
-                              className='w-full flex items-center justify-center gap-1 mt-2 text-gray-500 hover:text-pink-dark transition-colors'
+                              className='w-full flex items-center justify-center gap-1 mt-2 text-gray-textlight hover:text-pink-dark transition-colors'
                             >
                               <span className='font-mono text-xs uppercase tracking-wider'>
                                 {isExpanded ? 'Less' : 'Details'}

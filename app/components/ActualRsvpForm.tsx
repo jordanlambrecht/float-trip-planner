@@ -757,7 +757,7 @@ const ActualRsvpForm = ({
                     <button
                       type='button'
                       onClick={() => removePerson(person.id)}
-                      className='ml-3 p-1.5 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors shrink-0'
+                      className='ml-3 p-1.5 text-red-dark hover:text-red-text hover:bg-red-light rounded-full transition-colors shrink-0'
                       aria-label='Remove person'
                     >
                       <svg
@@ -906,7 +906,7 @@ const ActualRsvpForm = ({
               <p className='mb-3 text-sm text-gray-textlight'>
                 Communal things so David doesn't overpack
               </p>
-              <div className='rounded-md border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-750'>
+              <div className='rounded-md border border-gray bg-gray-pagebg p-4 dark:border-gray-textdark dark:bg-gray-750'>
                 <TagInput
                   tags={formData.items_bringing || []}
                   onTagsChange={(newTags) =>
@@ -954,8 +954,8 @@ const ActualRsvpForm = ({
                           <div
                             className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                               isSelected
-                                ? 'border-teal-dark bg-teal-50'
-                                : 'border-gray-300 hover:border-gray-400'
+                                ? 'border-teal-dark bg-teal-light'
+                                : 'border-gray hover:border-gray-textlight'
                             }`}
                             onClick={() => {
                               const currentItems = formData.extra_items || []
@@ -1034,7 +1034,7 @@ const ActualRsvpForm = ({
                                 className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                                   isSelected
                                     ? 'bg-teal-dark border-teal-dark'
-                                    : 'border-gray-300 bg-white hover:border-gray-400'
+                                    : 'border-gray bg-white hover:border-gray-textlight'
                                 }`}
                               >
                                 {isSelected && (
@@ -1068,7 +1068,7 @@ const ActualRsvpForm = ({
                             {isCompleted && !isEditing ? (
                               // Show as styled checkbox when it's completed and not editing
                               <div
-                                className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer border-teal-dark bg-teal-50 group hover:bg-teal-100`}
+                                className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer border-teal-dark bg-teal-light group hover:bg-teal-light`}
                                 onClick={() => {
                                   setEditingExtraField(index)
                                   // Remove from completed set when editing
@@ -1094,7 +1094,7 @@ const ActualRsvpForm = ({
                                 <div className='flex items-center space-x-2'>
                                   {/* Edit icon - shows on hover */}
                                   <svg
-                                    className='w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity'
+                                    className='w-4 h-4 text-gray-textlight opacity-0 group-hover:opacity-100 transition-opacity'
                                     fill='none'
                                     stroke='currentColor'
                                     viewBox='0 0 24 24'
@@ -1113,7 +1113,7 @@ const ActualRsvpForm = ({
                                         e.stopPropagation()
                                         removeCustomExtraField(index)
                                       }}
-                                      className='text-red-500 hover:text-red-700 p-1 text-lg font-bold'
+                                      className='text-red-dark hover:text-red-text p-1 text-lg font-bold'
                                       title='Remove this field'
                                     >
                                       ×
@@ -1123,7 +1123,7 @@ const ActualRsvpForm = ({
                               </div>
                             ) : (
                               // Show as input field when not completed or editing
-                              <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-gray-300'>
+                              <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-gray'>
                                 <input
                                   type='text'
                                   value={field}
@@ -1152,7 +1152,7 @@ const ActualRsvpForm = ({
                                     onClick={() =>
                                       removeCustomExtraField(index)
                                     }
-                                    className='text-red-500 hover:text-red-700 p-1 text-lg font-bold'
+                                    className='text-red-dark hover:text-red-text p-1 text-lg font-bold'
                                     title='Remove this field'
                                   >
                                     ×
@@ -1199,8 +1199,8 @@ const ActualRsvpForm = ({
                           <div
                             className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                               isSelected
-                                ? 'border-red-500 bg-red-50'
-                                : 'border-gray-300 hover:border-gray-400'
+                                ? 'border-red-dark bg-red-light'
+                                : 'border-gray hover:border-gray-textlight'
                             }`}
                             onClick={() => {
                               const currentNeeds = formData.needed_items || []
@@ -1280,8 +1280,8 @@ const ActualRsvpForm = ({
                               <div
                                 className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                                   isSelected
-                                    ? 'bg-red-500 border-red-500'
-                                    : 'border-gray-300 bg-white hover:border-gray-400'
+                                    ? 'bg-red-dark border-red-dark'
+                                    : 'border-gray bg-white hover:border-gray-textlight'
                                 }`}
                               >
                                 {isSelected && (
@@ -1315,7 +1315,7 @@ const ActualRsvpForm = ({
                             {isCompleted && !isEditing ? (
                               // Show as styled checkbox when it's completed and not editing
                               <div
-                                className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer border-red-500 bg-red-50 group hover:bg-red-100`}
+                                className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer border-red-dark bg-red-light group hover:bg-red-light`}
                                 onClick={() => {
                                   setEditingNeededField(index)
                                   // Remove from completed set when editing
@@ -1328,7 +1328,7 @@ const ActualRsvpForm = ({
                               >
                                 <div className='relative'>
                                   <div
-                                    className={`w-6 h-6 rounded border-2 flex items-center justify-center bg-red-500 border-red-500`}
+                                    className={`w-6 h-6 rounded border-2 flex items-center justify-center bg-red-dark border-red-dark`}
                                   >
                                     <span className='text-white text-sm'>
                                       ✓
@@ -1341,7 +1341,7 @@ const ActualRsvpForm = ({
                                 <div className='flex items-center space-x-2'>
                                   {/* Edit icon - shows on hover */}
                                   <svg
-                                    className='w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity'
+                                    className='w-4 h-4 text-gray-textlight opacity-0 group-hover:opacity-100 transition-opacity'
                                     fill='none'
                                     stroke='currentColor'
                                     viewBox='0 0 24 24'
@@ -1360,7 +1360,7 @@ const ActualRsvpForm = ({
                                         e.stopPropagation()
                                         removeCustomNeededField(index)
                                       }}
-                                      className='text-red-500 hover:text-red-700 p-1 text-lg font-bold'
+                                      className='text-red-dark hover:text-red-text p-1 text-lg font-bold'
                                       title='Remove this field'
                                     >
                                       ×
@@ -1370,7 +1370,7 @@ const ActualRsvpForm = ({
                               </div>
                             ) : (
                               // Show as input field when not completed or editing
-                              <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-gray-300'>
+                              <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-gray'>
                                 <input
                                   type='text'
                                   value={field}
@@ -1399,7 +1399,7 @@ const ActualRsvpForm = ({
                                     onClick={() =>
                                       removeCustomNeededField(index)
                                     }
-                                    className='text-red-500 hover:text-red-700 p-1 text-lg font-bold'
+                                    className='text-red-dark hover:text-red-text p-1 text-lg font-bold'
                                     title='Remove this field'
                                   >
                                     ×
@@ -1446,8 +1446,8 @@ const ActualRsvpForm = ({
                       key={allergy.name}
                       className={`flex items-center space-x-3 p-3 rounded-md border-2 transition-colors cursor-pointer ${
                         isSelected
-                          ? 'border-red-500 bg-red-50'
-                          : 'border-gray-300 hover:border-gray-400'
+                          ? 'border-red-dark bg-red-light'
+                          : 'border-gray hover:border-gray-textlight'
                       }`}
                       onClick={() => handleAllergyToggle(allergy.name)}
                     >
@@ -1461,8 +1461,8 @@ const ActualRsvpForm = ({
                         <div
                           className={`w-6 h-6 rounded border-2 flex items-center justify-center cursor-pointer ${
                             isSelected
-                              ? 'bg-red-500 border-red-500'
-                              : 'border-gray-300 bg-white hover:border-gray-400'
+                              ? 'bg-red-dark border-red-dark'
+                              : 'border-gray bg-white hover:border-gray-textlight'
                           }`}
                         >
                           {isSelected && (
@@ -1479,9 +1479,9 @@ const ActualRsvpForm = ({
                 })}
 
                 {/* Untoggable Republicans checkbox */}
-                <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-red-500 bg-red-50'>
+                <div className='flex items-center space-x-3 p-3 rounded-md border-2 border-red-dark bg-red-light'>
                   <div className='relative'>
-                    <div className='w-6 h-6 rounded border-2 flex items-center justify-center bg-red-500 border-red-500'>
+                    <div className='w-6 h-6 rounded border-2 flex items-center justify-center bg-red-dark border-red-dark'>
                       <span className='text-white text-sm'>✓</span>
                     </div>
                   </div>
@@ -1492,8 +1492,8 @@ const ActualRsvpForm = ({
                 </div>
               </div>
 
-              <div className='mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md'>
-                <p className='text-sm text-yellow-800'>
+              <div className='mt-6 p-4 bg-yellow-light border border-yellow rounded-md'>
+                <p className='text-sm text-yellow-text'>
                   <strong>Note:</strong> Text Jordan details @ 402-957-3995
                 </p>
               </div>
@@ -1517,8 +1517,8 @@ const ActualRsvpForm = ({
                       key={role}
                       className={`flex items-center space-x-4 p-4 rounded-md border-2 transition-colors cursor-pointer ${
                         isSelected
-                          ? 'border-teal-dark bg-teal-50'
-                          : 'border-gray-300 hover:border-gray-400'
+                          ? 'border-teal-dark bg-teal-light'
+                          : 'border-gray hover:border-gray-textlight'
                       }`}
                       onClick={() => handleVolunteerRoleToggle(role)}
                     >
@@ -1533,7 +1533,7 @@ const ActualRsvpForm = ({
                           className={`w-8 h-8 rounded border-2 flex items-center justify-center cursor-pointer ${
                             isSelected
                               ? 'bg-teal-dark border-teal-dark'
-                              : 'border-gray-300 bg-white hover:border-gray-400'
+                              : 'border-gray bg-white hover:border-gray-textlight'
                           }`}
                         >
                           {isSelected && (
@@ -1562,8 +1562,8 @@ const ActualRsvpForm = ({
                 <div
                   className={`flex items-center space-x-4 p-6 rounded-md border-2 transition-colors cursor-pointer ${
                     formData.merrit_reservoir === true
-                      ? 'border-teal-dark bg-teal-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-teal-dark bg-teal-light'
+                      : 'border-gray hover:border-gray-textlight'
                   }`}
                   onClick={() => updateFormData('merrit_reservoir', true)}
                 >
@@ -1580,7 +1580,7 @@ const ActualRsvpForm = ({
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${
                         formData.merrit_reservoir === true
                           ? 'bg-teal-dark border-teal-dark'
-                          : 'border-gray-300 bg-white hover:border-gray-400'
+                          : 'border-gray bg-white hover:border-gray-textlight'
                       }`}
                     >
                       {formData.merrit_reservoir === true && (
@@ -1597,8 +1597,8 @@ const ActualRsvpForm = ({
                 <div
                   className={`flex items-center space-x-4 p-6 rounded-md border-2 transition-colors cursor-pointer ${
                     formData.merrit_reservoir === false
-                      ? 'border-teal-dark bg-teal-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-teal-dark bg-teal-light'
+                      : 'border-gray hover:border-gray-textlight'
                   }`}
                   onClick={() => updateFormData('merrit_reservoir', false)}
                 >
@@ -1615,7 +1615,7 @@ const ActualRsvpForm = ({
                       className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${
                         formData.merrit_reservoir === false
                           ? 'bg-teal-dark border-teal-dark'
-                          : 'border-gray-300 bg-white hover:border-gray-400'
+                          : 'border-gray bg-white hover:border-gray-textlight'
                       }`}
                     >
                       {formData.merrit_reservoir === false && (
@@ -1631,7 +1631,7 @@ const ActualRsvpForm = ({
               </div>
             </div>
 
-            {/* <div className='mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-750'>
+            {/* <div className='mt-6 rounded-lg border border-gray bg-gray-pagebg p-4 dark:border-gray-textdark dark:bg-gray-750'>
               <h3 className='mb-3 text-xl font-semibold text-gray-textdark'>
                 Review Your RSVP
               </h3>
@@ -1760,8 +1760,8 @@ const ActualRsvpForm = ({
                 </p>
               </div>
 
-              <div className='bg-teal-50 border border-teal-200 rounded-lg p-4 mb-6'>
-                <p className='text-sm text-teal-700 mb-2'>
+              <div className='bg-teal-light border border-teal rounded-lg p-4 mb-6'>
+                <p className='text-sm text-teal-text mb-2'>
                   <strong>Add it to your calendar</strong>
                 </p>
                 <a
@@ -1770,7 +1770,7 @@ const ActualRsvpForm = ({
                       ? '/niobrara-trip-merrit.ics'
                       : '/niobrara-trip.ics'
                   }
-                  className='text-teal-600 hover:text-teal-800 underline font-medium'
+                  className='text-teal-text hover:text-teal-text underline font-medium'
                   download
                 >
                   📅 Download Calendar Event
@@ -1872,7 +1872,7 @@ const ActualRsvpForm = ({
                   on the trip!
                 </p>
                 {formData.message && (
-                  <div className='bg-gray-50 border-l-4 border-orange-dark p-4 mb-4'>
+                  <div className='bg-gray-pagebg border-l-4 border-orange-dark p-4 mb-4'>
                     <p className='text-sm text-gray-textdark font-medium mb-1'>
                       Your message:
                     </p>
@@ -1929,7 +1929,7 @@ const ActualRsvpForm = ({
                 <p className='text-center text-gray-textlight'>
                   Step {currentStep} of {TOTAL_STEPS}
                 </p>
-                <div className='mt-3 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700'>
+                <div className='mt-3 h-2.5 w-full rounded-full bg-gray dark:bg-gray-textdark'>
                   <div
                     className='h-2.5 rounded-full bg-teal transition-all duration-300 ease-in-out'
                     style={{ width: `${(currentStep / TOTAL_STEPS) * 100}%` }}
@@ -1946,7 +1946,7 @@ const ActualRsvpForm = ({
         {error &&
           !successMessage && ( // Only show error if no success message
             <div
-              className='mt-4 rounded-md border border-red-300 bg-red-50 p-4 text-red-700'
+              className='mt-4 rounded-md border border-red-medium bg-red-light p-4 text-red-text'
               role='alert'
             >
               <p className='font-semibold'>Error:</p>
@@ -2008,7 +2008,7 @@ const ActualRsvpForm = ({
                 type='button'
                 onClick={requestClearAll}
                 disabled={isPending}
-                className='text-sm text-gray-textlight hover:text-red-500 disabled:opacity-50'
+                className='text-sm text-gray-textlight hover:text-red-dark disabled:opacity-50'
               >
                 Clear All and Restart
               </button>

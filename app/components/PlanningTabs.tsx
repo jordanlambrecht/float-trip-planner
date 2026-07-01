@@ -26,7 +26,7 @@ const PlanningTabs = ({ rsvps = [], onClaimed }: PlanningTabsProps) => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
-        <div className='flex items-center gap-2 mb-6 bg-gray-100 rounded-lg p-1 w-fit'>
+        <div className='flex items-center gap-2 mb-6 bg-gray-pagebg rounded-lg p-1 w-fit'>
           {TABS.map(({ id, label }) => (
             <button
               key={id}
@@ -36,7 +36,7 @@ const PlanningTabs = ({ rsvps = [], onClaimed }: PlanningTabsProps) => {
                 'px-4 py-1.5 rounded-md text-sm font-mono font-medium transition-colors',
                 tab === id
                   ? 'bg-pink-dark text-white'
-                  : 'text-gray-600 hover:text-gray-800'
+                  : 'text-gray-textlight hover:text-gray-textdark'
               )}
             >
               {label}

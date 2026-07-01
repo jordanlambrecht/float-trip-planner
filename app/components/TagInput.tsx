@@ -151,7 +151,7 @@ const TagInput = ({
         (filteredSuggestions.length > 0 || shouldShowAddOption) && (
           <div
             className={clsx(
-              'absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto',
+              'absolute z-50 w-full mt-1 bg-white border border-gray rounded-md shadow-lg overflow-y-auto',
               // Adjust positioning and height when keyboard is open
               isKeyboardOpen
                 ? 'max-h-32 bottom-full mb-1' // Show above input when keyboard is open
@@ -163,8 +163,8 @@ const TagInput = ({
                 key={index}
                 type='button'
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`w-full px-3 py-2 text-left text-sm font-mono hover:bg-gray-100 focus:outline-none focus:bg-gray-100 ${
-                  index === 0 ? 'bg-gray-50' : ''
+                className={`w-full px-3 py-2 text-left text-sm font-mono hover:bg-gray-pagebg focus:outline-none focus:bg-gray-pagebg ${
+                  index === 0 ? 'bg-gray-pagebg' : ''
                 }`}
               >
                 {suggestion}
@@ -174,8 +174,8 @@ const TagInput = ({
               <button
                 type='button'
                 onClick={() => handleSuggestionClick(inputValue.trim())}
-                className={`w-full px-3 py-2 text-left text-sm font-mono hover:bg-gray-100 focus:outline-none focus:bg-gray-100 text-gray-600 italic ${
-                  filteredSuggestions.length === 0 ? 'bg-gray-50' : ''
+                className={`w-full px-3 py-2 text-left text-sm font-mono hover:bg-gray-pagebg focus:outline-none focus:bg-gray-pagebg text-gray-textlight italic ${
+                  filteredSuggestions.length === 0 ? 'bg-gray-pagebg' : ''
                 }`}
               >
                 Add "{inputValue.trim()}"...

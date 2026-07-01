@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { H2 } from './ui/Typography'
 import { TRIP_DAYS } from '@tripConfig'
 
 const Itinerary = () => {
@@ -7,7 +8,7 @@ const Itinerary = () => {
       <div className='p-6  grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm  '>
         <div className='my-6 py-4 mx-4 px-2 md:mx-8 md:px-4 flex flex-col md:flex-row items-start justify-between gap-4'>
           <div>
-            <h2>Itinerary</h2>
+            <H2>Itinerary</H2>
           </div>
           <div className='flex flex-col gap-y-12 max-w-xl'>
             {/* BONUS DAY */}

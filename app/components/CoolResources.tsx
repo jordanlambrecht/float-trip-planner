@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { H2 } from './ui/Typography'
 
 const CoolResources = () => {
   return (
@@ -6,7 +7,7 @@ const CoolResources = () => {
       <div className='p-6  grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm  '>
         <div className='my-6 py-4 px-4 mx-2 md:mx-8 md:px-4 flex flex-col md:flex-row items-start justify-between gap-4'>
           <div>
-            <h2>Cool Resources</h2>
+            <H2>Cool Resources</H2>
           </div>
           <div>
             <ul className='underline space-y-4'>

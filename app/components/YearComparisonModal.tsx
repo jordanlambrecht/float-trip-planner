@@ -52,9 +52,9 @@ const YearComparisonModal = ({
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm'>
-      <div className='w-full max-w-6xl max-h-[90vh] overflow-y-auto p-6 space-y-4 border rounded-lg shadow-xl bg-cardbg  border-gray-300 '>
+      <div className='w-full max-w-6xl max-h-[90vh] overflow-y-auto p-6 space-y-4 border rounded-lg shadow-xl bg-cardbg  border-gray '>
         {/* Header */}
-        <div className='flex items-center justify-between pb-4 border-b border-gray-300 '>
+        <div className='flex items-center justify-between pb-4 border-b border-gray '>
           <div className='flex items-center'>
             <h2 className='text-2xl font-bold font-kumbh-sans text-gray-textdark '>
               Compare {currentYear} to Previous Trips
@@ -62,7 +62,7 @@ const YearComparisonModal = ({
           </div>
           <button
             onClick={onClose}
-            className='p-2 text-gray-textlight hover:text-gray-textdark :text-gray-textlight rounded-full hover:bg-gray-100 :bg-gray-700'
+            className='p-2 text-gray-textlight hover:text-gray-textdark :text-gray-textlight rounded-full hover:bg-gray-pagebg :bg-gray-textdark'
           >
             <svg
               className='w-6 h-6'
@@ -91,7 +91,7 @@ const YearComparisonModal = ({
 
         {error && (
           <div className='py-8 text-center'>
-            <p className='font-mono text-red-600'>Error: {error}</p>
+            <p className='font-mono text-red-dark'>Error: {error}</p>
           </div>
         )}
 
@@ -99,7 +99,7 @@ const YearComparisonModal = ({
           <div className='space-y-8'>
             {/* Historical Data Section */}
             <div className=' pt-8'>
-              <div className='p-6 bg-gray-50  rounded-lg border border-gray-200 '>
+              <div className='p-6 bg-gray-pagebg  rounded-lg border border-gray '>
                 {/* Historical Trip Header */}
                 <div className='text-center mb-6'>
                   <p className='font-sans text-xs tracking-wider uppercase text-text '>
@@ -183,7 +183,7 @@ const YearComparisonModal = ({
                 </div>
 
                 {historicalData.notes && (
-                  <div className='mt-6 pt-4 border-t border-gray-200 '>
+                  <div className='mt-6 pt-4 border-t border-gray '>
                     <h4 className='font-semibold font-mono text-sm text-gray-textdark  mb-2'>
                       Notes
                     </h4>
@@ -194,7 +194,7 @@ const YearComparisonModal = ({
                 )}
 
                 {historicalData.photoAlbumUrl && (
-                  <div className='mt-4 pt-4 border-t border-gray-200 '>
+                  <div className='mt-4 pt-4 border-t border-gray '>
                     <a
                       href={historicalData.photoAlbumUrl}
                       target='_blank'
@@ -211,7 +211,7 @@ const YearComparisonModal = ({
         )}
 
         {/* Footer */}
-        <div className='flex justify-end pt-4 border-t border-gray-300 '>
+        <div className='flex justify-end pt-4 border-t border-gray '>
           <button
             onClick={onClose}
             className='px-4 py-2 font-mono text-sm text-white rounded bg-pink-dark hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-2'

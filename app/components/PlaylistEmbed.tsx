@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { H2 } from './ui/Typography'
 import Link from 'next/link'
 import { SPOTIFY_PLAYLIST_URL } from '@tripConfig'
 import { getSpotifyPlaylistAction } from '@actions'
@@ -58,7 +59,7 @@ const PlaylistEmbed = () => {
           )}
           <div className='flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3'>
             <div className='min-w-0'>
-              <h2 className='mb-1'>{data?.name || 'Float Trip Soundtrack'}</h2>
+              <H2 className='mb-1'>{data?.name || 'Float Trip Soundtrack'}</H2>
               <p className='font-mono text-sm text-gray-textlight'>
                 collaborative playlist of songs we may or may not float to
                 depending if they&apos;re bad or not

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { H1 } from './ui/Typography'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import { TRIP_YEAR, TRIP_DATES_FULL } from '@tripConfig'
@@ -11,9 +12,9 @@ const PageHeader = () => {
   return (
     <section className='flex flex-col items-center justify-center p-4 sm:p-6 w-full'>
       <div className='py-2 my-4 text-center w-full'>
-        <h1 className='text-5xl font-bold text-gray-textdark'>
+        <H1 className='text-5xl font-bold text-gray-textdark'>
           Niobrara {TRIP_YEAR}
-        </h1>
+        </H1>
         <h2 className='text-center my-1 italic font-semibold mx-0 text-gray-textdark'>
           {TRIP_DATES_FULL}
         </h2>
@@ -28,7 +29,7 @@ const PageHeader = () => {
             'font-mono text-sm px-4 py-2 rounded-md transition-colors',
             pathname === '/'
               ? 'bg-pink-dark text-white'
-              : 'text-gray-textdark hover:bg-gray-100 border border-gray-textlight'
+              : 'text-gray-textdark hover:bg-gray-pagebg border border-gray-textlight'
           )}
         >
           HOME
@@ -43,7 +44,7 @@ const PageHeader = () => {
         ) : (
           <Link
             href='/rsvp'
-            className='font-mono text-sm px-4 py-2 rounded-md transition-colors text-gray-textdark hover:bg-gray-100 border border-gray-textlight'
+            className='font-mono text-sm px-4 py-2 rounded-md transition-colors text-gray-textdark hover:bg-gray-pagebg border border-gray-textlight'
           >
             RSVP
           </Link>

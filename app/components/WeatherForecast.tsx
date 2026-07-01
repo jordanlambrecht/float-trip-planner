@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { H2 } from './ui/Typography'
 import type { HistoricalYearData } from '@types'
 import { getHistoricalYearsCached } from '../lib/historicalYears'
 import {
@@ -41,11 +42,11 @@ const weatherEmoji = (code: number): string => {
 }
 
 const uvLabel = (uv: number): { label: string; className: string } => {
-  if (uv < 3) return { label: 'low', className: 'text-green-700' }
-  if (uv < 6) return { label: 'moderate', className: 'text-yellow-600' }
-  if (uv < 8) return { label: 'high', className: 'text-orange-600' }
-  if (uv < 11) return { label: 'very high', className: 'text-red-600' }
-  return { label: 'extreme', className: 'text-purple-700' }
+  if (uv < 3) return { label: 'low', className: 'text-green-text' }
+  if (uv < 6) return { label: 'moderate', className: 'text-yellow-dark' }
+  if (uv < 8) return { label: 'high', className: 'text-orange-dark' }
+  if (uv < 11) return { label: 'very high', className: 'text-red-dark' }
+  return { label: 'extreme', className: 'text-purple-text' }
 }
 
 const dayLabel = (dateString: string): string =>
@@ -150,12 +151,12 @@ const WeatherForecast = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
-        <h2>Trip Weather Forecast</h2>
+        <H2>Trip Weather Forecast</H2>
         <p className='font-mono text-sm text-gray-textlight mb-6'>
           Valentine, NE
         </p>
 
-        {error && <p className='font-mono text-sm text-red-600'>{error}</p>}
+        {error && <p className='font-mono text-sm text-red-dark'>{error}</p>}
 
         {!error && (
           <>

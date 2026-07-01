@@ -88,7 +88,7 @@ export function ItemTooltip({
   }
 
   const isLeftSide = type === 'extra'
-  const headerColor = type === 'extra' ? 'text-red-300' : 'text-green-300'
+  const headerColor = type === 'extra' ? 'text-red-medium' : 'text-green-medium'
 
   return (
     <div
@@ -129,19 +129,19 @@ export function ItemTooltip({
             <div
               className={`w-0 h-0
                 ${/* Mobile: arrow pointing down */ ''}
-                border-l-10 border-l-transparent border-r-10 border-r-transparent border-t-10 border-t-gray-800
+                border-l-10 border-l-transparent border-r-10 border-r-transparent border-t-10 border-t-gray-textdark
                 ${/* Desktop: arrow pointing left/right */ ''}
                 sm:border-l-0 sm:border-r-0 sm:border-t-10 sm:border-t-transparent sm:border-b-10 sm:border-b-transparent
                 ${
                   isLeftSide
-                    ? 'sm:border-l-10 sm:border-l-gray-800'
-                    : 'sm:border-r-10 sm:border-r-gray-800'
+                    ? 'sm:border-l-10 sm:border-l-gray-textdark'
+                    : 'sm:border-r-10 sm:border-r-gray-textdark'
                 }`}
             ></div>
           </div>
 
           {/* Tooltip content */}
-          <div className='bg-gray-800 text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl border border-gray-700 max-w-xs'>
+          <div className='bg-gray-textdark text-white text-sm rounded-lg px-4 py-3 whitespace-nowrap shadow-xl border border-gray-textdark max-w-xs'>
             <div className={`font-semibold mb-2 ${headerColor}`}>
               {(() => {
                 // Special case headers for ride-related items
@@ -170,7 +170,7 @@ export function ItemTooltip({
             </div>
             <div className='space-y-1'>
               {peopleWithItem.map((person, index) => (
-                <div key={index} className='text-gray-100 text-xs'>
+                <div key={index} className='text-gray-pagebg text-xs'>
                   • {person}
                 </div>
               ))}

@@ -27,10 +27,10 @@ const RsvpPage = async () => {
   if ('error' in rsvpData) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen p-4 text-center'>
-        <p className='font-mono text-lg text-red-600'>
+        <p className='font-mono text-lg text-red-dark'>
           Error loading RSVP data:
         </p>
-        <p className='font-mono text-red-500'>{rsvpData.error}</p>
+        <p className='font-mono text-red-dark'>{rsvpData.error}</p>
       </div>
     )
   }
@@ -43,9 +43,9 @@ const RsvpPage = async () => {
 
       {/* RSVP Header Section */}
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full bg-linear-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6'>
+        <div className='w-full bg-linear-to-r from-teal-light to-blue-light border-2 border-teal rounded-lg p-6'>
           <div className='text-center mb-4'>
-            <h1 className='text-3xl font-bold text-gray-800 mb-2'>
+            <h1 className='text-3xl font-bold text-gray-textdark mb-2'>
               RSVP for Niobrara Trip
             </h1>
             <p className='text-xl font-mono text-pink-dark mb-2'>
@@ -66,7 +66,7 @@ const RsvpPage = async () => {
       <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
         <Link
           href='/'
-          className='inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-blue-dark rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2'
+          className='inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white bg-blue-dark rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-teal-dark focus:ring-offset-2'
         >
           🏞️ Trip Details & Such
         </Link>

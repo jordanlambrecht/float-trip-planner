@@ -37,10 +37,10 @@ const PollDisplay = ({
           {/* Compare to Last Year Button */}
           <div className='flex flex-row justify-between items-start mb-4'>
             <div>
-              <h2 className='line-through font-bold text-gray-600'>
+              <h2 className='line-through font-bold text-gray-textlight'>
                 {pollYear} Pre-RSVP Results (Archived)
               </h2>
-              <p className='text-sm font-mono text-green-700 mt-1'>
+              <p className='text-sm font-mono text-green-text mt-1'>
                 ✅ {PREVIOUS_TRIP_DATES_NO_YEAR}, {pollYear} was selected!
               </p>
             </div>
@@ -48,13 +48,13 @@ const PollDisplay = ({
             <div className='flex justify-end mb-4'>
               <button
                 onClick={() => setIsComparisonModalOpen(true)}
-                className='px-3 py-2 font-mono text-xs text-gray-textdark  border border-gray-300  rounded-md hover:bg-gray-100 :bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
+                className='px-3 py-2 font-mono text-xs text-gray-textdark  border border-gray  rounded-md hover:bg-gray-pagebg :bg-gray-textdark focus:outline-none focus:ring-2 focus:ring-pink-dark focus:ring-offset-1'
               >
                 Compare to Past Trips
               </button>
             </div>
           </div>
-          <p className='font-mono max-w-lg mb-8 text-gray-600'>
+          <p className='font-mono max-w-lg mb-8 text-gray-textlight'>
             The {pollYear} pre-RSVP voting period has ended. Based on the
             results below, {PREVIOUS_TRIP_DATES_NO_YEAR} was selected as the{' '}
             {pollYear} trip dates.

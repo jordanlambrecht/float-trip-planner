@@ -11,7 +11,7 @@ import {
 // Compact horizontal Venmo strip: avatar + handle, pay button, small QR.
 const VenmoCard = () => {
   return (
-    <div className='w-full max-w-xl mx-auto rounded-xl shadow bg-blue-text text-white'>
+    <div className='w-full max-w-xl mx-auto rounded-xl shadow bg-blue-dark text-white'>
       <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-5 py-4'>
         {/* Identity */}
         <div className='flex items-center gap-3 min-w-0'>

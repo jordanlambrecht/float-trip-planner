@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { H2 } from './ui/Typography'
 import { getHistoricalRollCallCached } from '../lib/historicalRollCall'
 import { getHistoricalYearsCached } from '../lib/historicalYears'
 import { formatNameWithInitials } from '../lib/attendance'
@@ -70,8 +71,8 @@ const HistoricalRollCall = () => {
     return (
       <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
         <div className='max-w-4xl mx-auto'>
-          <h2 className='text-2xl font-bold mb-4'>Historical Roll Call</h2>
-          <p className='text-center font-mono text-gray-500 py-8'>
+          <H2 className='text-2xl font-bold mb-4'>Historical Roll Call</H2>
+          <p className='text-center font-mono text-gray-textlight py-8'>
             Loading historical data...
           </p>
         </div>
@@ -83,8 +84,8 @@ const HistoricalRollCall = () => {
     return (
       <section className='py-12 sm:py-16 px-4 md:px-8 w-full'>
         <div className='max-w-4xl mx-auto'>
-          <h2 className='text-2xl font-bold mb-4'>Historical Roll Call</h2>
-          <p className='text-center font-mono text-red-500 py-8'>{error}</p>
+          <H2 className='text-2xl font-bold mb-4'>Historical Roll Call</H2>
+          <p className='text-center font-mono text-red-dark py-8'>{error}</p>
         </div>
       </section>
     )
@@ -118,7 +119,7 @@ const HistoricalRollCall = () => {
           return (
             <div key={year} className='mb-8'>
               <div className='flex flex-wrap items-center justify-between gap-2 mb-4'>
-                <h2 className='text-2xl font-bold'>{year} Roll Call</h2>
+                <H2 className='text-2xl font-bold'>{year} Roll Call</H2>
                 {photoUrls[year] && (
                   <a
                     href={photoUrls[year]}
@@ -136,7 +137,7 @@ const HistoricalRollCall = () => {
                   {yearEntries.map((entry, index) => (
                     <li
                       key={`${year}-${index}`}
-                      className='flex items-center justify-between p-3 border-b border-green-500'
+                      className='flex items-center justify-between p-3 border-b border-green-dark'
                     >
                       <p className='font-mono text-base font-medium text-gray-textdark truncate text-wrap pr-2'>
                         {formatNameWithInitials(entry.name)}

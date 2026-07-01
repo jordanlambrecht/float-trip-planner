@@ -749,8 +749,7 @@ export async function getSpotifyPlaylistAction(): Promise<
       ? data.tracks.items
       : []
 
-    // added_by only carries the (anonymous) Spotify user ID, so resolve each
-    // unique adder once via the public profile endpoint to get a display name.
+    // added_by carries only the user ID, so look up each unique adder's name.
     const adderIds = Array.from(
       new Set(
         items

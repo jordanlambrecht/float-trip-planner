@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useTransition } from 'react'
+import { H2 } from './ui/Typography'
 import type { Comment } from '@types'
 import { getCommentsAction, submitCommentAction } from '@actions'
 
@@ -85,8 +86,8 @@ const MessageWall = ({}: MessageWallProps) => {
     return (
       <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
         <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm '>
-          <h2 className='text-2xl font-bold mb-4'>Message Board</h2>
-          <p className='text-center font-mono text-gray-500 py-8'>
+          <H2 className='text-2xl font-bold mb-4'>Message Board</H2>
+          <p className='text-center font-mono text-gray-textlight py-8'>
             Loading messages...
           </p>
         </div>
@@ -98,7 +99,7 @@ const MessageWall = ({}: MessageWallProps) => {
     return (
       <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
         <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm '>
-          <h2 className='text-2xl font-bold mb-4'>Message Board</h2>
+          <H2 className='text-2xl font-bold mb-4'>Message Board</H2>
 
           {/* Comment submission form */}
           <div className='border-2 border-pink-dark rounded-lg p-4 mb-6'>
@@ -121,14 +122,14 @@ const MessageWall = ({}: MessageWallProps) => {
                   disabled={isSubmitting}
                 />
                 <div className='flex items-center justify-between'>
-                  <div className='text-xs text-gray-500'>
+                  <div className='text-xs text-gray-textlight'>
                     {submitSuccess && (
-                      <span className='text-green-600 font-medium'>
+                      <span className='text-green-dark font-medium'>
                         Comment added successfully!
                       </span>
                     )}
                     {submitError && (
-                      <span className='text-red-600 font-medium'>
+                      <span className='text-red-dark font-medium'>
                         {submitError}
                       </span>
                     )}
@@ -136,7 +137,7 @@ const MessageWall = ({}: MessageWallProps) => {
                   <button
                     type='submit'
                     disabled={!newComment.trim() || isSubmitting}
-                    className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-1 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+                    className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-text focus:outline-none focus:ring-1 focus:ring-gray-textlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
                   >
                     {isSubmitting ? 'Posting...' : 'Post Comment'}
                   </button>
@@ -145,7 +146,7 @@ const MessageWall = ({}: MessageWallProps) => {
             </form>
           </div>
 
-          <p className='text-center font-mono text-gray-500 py-8'>
+          <p className='text-center font-mono text-gray-textlight py-8'>
             No messages yet. Be the first to add one!
           </p>
         </div>
@@ -156,7 +157,7 @@ const MessageWall = ({}: MessageWallProps) => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm '>
-        <h2 className='text-2xl font-bold mb-6'>Message Board</h2>
+        <H2 className='text-2xl font-bold mb-6'>Message Board</H2>
 
         {/* Comment submission form */}
         <div className='border-2 border-pink-dark rounded-lg p-4 mb-6'>
@@ -167,26 +168,26 @@ const MessageWall = ({}: MessageWallProps) => {
                 value={commenterName}
                 onChange={(e) => setCommenterName(e.target.value)}
                 placeholder='Your name'
-                className='w-full p-3 font-mono text-sm border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400'
+                className='w-full p-3 font-mono text-sm border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-gray-textlight focus:border-gray-textlight'
                 disabled={isSubmitting}
               />
               <textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder='Add a message to the board...'
-                className='w-full p-3 font-mono text-sm border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 resize-none'
+                className='w-full p-3 font-mono text-sm border border-text-dm rounded-md focus:outline-none focus:ring-1 focus:ring-gray-textlight focus:border-gray-textlight resize-none'
                 rows={3}
                 disabled={isSubmitting}
               />
               <div className='flex items-center justify-between'>
-                <div className='text-xs text-gray-500'>
+                <div className='text-xs text-gray-textlight'>
                   {submitSuccess && (
-                    <span className='text-green-600 font-medium'>
+                    <span className='text-green-dark font-medium'>
                       Comment added successfully!
                     </span>
                   )}
                   {submitError && (
-                    <span className='text-red-600 font-medium'>
+                    <span className='text-red-dark font-medium'>
                       {submitError}
                     </span>
                   )}
@@ -194,7 +195,7 @@ const MessageWall = ({}: MessageWallProps) => {
                 <button
                   type='submit'
                   disabled={!newComment.trim() || isSubmitting}
-                  className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-700 focus:outline-none focus:ring-1 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
+                  className='px-4 py-2 font-mono text-sm bg-pink-dark text-white rounded-md hover:bg-pink-text focus:outline-none focus:ring-1 focus:ring-gray-textlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors'
                 >
                   {isSubmitting ? 'Posting...' : 'Post Comment'}
                 </button>
@@ -232,11 +233,11 @@ const MessageWall = ({}: MessageWallProps) => {
                         ? comment.commenter_name
                         : 'Anonymous'}
                     </span>
-                    <span className='text-xs text-gray-500 italic'>
+                    <span className='text-xs text-gray-textlight italic'>
                       {formatDate(comment.date_created)}
                     </span>
                   </div>
-                  <p className='font-mono text-gray-700  whitespace-pre-wrap'>
+                  <p className='font-mono text-gray-textdark  whitespace-pre-wrap'>
                     "{comment.comment}"
                   </p>
                 </div>

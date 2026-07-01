@@ -26,15 +26,15 @@ const getRsvpEmoji = (status: RSVPStatus): string => {
 const getRsvpColor = (status: RSVPStatus): string => {
   switch (status) {
     case 'yes':
-      return 'border-green-500 bg-green-50'
+      return 'border-green-dark bg-green-light'
     case 'maybe_probably':
-      return 'border-blue-500 bg-blue-50'
+      return 'border-blue-dark bg-blue-light'
     case 'maybe_unlikely':
-      return 'border-purple-500 bg-purple-50'
+      return 'border-purple-dark bg-purple-light'
     case 'no':
-      return 'border-red-500 bg-red-50'
+      return 'border-red-dark bg-red-light'
     default:
-      return 'border-gray-500 bg-gray-50'
+      return 'border-gray-textlight bg-gray-pagebg'
   }
 }
 
@@ -107,7 +107,7 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
 
               {rsvp.items_bringing && (
                 <div className='mb-2'>
-                  <p className='text-xs font-medium text-gray-600 mb-1'>
+                  <p className='text-xs font-medium text-gray-textlight mb-1'>
                     Bringing:
                   </p>
                   <p className='font-mono text-sm text-gray-textdark'>
@@ -118,7 +118,7 @@ const ActualRsvpList = ({ rsvps }: ActualRsvpListProps) => {
 
               {rsvp.message && (
                 <div className='mb-2'>
-                  <p className='text-xs font-medium text-gray-600 mb-1'>
+                  <p className='text-xs font-medium text-gray-textlight mb-1'>
                     Message:
                   </p>
                   <p className='font-mono text-sm text-gray-textdark italic'>

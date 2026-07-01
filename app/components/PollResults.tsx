@@ -77,14 +77,14 @@ const PollResults = ({
       </div>
 
       <div className='mt-6 text-center sm:mt-8'>
-        <p className='font-mono text-sm text-gray-600 mb-2'>
+        <p className='font-mono text-sm text-gray-textlight mb-2'>
           Voting has closed - {PREVIOUS_TRIP_DATES_NO_YEAR},{' '}
           {PREVIOUS_TRIP_YEAR} selected
         </p>
         {/* Disabled button */}
         <button
           disabled
-          className='font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 border border-gray text-gray-400 bg-gray-100 rounded-md cursor-not-allowed opacity-50'
+          className='font-mono uppercase text-xs sm:text-sm tracking-wider py-2.5 px-6 border border-gray text-gray-textlight bg-gray-pagebg rounded-md cursor-not-allowed opacity-50'
         >
           Voting Closed
         </button>

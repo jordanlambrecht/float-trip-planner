@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { H2 } from './ui/Typography'
 import type { ActualRsvpEntry } from '@types'
 
 import VenmoCard from './VenmoCard'
@@ -14,13 +15,13 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
 
   if (!rsvps) {
     return (
-      <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full bg-linear-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-lg p-6'>
+      <section className='w-full flex flex-col items-center justify-center p-4 sm:p-6'>
+        <div className='w-full max-w-4xl bg-linear-to-r from-yellow-light to-orange-light border-2 border-yellow rounded-lg p-6 shadow-2xl'>
           <div className='text-center'>
-            <h2 className='text-2xl font-bold text-gray-800 mb-2'>
+            <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
               💰 Trip Cost Calculator
-            </h2>
-            <p className='font-mono text-gray-600'>Loading RSVP data...</p>
+            </H2>
+            <p className='font-mono text-gray-textlight'>Loading RSVP data...</p>
           </div>
         </div>
       </section>
@@ -61,24 +62,24 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
   const costPerPerson = totalPeople > 0 ? grandTotal / totalPeople : 0
 
   return (
-    <section className='w-full max-w-4xl flex flex-col items-center justify-center p-4 sm:p-6'>
-      <div className='w-full bg-yellow border-2 border-yellow-medium rounded-lg p-6'>
+    <section className='w-full flex flex-col items-center justify-center p-4 sm:p-6'>
+      <div className='w-full max-w-4xl bg-yellow border-2 border-yellow-medium rounded-lg p-6 shadow-2xl'>
         <div className='text-center mb-6'>
-          <h2 className='text-2xl font-bold text-gray-800 mb-2'>
+          <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
             💰 Trip Cost Calculator
-          </h2>
-          <p className='font-mono text-sm text-gray-600 mb-4'>
+          </H2>
+          <p className='font-mono text-sm text-gray-textlight mb-4'>
             Based on {totalPeople} people attending
           </p>
 
           {/* Toggle between Total and Per Person */}
-          <div className='flex items-center justify-center space-x-2 bg-gray-100 rounded-lg p-1 w-fit mx-auto'>
+          <div className='flex items-center justify-center space-x-2 bg-gray-pagebg rounded-lg p-1 w-fit mx-auto'>
             <button
               onClick={() => setShowPerPerson(true)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 showPerPerson
                   ? 'bg-orange-dark text-white'
-                  : 'text-gray-600 hover:text-gray-800'
+                  : 'text-gray-textlight hover:text-gray-textdark'
               }`}
             >
               Per Person
@@ -88,7 +89,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 !showPerPerson
                   ? 'bg-orange-dark text-white'
-                  : 'text-gray-600 hover:text-gray-800'
+                  : 'text-gray-textlight hover:text-gray-textdark'
               }`}
             >
               Total Cost
@@ -99,7 +100,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
           {/* Cost Breakdown */}
           <div className='space-y-4'>
-            <h3 className='font-semibold text-gray-800 border-b pb-2'>
+            <h3 className='font-semibold text-gray-textdark border-b pb-2'>
               Cost Breakdown
             </h3>
 
@@ -165,17 +166,17 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
 
           {/* Summary */}
           <div className='space-y-4'>
-            <h3 className='font-semibold text-gray-800 border-b pb-2'>
+            <h3 className='font-semibold text-gray-textdark border-b pb-2'>
               Summary
             </h3>
 
-            <div className='bg-white rounded-lg p-4 border border-orange-200'>
+            <div className='bg-white rounded-lg p-4 border border-orange'>
               <div className='space-y-2'>
                 <div className='flex justify-between text-lg font-semibold'>
                   <span>
                     {showPerPerson ? 'Cost Per Person:' : 'Total Trip Cost:'}
                   </span>
-                  <span className='font-mono text-green-700'>
+                  <span className='font-mono text-green-text'>
                     $
                     {showPerPerson
                       ? costPerPerson.toFixed(2)
@@ -183,13 +184,13 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
                   </span>
                 </div>
                 {showPerPerson && (
-                  <div className='flex justify-between text-sm text-gray-600'>
+                  <div className='flex justify-between text-sm text-gray-textlight'>
                     <span>Total for {totalPeople} people:</span>
                     <span className='font-mono'>${grandTotal.toFixed(2)}</span>
                   </div>
                 )}
                 {!showPerPerson && (
-                  <div className='flex justify-between text-sm text-gray-600'>
+                  <div className='flex justify-between text-sm text-gray-textlight'>
                     <span>Per Person:</span>
                     <span className='font-mono'>
                       ${costPerPerson.toFixed(2)}
@@ -199,7 +200,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
               </div>
             </div>
 
-            <div className='text-xs text-gray-500 space-y-1'>
+            <div className='text-xs text-gray-textlight space-y-1'>
               <p>
                 • Tube rentals calculated for {tubesNeeded} two-person tubes
               </p>
@@ -227,7 +228,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
 
         {/* Payment */}
         <div className='mt-6 pt-5 border-t border-yellow-medium/50'>
-          <p className='font-mono text-xs text-gray-500 text-center mb-3'>
+          <p className='font-mono text-xs text-gray-textlight text-center mb-3'>
             No rush or anything, I guess.
           </p>
           <VenmoCard />

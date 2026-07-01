@@ -1,4 +1,5 @@
 import { TRIP_COORDS } from '@tripConfig'
+import { H2 } from './ui/Typography'
 
 // Embedded VirtualSky planetarium (virtualsky.lco.global - free, no API key)
 // pinned to the sky over Merritt Reservoir on the trip's Saturday night,
@@ -22,7 +23,7 @@ const StarChart = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
-        <h2>Night Sky Preview</h2>
+        <H2>Night Sky Preview</H2>
         <p className='font-mono text-sm text-gray-textlight mb-6 max-w-xl'>
           The sky over Merritt Reservoir on Saturday night (Aug 22, ~11 PM),
           facing south.

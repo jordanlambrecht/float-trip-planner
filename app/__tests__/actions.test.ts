@@ -238,9 +238,7 @@ describe('getSpotifyPlaylistAction', () => {
     json: async () => body,
   })
 
-  // A playlist item shaped like the Spotify API response. added_by carries only
-  // the user ID (never a name), which is the whole reason the action does a
-  // second lookup.
+  // A playlist item shaped like the Spotify API response.
   const item = (id: string, name: string, addedById: string | null): any => ({
     added_by: addedById ? { id: addedById } : null,
     track: {
@@ -252,10 +250,7 @@ describe('getSpotifyPlaylistAction', () => {
     },
   })
 
-  // Routes the three endpoints the action hits (token -> playlist -> user
-  // profiles). `users` maps a Spotify user ID to its profile, or `ok: false`
-  // to simulate a failed profile lookup. Returns the list of user IDs actually
-  // looked up so tests can assert de-duplication.
+  // Routes the action's three endpoints: token -> playlist -> user profiles.
   const installFetch = (
     items: any[],
     users: Record<string, { ok?: boolean; display_name?: string | null }> = {}

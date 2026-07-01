@@ -1,5 +1,5 @@
 {
-  "name": "niobrara-app",
+  "name": "niobrara-float-trip-planner",
   "version": "1.0.0",
   "description": "A Doodle Poll-like application to determine the best time for a Niobrara float trip.",
   "author": "Jordan Lambrecht",
@@ -16,18 +16,18 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.3.1",
+    "@tailwindcss/postcss": "^4.3.2",
     "autoprefixer": "^10.5.2",
     "clsx": "^2.1.1",
     "next": "^16.2.9",
     "next-plausible": "^4.0.0",
     "pg": "^8.22.0",
     "postcss": "^8.5.16",
-    "prettier": "^3.9.1",
+    "prettier": "^3.9.4",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "tailwindcss": "^4.3.1"
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@types/node": "26.0.1",

@@ -3,7 +3,14 @@
 import type { ActualRsvpEntry, RSVPStatus } from '@types'
 import { isAttendingStatus } from '@types'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getHistoricalRollCallCached } from '../lib/historicalRollCall'
+import {
+  countPriorTrips,
+  toPriorAttendees,
+  formatNameWithInitials,
+  type PriorAttendee,
+} from '../lib/attendance'
 
 interface RsvpListProps {
   rsvps?: ActualRsvpEntry[]
@@ -55,19 +62,6 @@ const getMaybeLabel = (status: RSVPStatus | null): string | null => {
   }
 }
 
-// Helper function to initialize last names (first letter only)
-const formatNameWithInitials = (name: string): string => {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length <= 1) {
-    return name // No last name to initialize
-  }
-
-  const firstName = parts[0]
-  const lastNameInitial = parts[parts.length - 1][0].toUpperCase()
-
-  return `${firstName} ${lastNameInitial}.`
-}
-
 // Helper function to group RSVPs by year
 const groupRsvpsByYear = (
   rsvps: ActualRsvpEntry[]
@@ -88,6 +82,19 @@ const groupRsvpsByYear = (
 const RsvpList = ({ rsvps }: RsvpListProps) => {
   const [view, setView] = useState<RsvpView>('coming')
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
+  // Past-trip attendance for the rank stars. null = still loading.
+  const [history, setHistory] = useState<PriorAttendee[] | null>(null)
+
+  useEffect(() => {
+    getHistoricalRollCallCached().then((data) => {
+      // On fetch failure leave history null so cards render NO rank badge -
+      // labelling every veteran "🌱 First timer!" would be a confident lie. A
+      // genuinely empty (but successful) archive still resolves to [] and is
+      // honest (everyone really is a first-timer).
+      if (!data || 'error' in data) return
+      setHistory(toPriorAttendees(data))
+    })
+  }, [])
 
   const toggleExpanded = (id: string) => {
     setExpandedIds((prev) => {
@@ -201,7 +208,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                           : 'text-gray-600 hover:text-gray-800'
                       )}
                     >
-                      Declined (
+                      Nah (
                       {yearRsvps.filter((r) => r.rsvp_status === 'no').length})
                     </button>
                   </div>
@@ -228,6 +235,12 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                       rsvp.needed_items?.length
                     )
                     const isExpanded = expandedIds.has(cardId)
+                    // Past-trip count for the rank stars. Only for current-year
+                    // cards; null while the archive is still loading.
+                    const tripCount =
+                      year === currentYear && history !== null
+                        ? countPriorTrips(rsvp.name, history)
+                        : null
 
                     return (
                       <div
@@ -239,7 +252,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                         )}
                       >
                         {/* Name and RSVP Status */}
-                        <div className='flex items-center justify-between mb-3'>
+                        <div className='flex items-center justify-between mb-1'>
                           <div className='flex items-center gap-2'>
                             <h3 className='font-mono text-lg font-bold text-gray-800'>
                               {year < currentYear
@@ -266,11 +279,45 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                           </span>
                         </div>
 
-                        {/* Details live behind the chevron - keeps cards clean */}
+                        {/* Attendance rank — current year only */}
+                        {tripCount === 0 && (
+                          <p
+                            className='text-sm mb-2 tracking-wide'
+                            role='img'
+                            aria-label='First timer'
+                            title='First timer'
+                          >
+                            🌱
+                          </p>
+                        )}
+                        {tripCount !== null && tripCount > 0 && (
+                          <p
+                            className='text-sm mb-2 tracking-wide'
+                            role='img'
+                            aria-label={`${tripCount} previous trip${tripCount !== 1 ? 's' : ''}`}
+                            title={`${tripCount} previous trip${tripCount !== 1 ? 's' : ''}`}
+                          >
+                            {'⭐'.repeat(Math.min(tripCount, 10))}
+                          </p>
+                        )}
+
+                        {/* Details behind the chevron. Kept mounted (when there
+                            are details) and height-collapsed via the grid-rows
+                            0fr/1fr trick so the toggle animates open/closed
+                            instead of snapping. */}
                         {year === currentYear &&
                           isAttendingStatus(rsvp.rsvp_status) &&
-                          isExpanded && (
-                            <div className='space-y-2 text-sm'>
+                          hasDetails && (
+                            <div
+                              className={clsx(
+                                'grid transition-[grid-template-rows] duration-300 ease-in-out',
+                                isExpanded
+                                  ? 'grid-rows-[1fr]'
+                                  : 'grid-rows-[0fr]'
+                              )}
+                            >
+                              <div className='overflow-hidden'>
+                                <div className='space-y-2 text-sm'>
                               {/* Volunteer Roles */}
                               {rsvp.volunteer_roles &&
                                 rsvp.volunteer_roles.length > 0 && (
@@ -411,6 +458,8 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                                     </span>
                                   </div>
                                 )}
+                                </div>
+                              </div>
                             </div>
                           )}
 
@@ -420,6 +469,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                             <button
                               type='button'
                               onClick={() => toggleExpanded(cardId)}
+                              aria-expanded={isExpanded}
                               aria-label={
                                 isExpanded ? 'Hide details' : 'Show details'
                               }

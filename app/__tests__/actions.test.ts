@@ -93,7 +93,7 @@ describe('submitActualRsvpAction', () => {
     expect(inserted('actual_rsvps')).toBe(true)
   })
 
-  it('registers every bringing/extra/needed item in the items table', async () => {
+  it('registers only communal bring-list items (not personal extra/needed gear)', async () => {
     await submitActualRsvpAction({
       name: 'Jordy',
       rsvp_status: 'yes',
@@ -105,9 +105,12 @@ describe('submitActualRsvpAction', () => {
     const itemInserts = mockQuery.mock.calls
       .filter((c) => String(c[0]).includes('INSERT INTO items'))
       .map((c) => c[1]?.[0])
-    expect(itemInserts).toEqual(
-      expect.arrayContaining(['Tent', 'Cooler', 'Firewood'])
-    )
+    // items_bringing is communal -> registered as a suggestion. extra_items and
+    // needed_items are personal lend/borrow gear -> must NOT pollute the
+    // communal items list.
+    expect(itemInserts).toContain('Tent')
+    expect(itemInserts).not.toContain('Cooler')
+    expect(itemInserts).not.toContain('Firewood')
   })
 })
 

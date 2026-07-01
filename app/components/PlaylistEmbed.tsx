@@ -45,42 +45,43 @@ const PlaylistEmbed = () => {
   return (
     <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
-        {/* Header */}
-        <div className='flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6'>
-          <div className='flex items-start gap-4'>
-            {data?.cover && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={data.cover}
-                alt={`${data.name} cover`}
-                className='w-28 h-28 rounded-lg object-cover shadow-md shrink-0'
-              />
-            )}
-            <div>
-              <h2>{data?.name || 'Float Trip Soundtrack'}</h2>
+        {/* Header: cover on the left; title with the subtext directly beneath
+            it, and the follow / add actions pinned top-right. */}
+        <div className='flex flex-col sm:flex-row sm:items-start gap-4 mb-6'>
+          {data?.cover && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={data.cover}
+              alt={`${data.name} cover`}
+              className='w-28 h-28 rounded-lg object-cover shadow-md shrink-0'
+            />
+          )}
+          <div className='flex-1 min-w-0 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3'>
+            <div className='min-w-0'>
+              <h2 className='mb-1'>{data?.name || 'Float Trip Soundtrack'}</h2>
               <p className='font-mono text-sm text-gray-textlight'>
                 collaborative playlist of songs we may or may not float to
                 depending if they&apos;re bad or not
               </p>
             </div>
-          </div>
-          <div className='flex gap-2 shrink-0'>
-            <Link
-              href={SPOTIFY_PLAYLIST_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-flex items-center justify-center px-4 py-2.5 bg-teal-dark text-white font-mono text-sm font-bold rounded-full hover:bg-opacity-90 transition-colors whitespace-nowrap'
-            >
-              ♥ Follow
-            </Link>
-            <Link
-              href={SPOTIFY_PLAYLIST_URL}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='inline-flex items-center justify-center px-4 py-2.5 border-2 border-teal-dark text-teal-text font-mono text-sm font-bold rounded-full hover:bg-teal-light transition-colors whitespace-nowrap'
-            >
-              ➕ Add a Song
-            </Link>
+            <div className='flex gap-2 shrink-0'>
+              <Link
+                href={SPOTIFY_PLAYLIST_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center px-4 py-2.5 bg-teal-dark text-white font-mono text-sm font-bold rounded-full hover:bg-opacity-90 transition-colors whitespace-nowrap'
+              >
+                ♥ Follow
+              </Link>
+              <Link
+                href={SPOTIFY_PLAYLIST_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center justify-center px-4 py-2.5 border-2 border-teal-dark text-teal-text font-mono text-sm font-bold rounded-full hover:bg-teal-light transition-colors whitespace-nowrap'
+              >
+                ➕ Add a Song
+              </Link>
+            </div>
           </div>
         </div>
 

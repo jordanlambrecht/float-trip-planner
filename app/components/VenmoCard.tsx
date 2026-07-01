@@ -11,7 +11,7 @@ import {
 // Compact horizontal Venmo strip: avatar + handle, pay button, small QR.
 const VenmoCard = () => {
   return (
-    <div className='w-full max-w-xl mx-auto rounded-xl shadow bg-[#008CFF] text-white'>
+    <div className='w-full max-w-xl mx-auto rounded-xl shadow bg-blue-text text-white'>
       <div className='flex flex-wrap items-center justify-between gap-x-4 gap-y-3 px-5 py-4'>
         {/* Identity */}
         <div className='flex items-center gap-3 min-w-0'>
@@ -33,7 +33,7 @@ const VenmoCard = () => {
           href={VENMO_PROFILE_URL}
           target='_blank'
           rel='noopener noreferrer'
-          className='px-4 py-2 bg-white text-[#008CFF] font-bold rounded-full hover:bg-white/90 transition-colors font-mono text-xs whitespace-nowrap'
+          className='px-4 py-2 bg-white text-blue-text font-bold rounded-full hover:bg-white/90 transition-colors font-mono text-xs whitespace-nowrap'
         >
           Pay on Venmo
         </Link>
@@ -47,7 +47,7 @@ const VenmoCard = () => {
             value={VENMO_PROFILE_URL}
             size={56}
             bgColor='#ffffff'
-            fgColor='#008CFF'
+            fgColor='#1e40af'
             level='M'
           />
         </div>

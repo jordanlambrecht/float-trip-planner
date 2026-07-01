@@ -38,6 +38,18 @@
   --color-yellow-dark: #eab308;
   --color-yellow-text: #92400e;
 
+  --color-red-light: #fee2e2;
+  --color-red: #fecaca;
+  --color-red-medium: #fca5a5;
+  --color-red-dark: #ef4444;
+  --color-red-text: #991b1b;
+
+  --color-green-light: #dcfce7;
+  --color-green: #bbf7d0;
+  --color-green-medium: #86efac;
+  --color-green-dark: #22c55e;
+  --color-green-text: #166534;
+
   --color-gray-pagebg: #f3f4f6;
   --color-gray-cardbg: #ffffff;
   --color-gray: #e5e7eb;

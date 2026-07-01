@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getHistoricalRollCallAction } from '@actions'
+import { getHistoricalRollCallCached } from '../lib/historicalRollCall'
 import { getHistoricalYearsCached } from '../lib/historicalYears'
+import { formatNameWithInitials } from '../lib/attendance'
 
 interface HistoricalEntry {
   name: string
@@ -11,19 +12,6 @@ interface HistoricalEntry {
 
 interface HistoricalRollCallProps {
   // We'll fetch the data within the component
-}
-
-// Helper function to initialize last names (first letter only)
-const formatNameWithInitials = (name: string): string => {
-  const parts = name.trim().split(/\s+/)
-  if (parts.length <= 1) {
-    return name // No last name to initialize
-  }
-
-  const firstName = parts[0]
-  const lastNameInitial = parts[parts.length - 1][0].toUpperCase()
-
-  return `${firstName} ${lastNameInitial}.`
 }
 
 // Helper function to group entries by year
@@ -52,7 +40,7 @@ const HistoricalRollCall = () => {
   useEffect(() => {
     const fetchHistoricalData = async () => {
       try {
-        const data = await getHistoricalRollCallAction()
+        const data = await getHistoricalRollCallCached()
         if ('error' in data) {
           setError(data.error)
         } else {

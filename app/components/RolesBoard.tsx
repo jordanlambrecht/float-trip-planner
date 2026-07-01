@@ -127,12 +127,13 @@ const RolesBoard = ({
       <div className='w-full max-w-sm p-6 rounded-lg shadow-xl bg-cardbg border border-gray-300'>
         <h3 className='text-lg font-bold text-gray-textdark mb-1'>
           {isCustomRole
-            ? 'Inventing a role?'
+            ? 'Adding A Role'
             : `You're claiming: ${claimingRole}`}
         </h3>
         <p className='font-mono text-sm text-gray-textlight mb-4'>
-          {isCustomRole ? "What's the role, and who" : 'Who'} are you? Use the
-          same name you RSVP&apos;d with.
+          {isCustomRole
+            ? "What's the role, and who are you? Use the same name you RSVP'd with."
+            : "Who are you? Use the same name you RSVP'd with."}
         </p>
         {isCustomRole && (
           <input

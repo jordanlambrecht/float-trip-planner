@@ -286,15 +286,14 @@ export async function submitActualRsvpAction(
       ]
     )
 
-    // Insert new items into the items table (from all three arrays)
-    const allItems = [
-      ...(items_bringing || []),
-      ...(extra_items || []),
-      ...(needed_items || []),
-    ]
+    // Feed only the communal bring-list into the items table. extra_items and
+    // needed_items are personal lend/borrow entries - a different concept - so
+    // they must not leak into the communal suggestion list (the form's
+    // bring-list autocomplete and the Gear board's "Still Need" both read it).
+    const communalItems = items_bringing || []
 
-    if (allItems.length > 0) {
-      for (const item of allItems) {
+    if (communalItems.length > 0) {
+      for (const item of communalItems) {
         await query(
           'INSERT INTO items (name) VALUES ($1) ON CONFLICT (name) DO NOTHING',
           [item]
@@ -310,8 +309,11 @@ export async function submitActualRsvpAction(
       )
     }
 
-    revalidatePath('/rsvp') // Revalidate the RSVP page
-    revalidatePath('/') // Revalidate the main page if it shows RSVP data
+    // No revalidatePath here. Both '/' and '/rsvp' read RSVP data client-side
+    // (getActualRsvsAction inside a useEffect), so there is nothing
+    // server-cached to refresh. Revalidating the current route would refresh
+    // the /rsvp segment mid-submit and remount the multi-step form, snapping it
+    // back to step 1 instead of showing the confirmation screen.
     return {
       success: true,
       message: 'RSVP submitted successfully!',

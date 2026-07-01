@@ -36,35 +36,25 @@ const InventoryBoard = ({
 
   const attending = rsvps.filter((rsvp) => isLikelyComing(rsvp.rsvp_status))
 
-  // item (lowercase) -> { display name, who's bringing it }. Spare gear
-  // someone offered ("has extra") counts as covered too.
+  // Communal bring-list only. Personal lend/borrow (extra_items / needed_items)
+  // is a separate concept: it surfaces per-person on the RSVP cards and in the
+  // form's hover tooltips, and is intentionally kept out of this board so the
+  // two don't co-mingle.
   const bringingMap = new Map<string, { label: string; names: string[] }>()
   attending.forEach((rsvp) => {
+    const firstName = rsvp.name.split(/\s+/)[0]
     ;(rsvp.items_bringing || []).forEach((item) => {
       const key = item.toLowerCase()
-      if (!bringingMap.has(key)) {
-        bringingMap.set(key, { label: item, names: [] })
-      }
-      bringingMap.get(key)!.names.push(rsvp.name.split(/\s+/)[0])
-    })
-    ;(rsvp.extra_items || []).forEach((item) => {
-      const key = item.toLowerCase()
-      if (!bringingMap.has(key)) {
-        bringingMap.set(key, { label: item, names: [] })
-      }
-      bringingMap.get(key)!.names.push(`${rsvp.name.split(/\s+/)[0]} (extra)`)
+      if (!bringingMap.has(key)) bringingMap.set(key, { label: item, names: [] })
+      bringingMap.get(key)!.names.push(firstName)
     })
   })
 
-  // Still needed = explicit asks from RSVPs + the live items table, minus
-  // anything someone already claimed.
-  const neededCandidates = [
-    ...attending.flatMap((rsvp) => rsvp.needed_items || []),
-    ...dbItems,
-  ]
+  // Still needed = the communal items table minus anything someone already
+  // said they're bringing.
   const stillNeed: string[] = []
   const seen = new Set<string>()
-  neededCandidates.forEach((item) => {
+  dbItems.forEach((item) => {
     const key = item.toLowerCase()
     if (!seen.has(key) && !bringingMap.has(key)) {
       seen.add(key)
@@ -203,8 +193,9 @@ const InventoryBoard = ({
             : `You're bringing: ${claimingItem}`}
         </h3>
         <p className='font-mono text-sm text-gray-textlight mb-4'>
-          {isCustomItem ? 'What is it, and who' : 'Who'} are you? Use the same
-          name you RSVP&apos;d with.
+          {isCustomItem
+            ? "What is it, and who are you? Use the same name you RSVP'd with."
+            : "Who are you? Use the same name you RSVP'd with."}
         </p>
         {isCustomItem && (
           <input

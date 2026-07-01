@@ -78,8 +78,8 @@ const InventoryBoard = ({
   const body = (
     <>
       <Muted className='mb-6 max-w-xl'>
-        Communal gear for camp. Tap anything to say you can bring it - more than
-        one person can pitch in on the same thing, and we&apos;ll sort out the
+        Communal gear for camp. Tap anything to say you can bring it. More than
+        one person can pitch in on the same thing and we&apos;ll sort out the
         final details later.
       </Muted>
 

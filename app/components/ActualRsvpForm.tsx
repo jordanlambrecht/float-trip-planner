@@ -25,6 +25,7 @@ import TagInput from './TagInput'
 import { ItemTooltip } from './ItemTooltip'
 import { submitActualRsvpAction, getPredefinedItemsAction } from '@actions' // Added getPredefinedItemsAction
 import { VOLUNTEER_ROLES } from '../pollConfig'
+import { H2, H3 } from './ui/Typography'
 
 // Define AdditionalPerson type
 interface AdditionalPerson {
@@ -793,9 +794,9 @@ const ActualRsvpForm = ({
 
             {/* RSVP Status */}
             <div className='mt-8'>
-              <h3 className='mb-3 text-lg font-semibold text-gray-textdark'>
+              <H3 className='mb-3 text-lg font-semibold text-gray-textdark'>
                 Are {additionalPeople.length > 0 ? "y'all" : 'you'} coming?
-              </h3>
+              </H3>
               <div className='grid grid-cols-2 gap-2 sm:gap-3'>
                 {RSVP_OPTIONS.filter(
                   (option) =>
@@ -837,9 +838,9 @@ const ActualRsvpForm = ({
           <Fragment>
             {isAttendingStatus(formData.rsvp_status) ? (
               <div className='space-y-4'>
-                <h3 className='text-lg font-semibold text-gray-textdark'>
+                <H3 className='text-lg font-semibold text-gray-textdark'>
                   Phone Number{getGuestInfo().isPlural ? 's' : ''}
-                </h3>
+                </H3>
 
                 {/* Main person phone */}
                 <div>
@@ -1751,16 +1752,19 @@ const ActualRsvpForm = ({
           <Fragment>
             <div className='text-center py-8'>
               <div className='mb-6'>
-                <h2 className='text-center text-2xl font-bold text-gray-textdark mb-4'>
+                <H3 className='text-center text-2xl font-bold text-gray-textdark mb-4'>
                   🎉 RSVP Submitted Successfully 🎉
-                </h2>
+                </H3>
                 <p className='text-lg text-gray-textdark mb-4'>Siiiick.</p>
-                <p className='text-gray-textlight mb-6'>
+                <p className='text-gray-textlight mb-3'>
                   You'll receive more details as we get closer to the trip date.
                 </p>
               </div>
-
+              <Link href='/#playlist' className='inline-block text-teal-text hover:text-teal-text underline font-medium mb-4'>
+                  Add songs to the trip Spotify playlist →
+                </Link> 
               <div className='bg-teal-light border border-teal rounded-lg p-4 mb-6'>
+                
                 <p className='text-sm text-teal-text mb-2'>
                   <strong>Add it to your calendar</strong>
                 </p>
@@ -1803,9 +1807,9 @@ const ActualRsvpForm = ({
           <Fragment>
             <div className='text-center py-8'>
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-textdark mb-4 text-center'>
+                <H3 className='text-2xl font-bold text-gray-textdark mb-4 text-center'>
                   Ah, bummer! 😔
-                </h2>
+                </H3>
                 <p className='text-lg text-gray-textdark mb-4'>
                   Sorry you can't make it. We'll miss you.
                 </p>
@@ -1864,12 +1868,11 @@ const ActualRsvpForm = ({
           <Fragment>
             <div className='text-center py-8'>
               <div className='mb-6'>
-                <h2 className='text-2xl font-bold text-gray-textdark mb-4 text-center'>
+                <p className='text-2xl font-bold text-gray-textdark mb-4 text-center'>
                   Thanks for letting us know! 📝
-                </h2>
+                </p>
                 <p className='text-lg text-gray-textdark mb-4'>
-                  We appreciate you taking the time to respond. We'll miss you
-                  on the trip!
+                  Sorry you can't make it. We'll miss you.
                 </p>
                 {formData.message && (
                   <div className='bg-gray-pagebg border-l-4 border-orange-dark p-4 mb-4'>
@@ -1918,9 +1921,9 @@ const ActualRsvpForm = ({
     >
       <form onSubmit={handleSubmit} className='space-y-8 p-4 sm:p-8'>
         <div className='mb-4'>
-          <h2 className='text-2xl font-bold text-center text-gray-textdark'>
+          <H2 className='text-2xl font-bold text-center text-gray-textdark'>
             Niobrara River Trip RSVP
-          </h2>
+          </H2>
           {currentStep !== 8 &&
             currentStep !== 9 &&
             currentStep !== 10 && // Hide step counter for "Confirmation" step and "Can't Make It" step
@@ -1941,7 +1944,7 @@ const ActualRsvpForm = ({
 
         <div className='min-h-62.5'>{renderStepContent()}</div>
 
-        {/* Error and Success Messages (centralized) */}
+        {/* Error and Success Messages*/}
         {/* Ensure these are not inside a conditionally rendered Fragment that might unmount them */}
         {error &&
           !successMessage && ( // Only show error if no success message

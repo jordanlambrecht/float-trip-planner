@@ -44,7 +44,7 @@ const PlaylistEmbed = () => {
   const embedUrl = toEmbedUrl(SPOTIFY_PLAYLIST_URL)
 
   return (
-    <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6'>
+    <section className='w-full h-auto flex flex-col items-center justify-center p-4 sm:p-6' id='playlist'>
       <div className='p-6 flex-col grow w-full max-w-4xl rounded-lg shadow-2xl border border-background-dm bg-cardbg'>
         {/* Header: cover on the left; title with the subtext directly beneath
             it, and the follow / add actions pinned top-right. */}

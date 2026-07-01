@@ -64,8 +64,8 @@ const RolesBoard = ({
   const body = (
     <>
       <Muted className='mb-6 max-w-xl'>
-        Who&apos;s down for what. Tap any role to add yourself - more than one
-        person can be down for the same thing, and we&apos;ll sort out the
+        Who&apos;s down for what. Tap any role to add yourself. More than one
+        person can be down for the same thing and we&apos;ll sort out the
         details later.
       </Muted>
 

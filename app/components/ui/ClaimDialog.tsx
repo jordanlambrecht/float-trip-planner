@@ -6,7 +6,7 @@ import Modal from './Modal'
 // Shared claim dialog for the gear (InventoryBoard) and roles (RolesBoard)
 // boards. Collects a name (+ an optional custom item/role) and delegates the
 // write to onSubmit. Copy is passed in so each board reads naturally. Claims
-// are additive - more than one person can be down for the same thing.
+// are additive. More than one person can be down for the same thing.
 interface ClaimDialogProps {
   open: boolean
   isCustom: boolean

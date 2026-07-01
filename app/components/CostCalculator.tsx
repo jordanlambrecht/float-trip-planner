@@ -19,7 +19,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
         <div className='w-full max-w-4xl bg-linear-to-r from-yellow-light to-orange-light border-2 border-yellow rounded-lg p-6 shadow-2xl'>
           <div className='text-center'>
             <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
-              💰 Trip Cost Calculator
+              Trip Cost Calculator
             </H2>
             <p className='font-mono text-gray-textlight'>Loading RSVP data...</p>
           </div>
@@ -66,7 +66,7 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
       <div className='w-full max-w-4xl bg-yellow border-2 border-yellow-medium rounded-lg p-6 shadow-2xl'>
         <div className='text-center mb-6'>
           <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
-            💰 Trip Cost Calculator
+            Trip Cost Calculator
           </H2>
           <p className='font-mono text-sm text-gray-textlight mb-4'>
             Based on {totalPeople} people attending

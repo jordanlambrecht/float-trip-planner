@@ -32,7 +32,7 @@ const LocationInfo = () => {
       <div className='w-full max-w-4xl bg-teal-light/50 border-2 border-teal rounded-lg p-6 shadow-2xl'>
         <div className='text-center mb-6'>
           <H2 className='text-2xl font-bold text-gray-textdark mb-2'>
-            📍 Where We're Staying
+            Where We're Staying
           </H2>
         </div>
 

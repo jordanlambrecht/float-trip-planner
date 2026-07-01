@@ -223,7 +223,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                       ? 'No maybes yet.'
                       : view === 'declined'
                         ? "Nobody's declined yet."
-                        : "Nobody's locked in a firm yes yet — check the Maybe tab."}
+                        : "Nobody's locked in a firm yes yet."}
                   </p>
                 )}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -280,7 +280,7 @@ const RsvpList = ({ rsvps }: RsvpListProps) => {
                           </span>
                         </div>
 
-                        {/* Attendance rank — current year only */}
+                        {/* Attendance rank. current year only */}
                         {tripCount === 0 && (
                           <p
                             className='text-sm mb-2 tracking-wide'

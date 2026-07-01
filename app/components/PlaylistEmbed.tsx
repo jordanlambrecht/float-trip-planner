@@ -104,7 +104,7 @@ const PlaylistEmbed = () => {
         ) : data.tracks.length === 0 ? (
           <div className='text-center py-10 border-2 border-dashed border-gray-textlight/40 rounded-xl'>
             <p className='font-mono text-base text-gray-textdark mb-1'>
-              No songs yet — be the first to add one. 🎶
+              No songs yet.
             </p>
             <p className='font-mono text-sm text-gray-textlight'>
               Tap Add a Song above to start building the soundtrack.

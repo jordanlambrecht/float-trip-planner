@@ -208,13 +208,12 @@ const CostCalculator = ({ rsvps }: CostCalculatorProps) => {
                 • Cooler tubes calculated for {coolerTubesNeeded} cooler tubes
               </p>
               <p>
-                • Food is chip-in-whatever-you-want — $45 is the suggested
+                • Food is chip-in-whatever-you-want. $45 is the suggested
                 amount
               </p>
               <p>
                 • Tube rentals, cooler tubes, and camping are{' '}
-                <span className='font-bold'>not optional</span> — everyone
-                covers their share of those
+                <span className='font-bold'>not optional</span>.
               </p>
               {merrittAttendees > 0 && (
                 <p>

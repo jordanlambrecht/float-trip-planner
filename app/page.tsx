@@ -2,6 +2,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useTransition } from 'react'
+import { H2 } from './components/ui/Typography'
 import type { ActualRsvpEntry } from '@types'
 import { getActualRsvsAction } from '@actions'
 import Schedule from './components/Schedule'
@@ -12,6 +13,8 @@ import {
   CostCalculator,
   HistoricalRollCall,
   FAQ,
+  WildlifeSection,
+  GeologySection,
 } from './components'
 import CoolResources from './components/CoolResources'
 import Itinerary from './components/Itinerary'
@@ -66,10 +69,10 @@ const Page = () => {
   if (error && rsvps === undefined) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen p-4 text-center'>
-        <p className='font-mono text-lg text-red-600'>
+        <p className='font-mono text-lg text-red-dark'>
           Error loading RSVP data:
         </p>
-        <p className='font-mono text-red-500'>{error}</p>
+        <p className='font-mono text-red-dark'>{error}</p>
         <button
           onClick={() => fetchData()}
           disabled={isRsvpLoading}
@@ -87,12 +90,12 @@ const Page = () => {
 
       {/* RSVP Call-to-Action Section */}
       <section className='w-full flex flex-col items-center justify-center p-4 sm:p-6'>
-        <div className='w-full max-w-4xl bg-linear-to-r from-teal-50 to-blue-50 border-2 border-teal-200 rounded-lg p-6 text-center shadow-2xl'>
-          <h2 className='text-2xl font-bold text-gray-800 mb-2'>Wanna RSVP?</h2>
+        <div className='w-full max-w-4xl bg-linear-to-r from-teal-light to-blue-light border-2 border-teal rounded-lg p-6 text-center shadow-2xl'>
+          <H2 className='text-2xl font-bold text-gray-textdark mb-2'>Wanna RSVP?</H2>
           <p className='text-lg font-mono text-pink-dark mb-4'>
             📅 {TRIP_DATES_FULL} 📅
           </p>
-          <p className='text-gray-600 font-mono mb-6'>
+          <p className='text-gray-textlight font-mono mb-6'>
             The official dates have been selected. Click below to submit your
             RSVP.
           </p>
@@ -118,6 +121,8 @@ const Page = () => {
       <FAQ />
       <MeteorShowerGuide />
       <StarChart />
+      <WildlifeSection />
+      <GeologySection />
       <CoolResources />
     </div>
   )

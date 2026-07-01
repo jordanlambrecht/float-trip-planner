@@ -3,7 +3,7 @@
 // Season turnover checklist:
 //   1. Update the constants below (plus the .ics files in /public).
 //   2. Run `pnpm migrate:season` to archive the previous year's data
-//      (years table + historical_roll_call) — past years are always kept
+//      (years table + historical_roll_call). Past years are always kept
 //      as historical records, never deleted.
 
 export const TRIP_YEAR = 2026
@@ -59,3 +59,12 @@ export const TRIP_COORDS = { lat: 42.8736, lon: -100.5503 }
 // it switches to live data automatically once the window opens.
 export const TRIP_FORECAST_START = '2026-08-20'
 export const TRIP_FORECAST_END = '2026-08-23'
+
+// Wildlife & geology sections. Cherry County, NE contains the whole trip area
+// (Sharp's Campground, Merritt Reservoir, the Niobrara corridor). iNaturalist
+// aggregates sightings by calendar MONTH, so month=8 is correct for our
+// late-August dates whenever the page loads. Not a live "recent sightings"
+// feed that would show the wrong season.
+export const TRIP_MONTH = 8 // August
+export const INAT_PLACE_ID = 420 // iNaturalist place_id: Cherry County, NE
+export const EBIRD_REGION = 'US-NE-031' // eBird region: Cherry County (external links)

@@ -122,7 +122,7 @@ const Page = () => {
       <MeteorShowerGuide />
       <StarChart />
       <WildlifeSection />
-      <GeologySection />
+      {/* <GeologySection /> */}
       <CoolResources />
     </div>
   )

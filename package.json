@@ -19,7 +19,7 @@
     "@tailwindcss/postcss": "^4.3.2",
     "autoprefixer": "^10.5.2",
     "clsx": "^2.1.1",
-    "next": "^16.2.9",
+    "next": "^16.3.8",
     "next-plausible": "^4.0.0",
     "pg": "^8.22.0",
     "postcss": "^8.5.18",
@@ -34,7 +34,7 @@
     "@types/react": "^19.2.17",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.11"
   },
   "keywords": [
     "nextjs",
